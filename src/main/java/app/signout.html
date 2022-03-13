@@ -1,0 +1,20 @@
+<!doctype html>
+<html>
+  <script ka:scope="global">
+    context.close();
+  </script>
+  <head th:replace="index::head"></head>
+  <body>
+    <div th:insert="header"></div>
+    <div class="container-fluid">
+      <div class="row m-3">     
+        <h1 class="display-5">You have been signed out.</h1>
+      </div>
+    </div>
+    <nav class="navbar navbar-dark bg-dark m-3">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="/">Home</a>
+      </div>
+    </nav>  
+  </body>
+</html>
