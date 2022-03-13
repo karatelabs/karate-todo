@@ -10,12 +10,14 @@ import com.intuit.karate.http.ServerContext;
 public class App {
 
     public static ServerConfig serverConfig(String root) {
-        ServerConfig config = new ServerConfig(root);
+        ServerConfig config = new ServerConfig(root)
+                .useGlobalSession(true)
+                .autoCreateSession(true);
         config.contextFactory(request -> {
             ServerContext context = new ServerContext(config, request);
             String path = request.getPath();
-            if (path.startsWith("/api/")) {
-                context.setApi(true);
+            if (context.setApiIfPathStartsWith("/api/")) {
+                // api
             } else if (path.endsWith(".ico") || path.startsWith("/pub/")) {
                 context.setHttpGetAllowed(true);
             }
