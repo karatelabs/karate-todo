@@ -23,7 +23,11 @@ Or from the command-line:
 mvn test -Dtest=LocalRunner
 ```
 
+To stop, just kill the process or stop the Java process from the IDE.
+
 # Architecture
-An earlier version of this application and the explanation can be found here: https://github.com/ptrthomas/karate-todomvc
+An old version of this application and the explanation can be found here: https://github.com/ptrthomas/karate-todomvc
 
 The version here is using Bootstrap for the theme. Some more work is needed for the UI.
+
+Note that you can edit the HTML files and refresh the UI to see changes without re-starting the server.
