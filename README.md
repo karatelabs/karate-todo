@@ -23,6 +23,8 @@ Or from the command-line:
 mvn test -Dtest=LocalRunner
 ```
 
+Now you should see the front-end at http://localhost:8080
+
 To stop, just kill the process or stop the Java process from the IDE.
 
 # Architecture
