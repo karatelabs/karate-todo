@@ -15,6 +15,8 @@ git checkout develop
 mvn install -f karate-core/pom.xml
 ```
 
+## Running `karate-todo`
+
 Now you can run the `LocalRunner` class as  JUnit test. You can do this from the IDE.
 
 Or from the command-line:
