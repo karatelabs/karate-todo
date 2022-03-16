@@ -17,7 +17,7 @@
         var found = todos.find(x => x.id === id);
         found.complete = !found.complete;
         break;
-      case 'removeCompleted':
+      case 'removeComplete':
         todos = todos.filter(x => !x.complete);
         session.todos = todos;
         break;
@@ -44,7 +44,7 @@
       case 'active':
         filtered = todos.filter(x => !x.complete);
         break;
-      case 'completed':
+      case 'complete':
         filtered = todos.filter(x => x.complete);
         break;
       default:
@@ -95,8 +95,8 @@
     <div class="col">
       <a href="#" th:classappend="selectIf('all')" ka:get="this" ka:vals="action:'all'">All</a>
       <a href="#" th:classappend="selectIf('active')" ka:get="this" ka:vals="action:'active'">Active</a>
-      <a href="#" th:classappend="selectIf('completed')" ka:get="this" ka:vals="action:'completed'">Completed</a>
-      <button th:if="todos.length > remaining" ka:post="this" ka:vals="action:'removeCompleted'" class="btn btn-secondary btn-sm">Clear completed</button>      
+      <a href="#" th:classappend="selectIf('complete')" ka:get="this" ka:vals="action:'complete'">Completed</a>
+      <button th:if="todos.length > remaining" ka:post="this" ka:vals="action:'removeComplete'" class="btn btn-secondary btn-sm">Clear completed</button>      
     </div>
   </div>
 </div>
