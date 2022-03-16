@@ -7,7 +7,7 @@
     switch (action) {
       case 'add':
         var title = request.param('title');
-        todos.push({id: todos.length + 1, title: title, completed: false});
+        todos.push({id: todos.length + 1, title: title, complete: false});
         break;
       case 'remove':
         var index = todos.findIndex(x => x.id === id);
@@ -54,7 +54,7 @@
   }
   var remaining = todos.filter(x => !x.complete).length;
   var selectIf = a => showing === a ? 'selected' : null;
-  var isEditing = t => action === 'edit' && t.id === id ? 'editing' : (t.complete ? 'completed' : null);
+  var isEditing = t => action === 'edit' && t.id === id ? 'editing' : (t.complete ? 'complete' : null);
 </script>
 
 <div class="container" hx-target="this" hx-swap="outerHTML">
