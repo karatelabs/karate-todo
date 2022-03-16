@@ -78,8 +78,8 @@
       <input type="checkbox" th:checked="todo.complete" ka:post="this" ka:vals="action:'toggle'">
     </div>
     <div class="col">
-      <div th:text="todo.title"></div>
-      <input type="text" name="title" th:value="todo.title" th:id="'todo' + todo.id"
+      <div th:text="todo.title"></div>      
+      <input th:if="false" type="text" name="title" th:value="todo.title" th:id="'todo' + todo.id"
              hx-trigger="blur,keyup-enter,keyup-escape" ka:post="this" ka:vals="action:'update'">      
     </div>
     <div class="col-1">

@@ -1,25 +1,26 @@
-if (!session.items) {
-  session.items = [];
+if (!session.todos) {
+  session.todos = [];
 }
 if (request.post) {
-  let item = request.body;
-  item.id = context.uuid();
-  session.items.push(item);
-  response.body = item;
+  let todo = request.body;
+  todo.id = session.todos.length + 1;
+  session.todos.push(todo);
+  response.body = todo;
 } else if (request.pathMatches('/{resource}/{id}')) {
-  let index = session.items.findIndex(c => c.id === request.pathParams.id);
+  let id = ~~request.pathParams.id;
+  let index = session.todos.findIndex(c => c.id === id);
   if (index === -1) {
     response.status = 404;
   } else if (request.get) {
-    response.body = session.items[index];
+    response.body = session.todos[index];
   } else if (request.put) {
-    let item = request.body;
-    item.id = request.pathParams.id;
-    session.items[index] = item;
-    response.body = item;
+    let todo = request.body;
+    todo.id = id;
+    session.todos[index] = todo;
+    response.body = todo;
   } else if (request.delete) {
-    session.items.splice(index, 1);
+    session.todos.splice(index, 1);
   }
 } else {
-  response.body = session.items;
+  response.body = session.todos;
 }

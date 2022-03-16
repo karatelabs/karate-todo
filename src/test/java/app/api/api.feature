@@ -4,32 +4,32 @@ Background:
 * url 'http://localhost:8080/api/todos'
 
 Scenario:
-* request { name: 'Billie' }
+* request { title: 'First', completed: false }
 * method post
 * status 200    
-* match response == { id: '#uuid', name: 'Billie' }
+* match response == { id: '#number', title: 'First', completed: false }
 * def id = response.id
 
 * path id
 * method get
 * status 200
-* match response == { id: '#(id)', name: 'Billie' }
+* match response == { id: '#(id)', title: 'First', completed: false }
 
 * method get
 * status 200
-* match response contains [{ id: '#(id)', name: 'Billie' }]
+* match response contains [{ id: '#(id)', title: 'First', completed: false }]
 
-* request { name: 'Bob' }
+* request { title: 'Second', completed: false }
 * method post
 * status 200    
-* match response == { id: '#uuid', name: 'Bob' }
+* match response == { id: '#number', title: 'Second', completed: false }
 * def id = response.id
 
 * path id
 * method get
 * status 200
-* match response == { id: '#(id)', name: 'Bob' }
+* match response == { id: '#(id)', title: 'Second', completed: false }
 
 * method get
 * status 200
-* match response contains [{ id: '#uuid', name: 'Billie' },{ id: '#(id)', name: 'Bob' }]
+* match response contains [{ id: '#number', title: 'First', completed: false },{ id: '#(id)', title: 'Second', completed: false }]
