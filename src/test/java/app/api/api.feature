@@ -1,7 +1,8 @@
 Feature:
 
 Background:
-* url 'http://localhost:8080/api/todos'
+* def port = karate.properties['server.port'] || 8080
+* url 'http://localhost:' + port + '/api/todos'
 
 Scenario:
 * request { title: 'First', complete: false }
