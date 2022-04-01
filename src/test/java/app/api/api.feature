@@ -7,7 +7,7 @@ Scenario:
 * request { title: 'First', complete: false }
 * method post
 * status 200    
-* match response == { id: '#number', title: 'First', complete: false }
+* match response == { id: '#string', title: 'First', complete: false }
 * def id = response.id
 
 * path id
@@ -22,7 +22,7 @@ Scenario:
 * request { title: 'Second', complete: false }
 * method post
 * status 200    
-* match response == { id: '#number', title: 'Second', complete: false }
+* match response == { id: '#string', title: 'Second', complete: false }
 * def id = response.id
 
 * path id
@@ -32,4 +32,4 @@ Scenario:
 
 * method get
 * status 200
-* match response contains [{ id: '#number', title: 'First', complete: false },{ id: '#(id)', title: 'Second', complete: false }]
+* match response contains [{ id: '#string', title: 'First', complete: false },{ id: '#(id)', title: 'Second', complete: false }]

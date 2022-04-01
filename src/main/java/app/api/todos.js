@@ -3,11 +3,11 @@ if (!session.todos) {
 }
 if (request.post) {
   let todo = request.body;
-  todo.id = session.todos.length + 1;
+  todo.id = context.uuid();
   session.todos.push(todo);
   response.body = todo;
 } else if (request.pathMatches('/{resource}/{id}')) {
-  let id = ~~request.pathParams.id;
+  let id = request.pathParams.id;
   let index = session.todos.findIndex(c => c.id === id);
   if (index === -1) {
     response.status = 404;
