@@ -19,6 +19,7 @@ class MockRunner {
     static void beforeAll() {
         server = MockServer
                 .feature("classpath:app/mock/mock.feature")
+                .pathPrefix("/api")
                 .http(0).build(); 
     }
 

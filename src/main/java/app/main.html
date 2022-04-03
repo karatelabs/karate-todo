@@ -27,9 +27,10 @@
           var found = todos.find(x => x.id === id);
           found.title = title;
         }
+        session.editing = null;
         break;
       case 'edit':
-
+        session.editing = id;
         break;
       case 'toggleAll':
         var anyActive = !!todos.find(x => !x.complete);
@@ -54,7 +55,6 @@
   }
   var remaining = todos.filter(x => !x.complete).length;
   var selectIf = a => showing === a ? 'btn-primary' : 'btn-outline-primary';
-  var isEditing = t => action === 'edit' && t.id === id ? 'editing' : (t.complete ? 'complete' : null);
 </script>
 
 <div class="container" hx-target="this" hx-swap="outerHTML">
@@ -70,17 +70,18 @@
       </div>      
     </div>    
     <div class="col p-0">
-      <input class="form-control form-control-lg" placeholder="What needs to be done?" name="title" ka:post="this" ka:vals="action:'add'" autofocus>
+      <input class="form-control form-control-lg" placeholder="What needs to be done?" name="title" ka:post="this" ka:vals="action:'add'" th:autofocus="!session.editing">
     </div>
   </div>
-  <div class="row py-2" th:each="todo: filtered" ka:vals="id:todo.id" th:classappend="isEditing(todo)">
+  <div class="row py-2" th:each="todo: filtered" ka:vals="id:todo.id">
     <div class="col-1 text-center">
       <input class="form-check-input" type="checkbox" th:checked="todo.complete" ka:post="this" ka:vals="action:'toggle'">
     </div>
-    <div class="col border-bottom">
-      <div th:text="todo.title" class="fs-5 pb-2"></div>      
-      <input th:if="false" type="text" name="title" th:value="todo.title" th:id="'todo' + todo.id"
-             hx-trigger="blur,keyup-enter,keyup-escape" ka:post="this" ka:vals="action:'update'">      
+    <div class="col border-bottom p-0" th:with="editing:session.editing==todo.id">
+      <div th:unless="editing" th:text="todo.title" class="fs-5 p-2" hx-trigger="dblclick" ka:post="this" ka:vals="action:'edit'"></div>      
+      <input th:if="editing" class="form-control form-control-lg" name="title" th:value="todo.title"
+             hx-trigger="blur,keyup-enter,keyup-escape" ka:post="this" ka:vals="action:'update'" 
+             onfocus="this.selectionStart=this.selectionEnd=this.value.length" autofocus>
     </div>
     <div class="col-1 text-end p-0">
       <button ka:post="this" ka:vals="action:'remove'" class="btn btn-outline-secondary btn-sm">
