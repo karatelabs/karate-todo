@@ -1,4 +1,4 @@
-package app.ui;
+package app.ui.data;
 
 import com.intuit.karate.Results;
 import com.intuit.karate.Runner;
@@ -9,11 +9,11 @@ import org.junit.jupiter.api.Test;
  *
  * @author peter
  */
-class UiRunner {
+class DataRunner {
 
     @Test
     void testApi() {
-        Results results = Runner.path("classpath:app/ui").parallel(1);
+        Results results = Runner.path("classpath:app/ui/data").parallel(1);
         assertEquals(0, results.getFailCount(), results.getErrorMessages());
     }
 
