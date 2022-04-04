@@ -10,7 +10,7 @@ class TodoSimulation extends Simulation {
     "/api/todos/{id}" -> Nil
   )
 
-  val main = scenario("main").exec(karateFeature("classpath:app/api/api.feature"))
+  val main = scenario("main").exec(karateFeature("classpath:app/api/simple/simple.feature"))
 
   setUp(
     main.inject(rampUsers(10) during (5 seconds)).protocols(protocol)

@@ -22,7 +22,7 @@ Now you can run the `LocalRunner` class as  JUnit test. You can do this from the
 Or from the command-line:
 
 ```
-mvn test -Dtest=LocalRunner
+mvn clean test -Dtest=LocalRunner
 ```
 
 Now you should see the front-end at http://localhost:8080
@@ -40,5 +40,5 @@ Note that you can edit the HTML files and refresh the UI to see changes without 
 To run performance test:
 
 ```
-mvn clean test -P gatling
+mvn test -P gatling
 ```

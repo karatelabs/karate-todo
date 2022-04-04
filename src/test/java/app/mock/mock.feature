@@ -5,17 +5,17 @@ Background:
 * def todos = {}
 
 Scenario: pathMatches('/todos') && methodIs('post')
-    * def todo = request
-    * def id = uuid()
-    * todo.id = id
-    * todos[id] = todo
-    * def response = todo
+* def todo = request
+* def id = uuid()
+* todo.id = id
+* todos[id] = todo
+* def response = todo
 
 Scenario: pathMatches('/todos')
-    * def response = $todos.*
+* def response = $todos.*
 
 Scenario: pathMatches('/todos/{id}')
-    * def response = todos[pathParams.id]
+* def response = todos[pathParams.id]
 
 Scenario:
-    * def responseStatus = 404
+* def responseStatus = 404

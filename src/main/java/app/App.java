@@ -17,7 +17,7 @@ public class App {
             ServerContext context = new ServerContext(config, request);
             String path = request.getPath();
             if (context.setApiIfPathStartsWith("/api/")) {
-                // api
+                context.setLockNeeded(true);
             } else if (path.endsWith(".ico") || path.startsWith("/pub/")) {
                 context.setHttpGetAllowed(true);
             }
