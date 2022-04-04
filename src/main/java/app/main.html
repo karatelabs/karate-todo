@@ -99,7 +99,7 @@
       <a href="#" class="btn btn-sm" th:classappend="selectIf('complete')" ka:get="this" ka:vals="action:'complete'">Completed</a>
     </div>
     <div class="col text-end pe-0">
-      <button th:if="todos.length > remaining" ka:post="this" ka:vals="action:'removeComplete'" class="btn btn-outline-secondary btn-sm">Clear completed</button>      
+      <button th:if="todos.length > remaining" ka:post="this" ka:vals="action:'removeComplete'" class="btn btn-outline-secondary btn-sm">Clear Completed</button>
     </div>
   </div>
 </div>

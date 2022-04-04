@@ -3,10 +3,10 @@ Feature:
 
 Scenario Outline:
 * input('input[name=title]', title + Key.ENTER)
-* def found =
+* def find =
 """
 function() {
-  let rows = scriptAll('.border-bottom', '_.textContent');
+  let rows = scriptAll('.border-bottom div', '_.textContent');
   let count = rows.length;
   if (count && rows[count-1] == title) {
     return rows[count-1]
@@ -15,7 +15,7 @@ function() {
   }
 }
 """
-* waitUntil(found)
+* waitUntil(find)
 
 Examples:
 | title |

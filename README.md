@@ -35,3 +35,10 @@ An old version of this application and the explanation can be found here: https:
 The version here is using Bootstrap for the theme. Some more work is needed for the UI.
 
 Note that you can edit the HTML files and refresh the UI to see changes without re-starting the server.
+
+# Karate Gatling
+To run performance test:
+
+```
+mvn clean test -P gatling
+```

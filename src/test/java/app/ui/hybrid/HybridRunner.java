@@ -1,15 +1,15 @@
-package app.ui.data;
+package app.ui.hybrid;
 
 import com.intuit.karate.Results;
 import com.intuit.karate.Runner;
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 
-class DataRunner {
+class HybridRunner {
 
     @Test
     void testApi() {
-        Results results = Runner.path("classpath:app/ui/data").parallel(1);
+        Results results = Runner.path("classpath:app/ui/hybrid").parallel(1);
         assertEquals(0, results.getFailCount(), results.getErrorMessages());
     }
 

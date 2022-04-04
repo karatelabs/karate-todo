@@ -5,7 +5,8 @@ Background:
 * driver 'http://localhost:8080'
 
 Scenario:
-* input('input[name=title]', 'Task One' + Key.ENTER)
-* waitForText('.border-bottom', 'Task One')
-* waitFor('button').click()
+* waitFor('h1')
+* if (locateAll('.border-bottom').length == 0) karate.abort()
+* click('.form-switch input')
+* click('{}Clear Completed')
 * waitUntil(() => locateAll('.border-bottom').length == 0)
