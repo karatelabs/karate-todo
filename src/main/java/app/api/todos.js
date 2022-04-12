@@ -1,6 +1,4 @@
-if (!session.todos) {
-  session.todos = [];
-}
+session.todos = session.todos || [];
 if (request.post) {
   let todo = request.body;
   todo.id = context.uuid();
