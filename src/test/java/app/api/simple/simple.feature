@@ -26,11 +26,6 @@ Scenario:
 * match response == { id: '#string', title: 'Second', complete: false }
 * def id = response.id
 
-* path id
-* method get
-* status 200
-* match response == { id: '#(id)', title: 'Second', complete: false }
-
 * method get
 * status 200
 * match response contains [{ id: '#string', title: 'First', complete: false },{ id: '#(id)', title: 'Second', complete: false }]

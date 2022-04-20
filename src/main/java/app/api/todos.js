@@ -17,8 +17,9 @@ if (request.post) {
     session.todos[index] = todo;
     response.body = todo;
   } else if (request.delete) {
-    session.todos.splice(index, 1);
+    session.todos.splice(index, 1);    
   }
 } else {
+  // context.delay(1000);
   response.body = session.todos;
 }

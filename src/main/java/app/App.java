@@ -3,10 +3,6 @@ package app;
 import com.intuit.karate.http.ServerConfig;
 import com.intuit.karate.http.ServerContext;
 
-/**
- *
- * @author peter
- */
 public class App {
 
     public static ServerConfig serverConfig(String root) {
