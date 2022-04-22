@@ -1,18 +1,14 @@
 # Instructions
 
 ## Prerequisites
-* Git
 * Java JDK
 * Maven
 
-## `karate-core`
-For now, we depend on the `develop` version of `karate-core`, which has to be built locally and the version is `2.0.0`. 
+## Verify Setup
+If the following command runs the `ApiTest` fine, you are all set:
 
 ```
-git clone https://github.com/karatelabs/karate.git
-cd karate
-git checkout develop
-mvn install -f karate-core/pom.xml
+mvn clean test
 ```
 
 ## Running `karate-todo`
@@ -29,15 +25,8 @@ Now you should see the front-end at http://localhost:8080
 
 To stop, just kill the process or stop the Java process from the IDE.
 
-# Architecture
-An old version of this application and the explanation can be found here: https://github.com/ptrthomas/karate-todomvc
-
-The version here is using Bootstrap for the theme. Some more work is needed for the UI.
-
-Note that you can edit the HTML files and refresh the UI to see changes without re-starting the server.
-
 # Karate Gatling
-To run performance test:
+To run performance test (after the app has been started on `localhost`):
 
 ```
 mvn test -P gatling
