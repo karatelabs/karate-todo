@@ -1,14 +1,19 @@
 # Instructions
 
 ## Prerequisites
-* Java JDK
-* Maven
+* Java JDK (and [`JAVA_HOME`](https://www.baeldung.com/java-home-on-windows-7-8-10-mac-os-x-linux) environment variable set)
 
 ## Verify Setup
 If the following command runs the `ApiTest` fine, you are all set:
 
+Windows:
 ```
-mvn clean test
+mvnw clean test
+```
+
+Other:
+```
+./mvnw clean test
 ```
 
 ## Running `karate-todo`
