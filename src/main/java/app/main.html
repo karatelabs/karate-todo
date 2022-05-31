@@ -73,12 +73,12 @@
       <input class="form-control form-control-lg" placeholder="What needs to be done?" name="title" ka:post="this" ka:vals="action:'add'" th:autofocus="!session.editing">
     </div>
   </div>
-  <div class="row py-2 items-container" th:each="todo: filtered" ka:vals="id:todo.id">
+  <div class="row py-2" th:each="todo: filtered" ka:vals="id:todo.id">
     <div class="col-1 text-center">
       <input class="form-check-input" type="checkbox" th:checked="todo.complete" ka:post="this" ka:vals="action:'toggle'">
     </div>
     <div class="col border-bottom p-0" th:with="editing:session.editing==todo.id">
-      <div th:unless="editing" th:text="todo.title" class="fs-5 p-2 item-text" hx-trigger="dblclick" ka:post="this" ka:vals="action:'edit'"></div>      
+      <div th:unless="editing" th:text="todo.title" class="fs-5 p-2" hx-trigger="dblclick" ka:post="this" ka:vals="action:'edit'"></div>
       <input th:if="editing" class="form-control form-control-lg" name="title" th:value="todo.title"
              hx-trigger="blur,keyup-enter,keyup-escape" ka:post="this" ka:vals="action:'update'" 
              onfocus="this.selectionStart=this.selectionEnd=this.value.length" autofocus>

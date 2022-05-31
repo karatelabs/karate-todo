@@ -1,11 +1,10 @@
 Feature:
 
   Background:
-    * def port = karate.properties['server.port']
+    * def port = karate.properties['server.port'] || karate.get('serverPort', 8080)
     * url 'http://localhost:' + port + '/api/todos'
 
   Scenario: simple crud flow
-    * url 'http://localhost:' + port + '/api/todos'
     * request { title: 'First', complete: false }
     * method post
     * status 200
