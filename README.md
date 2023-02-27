@@ -1,7 +1,8 @@
 # Instructions
 
 ## Prerequisites
-* [Java JDK](https://www.oracle.com/java/technologies/downloads/) and [`JAVA_HOME`](https://www.baeldung.com/java-home-on-windows-7-8-10-mac-os-x-linux) environment variable set
+* [Java JDK](https://www.oracle.com/java/technologies/downloads) - (at least version 11 or greater), [OpenJDK](https://openjdk.org/install) also works
+* [`JAVA_HOME`](https://www.baeldung.com/java-home-on-windows-7-8-10-mac-os-x-linux) environment variable set
 
 ## Verify Setup
 If the following command runs the `ApiTest` fine, you are all set:
