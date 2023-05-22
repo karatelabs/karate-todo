@@ -14,6 +14,6 @@ Feature: browser automation demo
     And screenshot()
 
     Given driver 'https://google.com'
-    And input("input[name=q]", 'karate dsl')
+    And input("[name=q][name=q]", 'karate dsl')
     When submit().click("input[name=btnI]")
     Then waitForUrl('https://github.com/karatelabs/karate')
