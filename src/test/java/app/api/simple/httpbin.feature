@@ -5,7 +5,7 @@ Feature: simple requests
     * request { myKey: 'myValue' }
     * method post
     * status 200
-    * match response contains { json: { myKey: 'myValue' } }
+    * match response.json == { myKey: 'myValue' }
 
     * path response.json.myKey
     * method get
