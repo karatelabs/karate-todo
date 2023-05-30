@@ -1,6 +1,6 @@
 # Instructions
 
-A video intro to Karate that uses demos from this project can be viewed here: [API Testing With Karate](https://youtu.be/WT4gg7Jutzg).
+> A 20 minute video intro to Karate that uses demos from this project can be viewed here: [API Testing With Karate](https://youtu.be/WT4gg7Jutzg).
 
 ## Prerequisites
 * [Java JDK](https://www.oracle.com/java/technologies/downloads) - (at least version 11 or greater), [OpenJDK](https://openjdk.org/install) also works
