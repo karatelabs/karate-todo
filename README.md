@@ -19,7 +19,7 @@ Other:
 
 ## Running `karate-todo`
 
-Now you can run the `LocalRunner` class as  JUnit test. You can do this from the IDE.
+Now you can run the `LocalRunner` class as  JUnit test. You can do this from an IDE that has Java support.
 
 Or from the command-line:
 
