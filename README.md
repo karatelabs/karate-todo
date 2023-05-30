@@ -21,8 +21,7 @@ Other:
 
 ## Running `karate-todo`
 
-> `mvn` will work if you have [Maven installed](https://maven.apache.org/install.html).
-> Else replace it with `./mvnw` or `mvnw` like shown above.
+> `mvn` will work if you have [Maven installed](https://maven.apache.org/install.html). Else replace it with `./mvnw` or `mvnw` like shown above.
 
 Now you can run the `LocalRunner` class as  JUnit test. You can do this from an IDE that has Java support.
 
