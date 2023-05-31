@@ -1,4 +1,6 @@
-> A 20 minute video intro to Karate that uses demos from this project can be viewed here: [API Testing With Karate](https://youtu.be/WT4gg7Jutzg).
+# Overview
+
+A 20 minute video intro to [Karate](https://www.karatelabs.io) that uses demos from this project can be viewed here: [API Testing With Karate](https://youtu.be/WT4gg7Jutzg).
 
 # Instructions
 
