@@ -37,9 +37,27 @@ Now you should see the front-end at http://localhost:8080
 
 To stop, just kill the process or stop the Java process from the IDE.
 
-# Karate Gatling
+## Running Tests
+After the app has been started on `localhost:8080`, you can run tests. 
+
+One of the easiest ways to run tests, recommended for non-programmers or teams that are not familiar with Java, is to use [Visual Studio Code](https://github.com/karatelabs/karate/wiki/Get-Started:-Visual-Studio-Code).
+
+There are more tests and examples in this project, but the following are the simplest ones to get started with:
+
+### API Test
+* [api/simple.feature](src/test/java/app/api/simple/simple.feature)
+
+### UI Test
+* [ui/simple.feature](src/test/java/app/ui/simple/simple.feature)
+
+### API Mock
+* [mock/test.feature](src/test/java/app/mock/test.feature) - this would run the API test, but after starting the mock defined in [mock.feature](src/test/java/app/mock/mock.feature)
+
+### API Performance Test
 To run performance test (after the app has been started on `localhost`):
 
 ```
 mvn test -P gatling
 ```
+
+The above command uses Maven and has to be run on the command-line.
