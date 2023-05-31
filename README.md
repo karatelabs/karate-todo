@@ -2,7 +2,14 @@
 
 A 20 minute video intro to [Karate](https://www.karatelabs.io) that uses demos from this project can be viewed here: [API Testing With Karate](https://youtu.be/WT4gg7Jutzg).
 
+Use the official Karate IDE plugins for the best developer experience:
+
+* [Karate extension for Visual Studio Code](https://marketplace.visualstudio.com/items?itemName=karatelabs.karate)
+* [Karate plugin for IntelliJ IDEA](https://plugins.jetbrains.com/plugin/19232-karate)
+
 # Instructions
+
+> You can use [GitHub Codespaces](https://github.com/karatelabs/karate/wiki/Get-Started:-GitHub-Codespaces) to open this project directly in your browswer ! The default image includes Java and Maven, so you can skip the "Prerequisites" section below and go directly to [Verify Setup](#verify-setup). Make sure you install the [Karate extension for Visual Studio Code](https://marketplace.visualstudio.com/items?itemName=karatelabs.karate) in your Codespace. The Karate extension for VS Code can also be run in a Docker based [devcontainer](https://code.visualstudio.com/docs/devcontainers/containers).
 
 ## Prerequisites
 * [Java JDK](https://www.oracle.com/java/technologies/downloads) - (at least version 11 or greater), [OpenJDK](https://openjdk.org/install) also works
