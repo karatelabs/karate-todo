@@ -1,6 +1,6 @@
 Feature: simple requests
 
-  Scenario: simple POST
+  Scenario: simple POST and GET
     * url 'https://httpbin.org/anything'
     * request { myKey: 'myValue' }
     * method post
