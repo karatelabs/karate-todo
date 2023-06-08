@@ -14,25 +14,19 @@ Use the official Karate IDE plugins for the best developer experience:
 > You can use [GitHub Codespaces](https://github.com/karatelabs/karate/wiki/Get-Started:-GitHub-Codespaces) to open this project directly in your browswer ! The default image includes Java and Maven, so you can skip the "Prerequisites" section below and go directly to [Verify Setup](#verify-setup). Make sure you install the [Karate extension for Visual Studio Code](https://marketplace.visualstudio.com/items?itemName=karatelabs.karate) in your Codespace. The Karate extension for VS Code can also be run in a Docker based [devcontainer](https://code.visualstudio.com/docs/devcontainers/containers).
 
 ## Prerequisites
-* [Java JDK](https://www.oracle.com/java/technologies/downloads) - (at least version 11 or greater), [OpenJDK](https://openjdk.org/install) also works
+* [Java JDK](https://www.oracle.com/java/technologies/downloads) - (at least version 11 or greater), [OpenJDK](https://jdk.java.net/) also works
 * [`JAVA_HOME`](https://www.baeldung.com/java-home-on-windows-7-8-10-mac-os-x-linux) environment variable set
 
 ## Verify Setup
 If the following command runs the `ApiTest` fine, you are all set:
 
-Windows:
-```
-mvnw clean test
-```
-
-Other:
-```
-./mvnw clean test
-```
+| Windows | Linux / Mac |
+| ------- | ----------- |
+| `mvnw clean test` | `./mvnw clean test` |
 
 ## Running `karate-todo`
 
-> `mvn` will work if you have [Maven installed](https://maven.apache.org/install.html). Else replace it with `./mvnw` or `mvnw` like shown above.
+> In the commands below, `mvn` will work if you have [Maven installed](https://maven.apache.org/install.html). Else replace it with `./mvnw` or `mvnw` like shown above to use the [Maven wrapper](https://maven.apache.org/wrapper).
 
 Now you can run the `LocalRunner` class as  JUnit test. You can do this from an IDE that has Java support.
 
@@ -60,7 +54,7 @@ There are more tests and examples in this project, but the following are the sim
 * [ui/simple.feature](src/test/java/app/ui/simple/simple.feature)
 
 ### API Mock
-* [mock/test.feature](src/test/java/app/mock/test.feature) - this would run the API test, but after starting the mock defined in [mock.feature](src/test/java/app/mock/mock.feature)
+* [mock/test.feature](src/test/java/app/mock/test.feature) - this would run the API test after starting the mock defined in [mock.feature](src/test/java/app/mock/mock.feature). Note how the same test ([simple.feature](src/test/java/app/api/simple/simple.feature)) works for both the "real" API and the mock.
 
 ### API Performance Test
 To run performance test (after the app has been started on `localhost`):
