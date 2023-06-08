@@ -35,7 +35,7 @@ If the following command runs the `ApiTest` fine, you are all set:
 
 ## Running `karate-todo`
 
-> In the commands below, `mvn` will work if you have [Maven installed](https://maven.apache.org/install.html). Else replace it with `./mvnw` or `mvnw` like shown above to use the [Maven wrapper](https://maven.apache.org/wrapper).
+> In the commands below, `mvn` will work if you have [Maven installed](https://github.com/karatelabs/karate/wiki/Get-Started:-Maven-and-Gradle). Else replace it with `./mvnw` or `mvnw` like shown above to use the [Maven wrapper](https://maven.apache.org/wrapper).
 
 Now you can run the `LocalRunner` class as  JUnit test. You can do this from an IDE that has Java support.
 
