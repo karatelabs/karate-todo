@@ -14,10 +14,19 @@ Use the official Karate IDE plugins for the best developer experience:
 > You can use [GitHub Codespaces](https://github.com/karatelabs/karate/wiki/Get-Started:-GitHub-Codespaces) to open this project directly in your browswer ! The default image includes Java and Maven, so you can skip the "Prerequisites" section below and go directly to [Verify Setup](#verify-setup). Make sure you install the [Karate extension for Visual Studio Code](https://marketplace.visualstudio.com/items?itemName=karatelabs.karate) in your Codespace. The Karate extension for VS Code can also be run in a Docker based [devcontainer](https://code.visualstudio.com/docs/devcontainers/containers).
 
 ## Prerequisites
+* [Git](https://git-scm.com/download) - to clone this project, or you could just [download the source code as a ZIP file](https://github.com/karatelabs/karate-todo/archive/refs/heads/main.zip)
 * [Java JDK](https://www.oracle.com/java/technologies/downloads) - (at least version 11 or greater), [OpenJDK](https://jdk.java.net/) also works
 * [`JAVA_HOME`](https://www.baeldung.com/java-home-on-windows-7-8-10-mac-os-x-linux) environment variable set
 
+## Get Source Code
+* open a terminal in a folder in which `karate-todo` will be created
+* enter the following command: `git clone https://github.com/karatelabs/karate-todo.git`
+
+If you don't have Git installed, you can [download the source code as a ZIP file](https://github.com/karatelabs/karate-todo/archive/refs/heads/main.zip) and extract it. The folder you get may be called `karate-todo-main`, so just re-name it to `karate-todo`.
+
 ## Verify Setup
+Open a terminal in the directory called `karate-todo`.
+
 If the following command runs the `ApiTest` fine, you are all set:
 
 | Windows | Linux / Mac |
