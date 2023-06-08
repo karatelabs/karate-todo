@@ -2,7 +2,7 @@
 
 This is a self-contained project that is great for training or demo-ing all capabilities of Karate. It includes an app that has a working front-end UI and back-end API. Examples of API tests, API performance tests, API mocks and Web-Browser automation are included.
 
-A 20 minute video intro to [Karate](https://www.karatelabs.io) that uses demos from this project can be viewed here: [API Testing With Karate](https://youtu.be/WT4gg7Jutzg).
+An 8 minute video ideal for beginners can be found here. [Karate Kick Start - The TODO Sample and Demo Project](https://youtu.be/gDZWgV3OubY). No programming or automation experience is required.
 
 Use the official Karate IDE plugins for the best developer experience:
 
