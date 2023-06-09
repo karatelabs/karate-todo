@@ -1,8 +1,10 @@
 # Overview
 
-This is a self-contained project that is great for training or demo-ing all capabilities of Karate. It includes an app that has a working front-end UI and back-end API. Examples of API tests, API performance tests, API mocks and Web-Browser automation are included.
+This is a self-contained project that is great for training or demo-ing all capabilities of [Karate](https://karatelabs.io). It includes an app that has a working front-end UI and back-end API. Examples of API tests, API performance tests, API mocks and Web-Browser automation are included.
 
 An 8 minute video ideal for beginners can be found here. [Karate Kick Start - The TODO Sample and Demo Project](https://youtu.be/gDZWgV3OubY). No programming or automation experience is required.
+
+A longer video (20 minutes) which is a good introduction to Karate uses demos in this project and can be an additional reference: [API Testing with Karate](https://youtu.be/WT4gg7Jutzg).
 
 Use the official Karate IDE plugins for the best developer experience:
 
@@ -59,11 +61,17 @@ There are more tests and examples in this project, but the following are the sim
 ### API Test
 * [api/simple.feature](src/test/java/app/api/simple/simple.feature)
 
+Documentation: [Karate API Testing](https://karatelabs.github.io/karate)
+
 ### UI Test
 * [ui/simple.feature](src/test/java/app/ui/simple/simple.feature)
 
+Documentation: [Karate UI Testing](https://karatelabs.github.io/karate/karate-core)
+
 ### API Mock
 * [mock/test.feature](src/test/java/app/mock/test.feature) - this would run the API test after starting the mock defined in [mock.feature](src/test/java/app/mock/mock.feature). Note how the same test ([simple.feature](src/test/java/app/api/simple/simple.feature)) works for both the "real" API and the mock.
+
+Documentation: [Karate API Mocks](https://karatelabs.github.io/karate/karate-netty)
 
 ### API Performance Test
 To run performance test (after the app has been started on `localhost`):
@@ -72,4 +80,6 @@ To run performance test (after the app has been started on `localhost`):
 mvn test -P gatling
 ```
 
-The above command uses Maven and has to be run on the command-line.
+The above command uses Maven and has to be run on the command-line. The entry point is [perf/TodoSimulation.scala](src/test/java/app/perf/TodoSimulation.scala). The Maven [pom.xml](pom.xml) has a `<profile>` called `gatling`, which sets up the performance test and the `karate-gatling` dependency.
+
+Documentation: [Karate API Performance Testing](https://karatelabs.github.io/karate/karate-gatling)
