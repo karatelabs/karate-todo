@@ -1,4 +1,4 @@
-Feature:
+Feature: simple data driven testing
 
   Background:
     * url 'http://localhost:8080/api/todos'

@@ -1,4 +1,4 @@
-Feature:
+Feature: reading payloads from json files
 
   Scenario:
     * def data = read('data.json')
