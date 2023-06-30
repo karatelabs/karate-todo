@@ -1,5 +1,6 @@
 package app;
 
+import com.intuit.karate.http.HttpServer;
 import com.intuit.karate.http.ServerConfig;
 import com.intuit.karate.http.ServerContext;
 
@@ -18,6 +19,11 @@ public class App {
             return context;
         });
         return config;
+    }
+    
+    public static void main(String[] args) {
+        ServerConfig config = App.serverConfig(args[0]);
+        HttpServer.config(config).local(false).http(8080).build().waitSync();        
     }
 
 }
