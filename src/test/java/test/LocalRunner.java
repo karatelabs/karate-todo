@@ -12,9 +12,9 @@ class LocalRunner {
     private static final Logger logger = LoggerFactory.getLogger(LocalRunner.class);
 
     @Test
-    void testServer() throws Exception {
-        ServerConfig config = App.serverConfig("src/main/java/app").devMode(true);
+    void testServer() {
+        ServerConfig config = App.serverConfig("src/main/java/app");
         HttpServer.config(config).http(8080).build().waitSync();
-    }
+    }        
 
 }

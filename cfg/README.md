@@ -9,7 +9,7 @@ If needed, make the `*.sh` files executable by running `chmod +x <path to file>`
 To package only the application (front-end and back-end) into a Docker container and run it:
 
 ```bash
-cfg/build-docker.sh
+cfg/build-docker-app.sh
 ```
 
 To run the application on port 8080:

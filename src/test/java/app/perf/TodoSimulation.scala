@@ -6,6 +6,8 @@ import scala.concurrent.duration._
 
 class TodoSimulation extends Simulation {
 
+  Utils.startServer()
+
   val protocol = karateProtocol(
     "/api/todos/{id}" -> Nil
   )

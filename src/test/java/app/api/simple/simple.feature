@@ -1,8 +1,8 @@
 Feature:
 
   Background:
-    * def port = karate.properties['server.port'] || karate.get('serverPort', 8080)
-    * url 'http://localhost:' + port + '/api/todos'
+    * def urlBase = karate.properties['url.base'] || karate.get('urlBase', 'http://localhost:8080')
+    * url urlBase + '/api/todos'
 
   Scenario: simple crud flow
     # create first todo record and save the id

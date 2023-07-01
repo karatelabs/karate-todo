@@ -22,7 +22,7 @@ class MockRunner {
     @Test
     void testApi() {
         Results results = Runner.path("classpath:app/api/simple/simple.feature")
-                .systemProperty("server.port", server.getPort() + "")
+                .systemProperty("url.base", "http://localhost:" + server.getPort())
                 .parallel(1);
         assertEquals(0, results.getFailCount(), results.getErrorMessages());
     }

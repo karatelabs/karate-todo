@@ -12,11 +12,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class ApiTest {
 
     @Test
-    void testAll() throws Exception {
+    void testAll() {
         ServerConfig config = App.serverConfig("src/main/java/app");
         HttpServer server = HttpServer.config(config).build();
         Results results = Runner.path("classpath:app/api/simple/simple.feature")
-                .systemProperty("server.port", server.getPort() + "")
+                .systemProperty("url.base", "http://localhost:" + server.getPort())
                 .parallel(1);
         assertEquals(0, results.getFailCount(), results.getErrorMessages());
     }
