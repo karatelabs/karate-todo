@@ -1,9 +1,0 @@
-FROM maven:3-jdk-11
-
-ADD src /src
-ADD pom.xml /pom.xml
-ADD target/repository /usr/share/maven/ref/repository
-
-ENV MAVEN_OPTS="-Dkarate.env=perf"
-
-CMD ["mvn", "-P", "gatling", "test"]
