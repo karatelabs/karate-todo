@@ -1,6 +1,10 @@
-FROM maven:3-jdk-11
+FROM maven:3-amazoncorretto-11
 
 ADD target/repository /usr/share/maven/ref/repository
+
+RUN  apt-get update \
+  && apt-get install -y wget \
+  && rm -rf /var/lib/apt/lists/*
 
 RUN wget -O karate.jar https://github.com/karatelabs/karate/releases/download/v1.4.0/karate-1.4.0.jar
 
