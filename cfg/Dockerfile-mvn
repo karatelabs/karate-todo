@@ -1,4 +1,4 @@
-FROM maven:3.9.3-amazoncorretto-20-debian-bookworm
+FROM maven:3.9-amazoncorretto-17-debian
 
 RUN  apt-get update \
   && apt-get install -y wget \
