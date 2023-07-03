@@ -96,14 +96,14 @@ public class TodoPerfJobConfig extends JobConfigBase<Integer> {
     @Override
     public void onStop() {
         super.onStop();
-        Command.exec(true, null, new String[]{"mvn", "-P", "gatling", "exec:java", "-Dexec.classpathScope=test",
+        Command.exec(true, null, new String[]{"./mvnw", "-P", "gatling", "exec:java", "-Dexec.classpathScope=test",
             "-Dexec.mainClass=io.gatling.app.Gatling", "-Dexec.args=-ro " + reportDir + " -rf " + buildDir});
     }
     
     // mvn test-compile exec:java -Dexec.classpathScope=test -Dexec.mainClass=app.perf.job.TodoPerfJobConfig -Dkarate.env=perf
     // docker run -it --rm -v "$HOME/.m2":/root/.m2 karate-mvn java -jar karate.jar -j http://host.docker.internal:8090
     public static void main(String[] args) {
-        TodoPerfJobConfig config = new TodoPerfJobConfig(2, "localhost", 8090);        
+        TodoPerfJobConfig config = new TodoPerfJobConfig(5, "localhost", 8090);        
         JobManager manager = new JobManager(config);       
         manager.start();
         manager.waitForCompletion();
