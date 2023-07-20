@@ -102,6 +102,7 @@ public class TodoPerfJobConfig extends JobConfigBase<Integer> {
     // ./mvnw exec:java -Dexec.mainClass=app.App -Dexec.args=classpath:app
     // export URL_BASE=http://host.docker.internal:8080
     // mvn test-compile exec:java -Dexec.classpathScope=test -Dexec.mainClass=app.perf.job.TodoPerfJobConfig -Dkarate.env=perf -Dexec.args=5
+    // docker run -it --rm -p 8090:8090 -e URL_BASE=http://host.docker.internal:8080 -w /karate-todo karate-mvn mvn test-compile exec:java -Dexec.classpathScope=test -Dexec.mainClass=app.perf.job.TodoPerfJobConfig -Dkarate.env=perf -Dexec.args=5
     // docker run -it --rm -v "$HOME/.m2":/root/.m2 karate-mvn java -jar karate.jar -j http://host.docker.internal:8090   
     // ./mvnw exec:java -Dexec.classpathScope=test -Dexec.mainClass=com.intuit.karate.Main -Dexec.args="-j http://localhost:8090"
     public static void main(String[] args) {

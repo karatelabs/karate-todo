@@ -1,6 +1,7 @@
 #!/bin/bash
 
-# docker run -it --rm -v "$(pwd)":/karate-todo -w /karate-todo -e START_SERVER=true maven:3.9.3-amazoncorretto-20 mvn test -P gatling -Dmaven.repo.local=./target/repository
+export START_SERVER=true
+./mvnw test -P gatling -Dmaven.repo.local=./target/repository
 
 # export DOCKER_DEFAULT_PLATFORM=linux/amd64
 
