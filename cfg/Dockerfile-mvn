@@ -1,4 +1,4 @@
-FROM maven:3.9.3-amazoncorretto-20
+FROM maven:3.9.3-amazoncorretto-17
 
 RUN curl https://github.com/karatelabs/karate/releases/download/v1.4.0/karate-1.4.0.jar -o karate.jar
 
