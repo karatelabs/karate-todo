@@ -7,7 +7,7 @@ RUN curl -L -o karate.jar https://github.com/karatelabs/karate/releases/download
 ADD src /karate-todo/src
 ADD pom.xml /karate-todo/pom.xml
 
-RUN mvn test-compile exec:java -Dexec.classpathScope=test -Dexec.mainClass=com.intuit.karate.Main
-RUN mvn -f /karate-todo/pom.xml -P gatling test
+RUN mvn -f /karate-todo/pom.xml test-compile exec:java -Dexec.classpathScope=test -Dexec.mainClass=com.intuit.karate.Main
+RUN mvn -f /karate-todo/pom.xml test -P gatling
 
 EXPOSE 8090
