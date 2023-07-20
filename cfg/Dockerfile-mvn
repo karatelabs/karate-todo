@@ -8,5 +8,6 @@ ADD src /src
 ADD pom.xml /pom.xml
 ENV START_SERVER=true
 RUN mvn test -P gatling
+RUN mvn clean
 
 EXPOSE 8090
