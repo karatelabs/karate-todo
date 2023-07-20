@@ -2,9 +2,12 @@ FROM maven:3.9.3-amazoncorretto-17
 
 RUN curl -L -o karate.jar https://github.com/karatelabs/karate/releases/download/v1.4.0/karate-1.4.0.jar
 
-ADD target/repository /usr/share/maven/ref/repository
+# ADD target/repository /usr/share/maven/ref/repository
 
 ADD src /karate-todo/src
 ADD pom.xml /karate-todo/pom.xml
+
+RUN mvn test-compile exec:java -Dexec.classpathScope=test -Dexec.mainClass=com.intuit.karate.Main
+RUN mvn -f /karate-todo/pom.xml -P gatling test
 
 EXPOSE 8090

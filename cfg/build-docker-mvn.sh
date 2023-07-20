@@ -1,7 +1,7 @@
 #!/bin/bash
 
-export START_SERVER=true
-./mvnw test -P gatling -Dmaven.repo.local=./target/repository
+# export START_SERVER=true
+# ./mvnw test -P gatling -Dmaven.repo.local=./target/repository
 
 # export DOCKER_DEFAULT_PLATFORM=linux/amd64
 
