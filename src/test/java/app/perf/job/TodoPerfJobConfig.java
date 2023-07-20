@@ -29,18 +29,18 @@ public class TodoPerfJobConfig extends JobConfigBase<Integer> {
     @Override
     public String getExecutorCommand(String jobId, String jobUrl, int index) {
         return null;
-    }    
+    }
 
     @Override
     public List<JobCommand> getStartupCommands() {
         return Collections.EMPTY_LIST;
-    }        
+    }
 
     @Override
     public List<JobCommand> getShutdownCommands() {
         return Collections.EMPTY_LIST;
-    }        
-    
+    }
+
     @Override
     public List<Integer> getInitialChunks() {
         int count = getExecutorCount();
@@ -53,7 +53,7 @@ public class TodoPerfJobConfig extends JobConfigBase<Integer> {
         }
         return list;
     }
-    
+
     @Override
     public String getExecutorDir() {
         return executorDir;
@@ -98,16 +98,25 @@ public class TodoPerfJobConfig extends JobConfigBase<Integer> {
         Command.exec(true, null, new String[]{"./mvnw", "-P", "gatling", "exec:java", "-Dexec.classpathScope=test",
             "-Dexec.mainClass=io.gatling.app.Gatling", "-Dexec.args=-ro " + reportDir + " -rf " + buildDir});
     }
-    
-    // mvn test-compile exec:java -Dexec.classpathScope=test -Dexec.mainClass=app.perf.job.TodoPerfJobConfig -Dkarate.env=perf
+
+    // mvn test-compile exec:java -Dexec.classpathScope=test -Dexec.mainClass=app.perf.job.TodoPerfJobConfig -Dkarate.env=perf -Dexec.args=5
     // docker run -it --rm -v "$HOME/.m2":/root/.m2 karate-mvn java -jar karate.jar -j http://host.docker.internal:8090
     public static void main(String[] args) {
-        TodoPerfJobConfig config = new TodoPerfJobConfig(5, "localhost", 8090);        
-        JobManager manager = new JobManager(config);       
+        int count = 5;
+        if (args.length > 0) {
+            try {
+                count = Integer.valueOf(args[0]);
+            } catch (Exception e) {
+
+            }
+        }
+        System.out.println("using worker node count: " + count);
+        TodoPerfJobConfig config = new TodoPerfJobConfig(count, "localhost", 8090);
+        JobManager manager = new JobManager(config);
         manager.start();
         manager.waitForCompletion();
         manager.server.stop();
-        logger.debug("waiting for server shutdown ...");        
+        logger.debug("waiting for server shutdown ...");
     }
 
 }
