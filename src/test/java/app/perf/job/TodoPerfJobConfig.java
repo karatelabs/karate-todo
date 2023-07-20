@@ -16,7 +16,7 @@ import java.util.List;
 
 public class TodoPerfJobConfig extends JobConfigBase<Integer> {
 
-    String mainCommand = "mvn test -P gatling";
+    String mainCommand = "mvn -P gatling test-compile gatling:test -Dgatling.simulationClass=app.perf.job.TodoLongSimulation";
     String buildDir = FileUtils.getBuildDir();
     String reportDir = Constants.KARATE_REPORTS;
     String executorDir = buildDir + File.separator + "gatling";
