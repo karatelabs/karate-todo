@@ -95,7 +95,7 @@ public class TodoPerfJobConfig extends JobConfigBase<Integer> {
     @Override
     public void onStop() {
         super.onStop();
-        Command.exec(true, null, new String[]{"./mvnw", "-P", "gatling", "exec:java", "-Dexec.classpathScope=test",
+        Command.exec(true, null, new String[]{"mvn", "-P", "gatling", "exec:java", "-Dexec.classpathScope=test",
             "-Dexec.mainClass=io.gatling.app.Gatling", "-Dexec.args=-ro " + reportDir + " -rf " + buildDir});
     }
 
@@ -103,7 +103,7 @@ public class TodoPerfJobConfig extends JobConfigBase<Integer> {
     // export URL_BASE=http://host.docker.internal:8080
     // mvn test-compile exec:java -Dexec.classpathScope=test -Dexec.mainClass=app.perf.job.TodoPerfJobConfig -Dkarate.env=perf -Dexec.args=5
     // docker run -it --rm -p 8090:8090 -e URL_BASE=http://host.docker.internal:8080 -w /karate-todo karate-mvn mvn test-compile exec:java -Dexec.classpathScope=test -Dexec.mainClass=app.perf.job.TodoPerfJobConfig -Dkarate.env=perf -Dexec.args=5
-    // docker run -it --rm -v "$HOME/.m2":/root/.m2 karate-mvn java -jar karate.jar -j http://host.docker.internal:8090   
+    // docker run -it --rm karate-mvn java -jar karate.jar -j http://host.docker.internal:8090   
     // ./mvnw exec:java -Dexec.classpathScope=test -Dexec.mainClass=com.intuit.karate.Main -Dexec.args="-j http://localhost:8090"
     public static void main(String[] args) {
         int count = 5;

@@ -11,11 +11,11 @@ class TodoLongSimulation extends Simulation {
     "/api/todos/{id}" -> Nil
   )
 
-  val main = scenario("main").during(10.minutes) { 
+  val main = scenario("main").during(180) { 
     pace(10).exec(karateFeature("classpath:app/api/simple/simple.feature")) 
   }
 
-  val reset = scenario("reset").during(10.minutes) {
+  val reset = scenario("reset").during(180) {
     pace(30).exec(karateFeature("classpath:app/api/simple/reset.feature"))
   }
 
