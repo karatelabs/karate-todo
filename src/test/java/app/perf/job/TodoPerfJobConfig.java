@@ -99,6 +99,7 @@ public class TodoPerfJobConfig extends JobConfigBase<Integer> {
             "-Dexec.mainClass=io.gatling.app.Gatling", "-Dexec.args=-ro " + reportDir + " -rf " + buildDir});
     }
 
+    // docker run -it --rm -p 8080:8080 karate-todo
     // ./mvnw exec:java -Dexec.mainClass=app.App -Dexec.args=classpath:app
     // export URL_BASE=http://host.docker.internal:8080
     // mvn test-compile exec:java -Dexec.classpathScope=test -Dexec.mainClass=app.perf.job.TodoPerfJobConfig -Dkarate.env=perf -Dexec.args=5
