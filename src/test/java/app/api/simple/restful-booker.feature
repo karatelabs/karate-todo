@@ -28,7 +28,7 @@ Scenario:
   * method post
   * status 200
   * match response contains { bookingid: '#number', booking: '#(booking)' }
-  * def bookingid = response.bookingid;
+  * def bookingid = response.bookingid
 
   # find booking by name
   * path 'booking'
