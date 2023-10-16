@@ -11,7 +11,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <java.version>11</java.version>
         <maven.compiler.version>3.6.0</maven.compiler.version>
-        <karate.version>1.4.1.RC2</karate.version>
+        <karate.version>1.4.1</karate.version>
         <gatling.plugin.version>4.3.7</gatling.plugin.version>
     </properties>   
 
@@ -20,7 +20,12 @@
             <groupId>com.intuit.karate</groupId>
             <artifactId>karate-core</artifactId>
             <version>${karate.version}</version>
-        </dependency>                                 
+        </dependency>        
+        <dependency>
+            <groupId>io.karatelabs</groupId>
+            <artifactId>karate-debugserver</artifactId>
+            <version>0.1.0</version>
+        </dependency>                                                                 
         <dependency>
             <groupId>com.intuit.karate</groupId>
             <artifactId>karate-junit5</artifactId>
