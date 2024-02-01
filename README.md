@@ -69,7 +69,8 @@ Documentation: [Karate API Testing](https://karatelabs.github.io/karate)
 Documentation: [Karate UI Testing](https://karatelabs.github.io/karate/karate-core)
 
 ### API Mock
-* [mock/test.feature](src/test/java/app/mock/test.feature) - this would run the API test after starting the mock defined in [mock.feature](src/test/java/app/mock/mock.feature). Note how the same test ([simple.feature](src/test/java/app/api/simple/simple.feature)) works for both the "real" API and the mock.
+* [mock/test.feature](src/test/java/app/mock/test.feature) - this would run the API test after starting the mock defined in [mock.feature](src/test/java/app/mock/mock.feature). 
+* Note how the same test ([simple.feature](src/test/java/app/api/simple/simple.feature)) works for both the "real" API and the mock.
 
 Documentation: [Karate API Mocks](https://karatelabs.github.io/karate/karate-netty)
 
@@ -80,6 +81,15 @@ To run performance test (after the app has been started on `localhost`):
 mvn test -P gatling
 ```
 
-The above command uses Maven and has to be run on the command-line. The entry point is [perf/TodoSimulation.scala](src/test/java/app/perf/TodoSimulation.scala). The Maven [pom.xml](pom.xml) has a `<profile>` called `gatling`, which sets up the performance test and the `karate-gatling` dependency.
+The above command uses Maven and has to be run on the command-line. 
+The entry point is [perf/TodoSimulation.java](src/test/java/app/perf/TodoSimulation.java). 
+The Maven [pom.xml](pom.xml) has a `<profile>` called `gatling`, which sets up the performance test.
+
+Note that the new [Java DSL for Gatling](https://github.com/karatelabs/karate/tree/develop/karate-gatling#java-dsl) is being used instead of Scala. 
+The [`karate-gatling`](https://central.sonatype.com/artifact/io.karatelabs/karate-gatling) dependency 
+in the [`pom.xml`](pom.xml) in `test` scope, can bring in a lot of extra dependencies because of Gatling, 
+so you may have to use the [Karate "fat-jar"](https://github.com/karatelabs/karate#karate-core-fat-jar). 
+Also consider having your Karate tests in a separate Maven module if there are too many conflicts between
+libraries you already have in `test` scope with the ones that Karate (and Gatling) may bring in.
 
 Documentation: [Karate API Performance Testing](https://karatelabs.github.io/karate/karate-gatling)
