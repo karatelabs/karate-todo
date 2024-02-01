@@ -12,8 +12,6 @@ public class TodoSimulation extends Simulation {
 
     public TodoSimulation() {
 
-        Utils.startServer();
-
         KarateProtocolBuilder protocol = karateProtocol(
                 uri("/api/todos/{id}").nil()
         );
