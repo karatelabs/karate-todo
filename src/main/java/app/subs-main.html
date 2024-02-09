@@ -1,0 +1,28 @@
+<div class="container-fluid">
+
+  <table class="table">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Account</th>
+        <th>Base State</th>
+        <th>Job Effective Date</th>
+        <th>Producer Code</th>
+        <th>Product</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr th:each="sub: session.submissions">
+        <td th:text="sub.id"></td>
+        <td th:text="sub.account.id"></td>
+        <td th:text="sub.baseState.code"></td>
+        <td th:text="sub.jobEffectiveDate"></td>
+        <td th:text="sub.producerCode.id"></td>
+        <td th:text="sub.product.id"></td>
+      </tr>
+    </tbody>
+  </table>  
+
+</div>
+
+
