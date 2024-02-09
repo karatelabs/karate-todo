@@ -2,7 +2,7 @@ Feature: two api calls in a loop
 
   @setup
   Scenario:
-    * def data = [{ id: 1, code: 200}, { id: 2, code: 200}]
+    * def data = [{ id: 1, code: 200}, { id: 2, code: 200 }]
 
   Scenario Outline: id: ${id}
     * url `https://httpbin.org/anything/${id}`
