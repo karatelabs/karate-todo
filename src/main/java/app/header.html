@@ -3,10 +3,13 @@
     <div class="navbar-nav">
       <a class="navbar-brand px-3" href="/">
         <img src="pub/karate-logo.svg" width="22px" class="me-2 pb-1"/>
-        <span>Karate Todo</span>
+        <span>Karate Insurance Demo</span>
       </a>    
     </div>
-    <div class="navbar-nav">      
+    <div class="navbar-nav">  
+      <div class="nav-item">
+        <a class="nav-link px-3" href="submissions">Submissions</a>
+      </div>      
       <div class="nav-item">
         <a class="nav-link px-3" th:unless="context.closed" href="signout">Sign Out</a>
       </div>
