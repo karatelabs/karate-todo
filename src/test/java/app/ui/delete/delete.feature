@@ -5,7 +5,7 @@ Feature:
     * driver 'http://localhost:8080'
 
   Scenario:
-    * def delete = 
+    * def remove =
     """
     function() {
       if (!exists('.border-bottom div')) {
@@ -14,4 +14,4 @@ Feature:
       click('.text-end button');
     }
     """
-    * waitUntil(delete)
+    * waitUntil(remove)

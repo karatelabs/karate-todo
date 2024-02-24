@@ -17,7 +17,7 @@ Use the official Karate IDE plugins for the best developer experience:
 
 ## Prerequisites
 * [Git](https://git-scm.com/download) - to clone this project, or you could just [download the source code as a ZIP file](https://github.com/karatelabs/karate-todo/archive/refs/heads/main.zip)
-* [Java JDK](https://www.oracle.com/java/technologies/downloads) - (at least version 11 or greater), [OpenJDK](https://jdk.java.net/) also works
+* [Java JDK](https://www.oracle.com/java/technologies/downloads) - (at least version 17 or greater), [OpenJDK](https://jdk.java.net/) also works
 * [`JAVA_HOME`](https://www.baeldung.com/java-home-on-windows-7-8-10-mac-os-x-linux) environment variable set
 
 ## Get Source Code
