@@ -20,7 +20,6 @@ if (request.post) {
         session.submissions.splice(index, 1);
     }
 } else {
-    // context.delay(1000);
     response.body = session.submissions;
 }
 

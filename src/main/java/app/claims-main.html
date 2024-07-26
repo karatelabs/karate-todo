@@ -1,0 +1,24 @@
+<div class="container-fluid">
+
+  <table class="table">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Policy Number</th>
+        <th>Loss Date</th>
+        <th>Claim Contact</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr th:each="c: session.claims">
+        <td th:text="c.data.attributes.id"></td>
+        <td th:text="c.data.attributes.policyNumber"></td>
+        <td th:text="c.data.attributes.lossDate"></td>
+        <td th:text="c.included.ClaimContact[0].attributes"></td>
+      </tr>
+    </tbody>
+  </table>  
+
+</div>
+
+
