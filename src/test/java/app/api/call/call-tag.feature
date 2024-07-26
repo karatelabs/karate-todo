@@ -5,7 +5,7 @@ Feature: using a response json array to loop
 
   Scenario: get a list of booking ids
     * url urlBase
-    * params { checkin: '2021-01-01', checkout: '2021-01-31' }
+    * params { checkin: '2024-01-01', checkout: '2024-08-01' }
     * method get
     * status 200
     * match each response == { bookingid: '#number' }
