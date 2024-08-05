@@ -20,9 +20,6 @@ Use the official Karate IDE plugins for the best developer experience:
 * [Java JDK](https://www.oracle.com/java/technologies/downloads) - (at least version 17 or greater), [OpenJDK](https://jdk.java.net/) also works
 * [`JAVA_HOME`](https://www.baeldung.com/java-home-on-windows-7-8-10-mac-os-x-linux) environment variable set
 
-> [!IMPORTANT]
-> Please note that Karate 1.4.1 [will not work if your Java version is 22 or greater](https://github.com/karatelabs/karate/issues/2542). Try to remain on a lower version of Java or use the [1.5.X branch](https://github.com/karatelabs/karate-todo/tree/karate-1.5) of this project.
-
 ## Get Source Code
 * open a terminal in a folder in which `karate-todo` will be created
 * enter the following command: `git clone https://github.com/karatelabs/karate-todo.git`
@@ -88,7 +85,8 @@ The above command uses Maven and has to be run on the command-line.
 The entry point is [perf/TodoSimulation.java](src/test/java/app/perf/TodoSimulation.java). 
 The Maven [pom.xml](pom.xml) has a `<profile>` called `gatling`, which sets up the performance test.
 
-Note that the new [Java DSL for Gatling](https://github.com/karatelabs/karate/tree/develop/karate-gatling#java-dsl) is being used instead of Scala. 
+Note that the new [Java DSL for Gatling](https://github.com/karatelabs/karate/tree/develop/karate-gatling#java-dsl) is being used instead of Scala.
+
 The [`karate-gatling`](https://central.sonatype.com/artifact/io.karatelabs/karate-gatling) dependency 
 in the [`pom.xml`](pom.xml) in `test` scope, can bring in a lot of extra dependencies because of Gatling, 
 so you may have to use the [Karate "fat-jar"](https://github.com/karatelabs/karate#karate-core-fat-jar). 
