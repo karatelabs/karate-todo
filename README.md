@@ -16,7 +16,7 @@ Use the official Karate IDE plugins for the best developer experience:
 > You can use [GitHub Codespaces](https://github.com/karatelabs/karate/wiki/Get-Started:-GitHub-Codespaces) to open this project directly in your browswer ! The default image includes Java and Maven, so you can skip the "Prerequisites" section below and go directly to [Verify Setup](#verify-setup). Make sure you install the [Karate extension for Visual Studio Code](https://marketplace.visualstudio.com/items?itemName=karatelabs.karate) in your Codespace. The Karate extension for VS Code can also be run in a Docker based [devcontainer](https://code.visualstudio.com/docs/devcontainers/containers).
 
 ## Prerequisites
-* [Git](https://git-scm.com/download) - to clone this project (or you could just [download the source code as a ZIP file](#download-code-as-zip))
+* [Git](https://git-scm.com/download) - to clone the project (or you could just [download the source code as a ZIP file](#download-code-as-zip))
 * [Java JDK](https://www.oracle.com/java/technologies/downloads) - (at least version 17 or greater), [OpenJDK](https://jdk.java.net/) also works
 * [`JAVA_HOME`](https://www.baeldung.com/java-home-on-windows-7-8-10-mac-os-x-linux) environment variable set
 
