@@ -95,3 +95,7 @@ Also consider having your Karate tests in a separate Maven module if there are t
 libraries you already have in `test` scope with the ones that Karate (and Gatling) may bring in.
 
 Documentation: [Karate API Performance Testing](https://karatelabs.github.io/karate/karate-gatling)
+
+# Gradle
+
+A sample `build.gradle` and instructions can be found [here](https://github.com/karatelabs/karate-todo/wiki/Gradle).
