@@ -5,4 +5,7 @@ target/
 home/
 .idea/
 .vscode/
+.gradle/
+build/
+gradle/
 

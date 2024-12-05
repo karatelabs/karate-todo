@@ -1,0 +1,44 @@
+plugins {
+    id 'java'
+}
+
+ext {
+    karateVersion = '1.5.0'
+}
+
+dependencies {
+    implementation "io.karatelabs:karate-core:${karateVersion}" // normally not needed, here used to run server
+    testImplementation "io.karatelabs:karate-junit5:${karateVersion}"
+    testImplementation "io.karatelabs:karate-gatling:${karateVersion}"
+}
+
+sourceSets {
+    test {
+        resources {
+            srcDir file('src/test/java')
+            exclude '**/*.java'
+        }
+    }
+}
+
+test {
+    useJUnitPlatform()
+    systemProperty "karate.options", System.properties.getProperty("karate.options")
+    systemProperty "karate.env", System.properties.getProperty("karate.env")
+    outputs.upToDateWhen { false }
+}
+
+repositories {
+    mavenCentral()
+}
+
+// to run, type: "gradle gatling"
+tasks.register('gatlingRun', JavaExec) {
+    classpath = sourceSets.test.runtimeClasspath
+    mainClass = "io.gatling.app.Gatling"
+    args = [
+            '-s', 'app.perf.TodoSimulation',
+            '-rf', "${layout.buildDirectory.get().asFile}/reports/gatling"
+    ]
+    systemProperties System.properties
+}
