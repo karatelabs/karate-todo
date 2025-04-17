@@ -1,7 +1,7 @@
 Feature: simple requests
 
   Scenario: simple POST and GET
-    * url 'https://httpbin.org/anything'
+    * url 'http://httpbin.org/anything'
     * request { myKey: 'myValue' }
     * method post
     * status 200
