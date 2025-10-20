@@ -8,7 +8,7 @@ Feature:
     # create first todo record and save the id
     * request { title: 'First', complete: false }
     * method post
-    * status 200
+    * status 201
     * match response == { id: '#string', title: 'First', complete: false }
     * def id = response.id
 
@@ -26,7 +26,7 @@ Feature:
     # create a second todo record and save the id
     * request { title: 'Second', complete: false }
     * method post
-    * status 200
+    * status 201
     * match response == { id: '#string', title: 'Second', complete: false }
     * def id = response.id
 

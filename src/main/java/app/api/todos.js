@@ -4,6 +4,7 @@ if (request.post) {
     todo.id = context.uuid();
     session.todos.push(todo);
     response.body = todo;
+    response.status = 201;
 } else if (request.pathMatches('/{resource}/{id}')) {
     let id = request.pathParams.id;
     let index = session.todos.findIndex(c => c.id === id);
@@ -16,6 +17,7 @@ if (request.post) {
         todo.id = id;
         session.todos[index] = todo;
         response.body = todo;
+        response.status = 201;
     } else if (request.delete) {
         session.todos.splice(index, 1);
     }
