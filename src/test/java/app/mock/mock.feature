@@ -10,6 +10,7 @@ Feature:
     * todo.id = id
     * todos[id] = todo
     * def response = todo
+    * def responseStatus = 201
 
   Scenario: pathMatches('/todos')
     * def response = $todos.*
