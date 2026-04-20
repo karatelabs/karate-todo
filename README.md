@@ -1,101 +1,72 @@
-# Overview
+# karate-todo
 
-This is a self-contained project that is great for training or demo-ing all capabilities of [Karate](https://karatelabs.io). It includes an app that has a working front-end UI and back-end API. Examples of API tests, API performance tests, API mocks and Web-Browser automation are included.
+A self-contained demo project for [Karate](https://karatelabs.io) v2. Includes a sample app
+(UI + API) and runnable examples of API tests, API mocks, UI automation, and performance tests.
 
-An 8 minute video ideal for beginners can be found here. [Karate Kick Start - The TODO Sample and Demo Project](https://youtu.be/gDZWgV3OubY). No programming or automation experience is required.
+Great for training, demos, or as a sandbox to learn Karate. No prior programming experience needed.
 
-A longer video (20 minutes) which is a good introduction to Karate uses demos in this project and can be an additional reference: [API Testing with Karate](https://youtu.be/WT4gg7Jutzg).
+## IDE plugins
 
-Use the official Karate IDE plugins for the best developer experience:
-
-* [Karate extension for Visual Studio Code](https://marketplace.visualstudio.com/items?itemName=karatelabs.karate)
-* [Karate plugin for IntelliJ IDEA](https://plugins.jetbrains.com/plugin/19232-karate)
-
-# Instructions
-
-> You can use [GitHub Codespaces](https://github.com/karatelabs/karate/wiki/Get-Started:-GitHub-Codespaces) to open this project directly in your browswer ! The default image includes Java and Maven, so you can skip the "Prerequisites" section below and go directly to [Verify Setup](#verify-setup). Make sure you install the [Karate extension for Visual Studio Code](https://marketplace.visualstudio.com/items?itemName=karatelabs.karate) in your Codespace. The Karate extension for VS Code can also be run in a Docker based [devcontainer](https://code.visualstudio.com/docs/devcontainers/containers).
+* [Karate for VS Code](https://marketplace.visualstudio.com/items?itemName=karatelabs.karate)
+* [Karate for IntelliJ IDEA](https://plugins.jetbrains.com/plugin/19232-karate)
 
 ## Prerequisites
-* [Git](https://git-scm.com/download) - to clone the project (or you could just [download the source code as a ZIP file](#download-code-as-zip))
-* [Java JDK](https://www.oracle.com/java/technologies/downloads) - (at least version 17 or greater), [OpenJDK](https://jdk.java.net/) also works
-* [`JAVA_HOME`](https://www.baeldung.com/java-home-on-windows-7-8-10-mac-os-x-linux) environment variable set
 
-## Get Source Code
-* open a terminal in a folder in which `karate-todo` will be created
-* enter the following command: `git clone https://github.com/karatelabs/karate-todo.git`
+* [Java 21+](https://www.oracle.com/java/technologies/downloads) with `JAVA_HOME` set — required by [Karate v2](https://docs.karatelabs.io/getting-started/whats-new-v2)
+* [Git](https://git-scm.com/download) (or [download as ZIP](https://github.com/karatelabs/karate-todo/archive/refs/heads/main.zip) and rename `karate-todo-main` → `karate-todo`)
 
-### Download Code as ZIP
-If you don't have Git installed, you can [download the source code as a ZIP file](https://github.com/karatelabs/karate-todo/archive/refs/heads/main.zip) and extract it. The folder you get may be called `karate-todo-main`, so just re-name it to `karate-todo`.
+> Using [GitHub Codespaces](https://github.com/karatelabs/karate/wiki/Get-Started:-GitHub-Codespaces) or a [VS Code devcontainer](https://code.visualstudio.com/docs/devcontainers/containers)? Java and Maven are pre-installed — skip to *Verify*.
 
-## Verify Setup
-Open a terminal in the directory called `karate-todo`.
-
-If the following command runs the `ApiTest` fine, you are all set:
-
-| Windows | Linux / Mac |
-| ------- | ----------- |
-| `mvnw clean test` | `./mvnw clean test` |
-
-## Running `karate-todo`
-
-> In the commands below, `mvn` will work if you have [Maven installed](https://github.com/karatelabs/karate/wiki/Get-Started:-Maven-and-Gradle). Else replace it with `./mvnw` or `mvnw` like shown above to use the [Maven wrapper](https://maven.apache.org/wrapper).
-
-Now you can run the `LocalRunner` class as  JUnit test. You can do this from an IDE that has Java support.
-
-Or from the command-line:
+## Get the code
 
 ```
-mvn clean test -Dtest=LocalRunner
+git clone https://github.com/karatelabs/karate-todo.git
+cd karate-todo
 ```
 
-Now you should see the front-end at http://localhost:8080
-
-To stop, just kill the process or stop the Java process from the IDE.
-
-## Running Tests
-After the app has been started on `localhost:8080`, you can run tests. 
-
-One of the easiest ways to run tests, recommended for non-programmers or teams that are not familiar with Java, is to use [Visual Studio Code](https://github.com/karatelabs/karate/wiki/Get-Started:-Visual-Studio-Code).
-
-There are more tests and examples in this project, but the following are the simplest ones to get started with:
-
-### API Test
-* [api/simple.feature](src/test/java/app/api/simple/simple.feature)
-
-Documentation: [Karate API Testing](https://karatelabs.github.io/karate)
-
-### UI Test
-* [ui/simple.feature](src/test/java/app/ui/simple/simple.feature)
-
-Documentation: [Karate UI Testing](https://karatelabs.github.io/karate/karate-core)
-
-### API Mock
-* [mock/test.feature](src/test/java/app/mock/test.feature) - this would run the API test after starting the mock defined in [mock.feature](src/test/java/app/mock/mock.feature). 
-* Note how the same test ([simple.feature](src/test/java/app/api/simple/simple.feature)) works for both the "real" API and the mock.
-
-Documentation: [Karate API Mocks](https://karatelabs.github.io/karate/karate-netty)
-
-### API Performance Test
-To run performance test (after the app has been started on `localhost`):
+## Verify
 
 ```
+./mvnw clean test
+```
+
+(Windows: `mvnw clean test`.) If `ApiTest` passes, you're good. All commands below assume the wrapper — drop the `./` and use plain `mvn` if you have [Maven installed](https://docs.karatelabs.io/getting-started/install-dependencies).
+
+## Run the app
+
+```
+mvn test -Dtest=LocalRunner
+```
+
+Open http://localhost:8080 — a working TODO app backed by the same API the tests hit.
+Stop with `Ctrl+C` or from your IDE.
+
+## What's in the box
+
+| Type | Entry point | Docs |
+|---|---|---|
+| API test | [`api/simple.feature`](src/test/java/app/api/simple/simple.feature) | [Making Requests](https://docs.karatelabs.io/http-requests/making-requests) |
+| UI test | [`ui/simple.feature`](src/test/java/app/ui/simple/simple.feature) | [UI Testing](https://docs.karatelabs.io/extensions/ui-testing) |
+| API mock | [`mock/test.feature`](src/test/java/app/mock/test.feature) (runs against [`mock.feature`](src/test/java/app/mock/mock.feature)) | [Test Doubles](https://docs.karatelabs.io/extensions/test-doubles) |
+| Performance | [`perf/TodoSimulation.java`](src/test/java/app/perf/TodoSimulation.java) | [Performance Testing](https://docs.karatelabs.io/extensions/performance-testing) |
+
+The same `simple.feature` runs against both the real API and the mock — a nice demonstration of Karate's contract-first testing.
+
+## Performance test
+
+Gatling hits the app over HTTP, so start it first. Two terminals:
+
+```
+# terminal 1 — app
+mvn test -Dtest=LocalRunner
+
+# terminal 2 — simulation
 mvn test -P gatling
 ```
 
-The above command uses Maven and has to be run on the command-line. 
-The entry point is [perf/TodoSimulation.java](src/test/java/app/perf/TodoSimulation.java). 
-The Maven [pom.xml](pom.xml) has a `<profile>` called `gatling`, which sets up the performance test.
+The HTML report is written to `target/gatling/todosimulation-*/index.html`.
+Uses the [Java DSL for Gatling](https://github.com/karatelabs/karate/tree/develop/karate-gatling#java-dsl) (no Scala required).
 
-Note that the new [Java DSL for Gatling](https://github.com/karatelabs/karate/tree/develop/karate-gatling#java-dsl) is being used instead of Scala.
+## Gradle
 
-The [`karate-gatling`](https://central.sonatype.com/artifact/io.karatelabs/karate-gatling) dependency 
-in the [`pom.xml`](pom.xml) in `test` scope, can bring in a lot of extra dependencies because of Gatling, 
-so you may have to use the [Karate "fat-jar"](https://github.com/karatelabs/karate#karate-core-fat-jar). 
-Also consider having your Karate tests in a separate Maven module if there are too many conflicts between
-libraries you already have in `test` scope with the ones that Karate (and Gatling) may bring in.
-
-Documentation: [Karate API Performance Testing](https://karatelabs.github.io/karate/karate-gatling)
-
-# Gradle
-
-A sample `build.gradle` and instructions can be found [here](https://github.com/karatelabs/karate-todo/wiki/Gradle).
+See [Install & Get Started](https://docs.karatelabs.io/getting-started/install-dependencies) for the Gradle setup.

@@ -1,3 +1,4 @@
+session || context.init();
 session.todos = session.todos || [];
 if (request.post) {
     let todo = request.body;

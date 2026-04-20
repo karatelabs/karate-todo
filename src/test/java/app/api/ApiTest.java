@@ -1,24 +1,39 @@
 package app.api;
 
 import app.App;
-import com.intuit.karate.Results;
-import com.intuit.karate.Runner;
-import com.intuit.karate.http.HttpServer;
-import com.intuit.karate.http.ServerConfig;
+import io.karatelabs.core.Runner;
+import io.karatelabs.core.SuiteResult;
+import io.karatelabs.http.HttpServer;
+import io.karatelabs.http.ServerConfig;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class ApiTest {
 
+    static HttpServer server;
+
+    @BeforeAll
+    static void beforeAll() {
+        ServerConfig config = App.serverConfig("src/main/java/app");
+        server = App.start(config, 0);
+    }
+
+    @AfterAll
+    static void afterAll() {
+        if (server != null) {
+            server.stopAndWait();
+        }
+    }
+
     @Test
     void testAll() {
-        ServerConfig config = App.serverConfig("src/main/java/app");
-        HttpServer server = HttpServer.config(config).build();
-        Results results = Runner.path("classpath:app/api/simple/simple.feature")
+        SuiteResult result = Runner.path("classpath:app/api/simple/simple.feature")
                 .systemProperty("url.base", "http://localhost:" + server.getPort())
                 .parallel(1);
-        assertEquals(0, results.getFailCount(), results.getErrorMessages());
+        assertEquals(0, result.getScenarioFailedCount(), String.join("\n", result.getErrors()));
     }
 
 }
