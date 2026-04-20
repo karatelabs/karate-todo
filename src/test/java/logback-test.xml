@@ -18,6 +18,8 @@
     <logger name="io.karatelabs" level="DEBUG"/>
     <logger name="io.netty" level="WARN"/>
     <logger name="app" level="DEBUG"/>
+    <logger name="karate.http" level="DEBUG"/>
+    <logger name="karate.mock" level="DEBUG"/>
    
     <root level="warn">
         <appender-ref ref="STDOUT" />

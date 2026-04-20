@@ -1,14 +1,14 @@
 package app;
 
-import io.karatelabs.http.HttpServer;
-import io.karatelabs.http.InMemorySessionStore;
-import io.karatelabs.http.ServerConfig;
-import io.karatelabs.http.ServerRequestHandler;
+import io.karatelabs.http.*;
 import io.karatelabs.markup.RootResourceResolver;
 
+import java.util.HashMap;
 import java.util.function.Function;
 
 public class App {
+
+    final static Session session = new Session("singleton", new HashMap<>(), System.currentTimeMillis(), System.currentTimeMillis(), -1);
 
     public static ServerConfig serverConfig(String root) {
         // v2's ServerRequestHandler routes /api/* to JS files and /pub/* to static
@@ -19,7 +19,27 @@ public class App {
         // can create a session and stash the todo list.
         return new ServerConfig(root)
                 .csrfEnabled(false)
-                .sessionStore(new InMemorySessionStore());
+                .sessionStore(new SessionStore() {
+                    @Override
+                    public Session create(int i) {
+                        return session;
+                    }
+
+                    @Override
+                    public Session get(String s) {
+                        return session;
+                    }
+
+                    @Override
+                    public void save(Session session) {
+
+                    }
+
+                    @Override
+                    public void delete(String s) {
+
+                    }
+                });
     }
 
     public static Function<io.karatelabs.http.HttpRequest, io.karatelabs.http.HttpResponse> handler(ServerConfig config) {
