@@ -80,16 +80,15 @@ Port 8080 auto-forwards for `LocalRunner`. After `./mvnw verify -Pui`, right-cli
 
 ## CI/CD
 
-[`.github/workflows/cicd.yml`](.github/workflows/cicd.yml) stages jobs as `api` → `ui` → `gatling` → `secret-scan` → `publish`,
+[`.github/workflows/cicd.yml`](.github/workflows/cicd.yml) stages jobs as `tests` → `gatling` → `secret-scan` → `publish`,
 runs on every push to `main` and on manual dispatch, and publishes the assembled reports to GitHub Pages.
 
 | Stage | What it does |
 |---|---|
-| `api` | `./mvnw test` — every non-`@external` feature under `app/api/` |
-| `ui` | `./mvnw verify -Pui` — UI features via Testcontainers + headless Chrome |
+| `tests` | `./mvnw verify -Pui` — one hybrid suite (API + UI) via Testcontainers + headless Chrome |
 | `gatling` | Starts `LocalRunner` in the background, runs `TodoSimulation` against it |
 | `secret-scan` | Greps the report artifacts for common token / private-key patterns — fails the build on hit |
-| `publish` | On `main` only: assembles `latest/{api,ui,gatling}/` and pushes to `gh-pages` |
+| `publish` | On `main` only: assembles `latest/{karate,gatling}/` and pushes to `gh-pages` |
 
 Live reports: [karatelabs.github.io/karate-todo/latest/](https://karatelabs.github.io/karate-todo/latest/)
 

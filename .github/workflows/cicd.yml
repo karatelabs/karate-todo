@@ -15,8 +15,8 @@ env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
 
 jobs:
-  api:
-    name: API tests
+  tests:
+    name: API + UI tests (Testcontainers)
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -25,40 +25,19 @@ jobs:
           java-version: '21'
           distribution: 'temurin'
           cache: maven
-      - name: Run API tests
-        run: ./mvnw -B test
-      - name: Upload API report
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: api-report
-          path: target/karate-reports
-          retention-days: 14
-
-  ui:
-    name: UI tests (Testcontainers)
-    needs: api
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-java@v4
-        with:
-          java-version: '21'
-          distribution: 'temurin'
-          cache: maven
-      - name: Run UI tests (chromedp/headless-shell via Testcontainers)
+      - name: Run api + ui suite (chromedp/headless-shell via Testcontainers)
         run: ./mvnw -B verify -Pui
-      - name: Upload UI report
+      - name: Upload Karate report
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: ui-report
+          name: karate-report
           path: target/karate-reports
           retention-days: 14
 
   gatling:
     name: Gatling smoke
-    needs: ui
+    needs: tests
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -97,12 +76,8 @@ jobs:
     steps:
       - uses: actions/download-artifact@v4
         with:
-          name: api-report
-          path: reports/api
-      - uses: actions/download-artifact@v4
-        with:
-          name: ui-report
-          path: reports/ui
+          name: karate-report
+          path: reports/karate
       - uses: actions/download-artifact@v4
         with:
           name: gatling-report
@@ -127,12 +102,8 @@ jobs:
     steps:
       - uses: actions/download-artifact@v4
         with:
-          name: api-report
-          path: public/latest/api
-      - uses: actions/download-artifact@v4
-        with:
-          name: ui-report
-          path: public/latest/ui
+          name: karate-report
+          path: public/latest/karate
       - uses: actions/download-artifact@v4
         with:
           name: gatling-report
@@ -148,8 +119,7 @@ jobs:
           <body>
             <h1>karate-todo — latest CI reports</h1>
             <p>Published from <code>main</code>. See <a href="https://github.com/karatelabs/karate-todo">the repo</a>.</p>
-            <a href="api/">API test report (Karate)</a>
-            <a href="ui/">UI test report (Karate + Testcontainers)</a>
+            <a href="karate/">Karate report (API + UI via Testcontainers)</a>
             <a href="gatling/">Gatling performance report</a>
           </body>
           </html>
