@@ -2,7 +2,7 @@
 Feature: simple data driven testing
 
   Background:
-    * url serverUrl + '/api/todos'
+    * url apiUrl + '/api/todos'
 
   Scenario Outline: using title: ${title}
     * request { title: '#(title)', complete: false }

@@ -48,9 +48,12 @@ class UiTest {
     @Test
     void testAll() {
         ContainerDriverProvider provider = new ContainerDriverProvider(chrome);
-        SuiteResult result = Runner.path("classpath:app/ui")
-                // @external: features that hit external hosts (google.feature).
-                // @todo: features gated on a karate-js 2.0.5 fix (see TODO in the features).
+        // One hybrid suite: api + ui features in a single report. Same in-process
+        // app serves both — karate HTTP hits localhost, the browser (in the
+        // container) hits host.docker.internal.
+        SuiteResult result = Runner.path("classpath:app/api", "classpath:app/ui")
+                // @external: features that hit external hosts (google, httpbin, ...).
+                // @todo: features gated on a karate-js 2.0.5 fix (see TODOs).
                 .tags("~@external", "~@todo")
                 .systemProperty("serverUrl", chrome.getHostAccessUrl(PORT))
                 .systemProperty("apiUrl", "http://localhost:" + PORT)

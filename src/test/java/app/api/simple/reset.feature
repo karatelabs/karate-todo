@@ -2,7 +2,7 @@
 Feature: helper to clear all todos
 
 Scenario:
-  * url serverUrl
+  * url apiUrl
   * path 'api', 'reset'
   * method get
   * status 200

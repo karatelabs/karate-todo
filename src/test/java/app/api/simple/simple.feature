@@ -2,7 +2,7 @@
 Feature: simple crud flow against the todo API
 
   Background:
-    * url serverUrl + '/api/todos'
+    * url apiUrl + '/api/todos'
 
   Scenario: simple crud flow
     # create first todo record and save the id
