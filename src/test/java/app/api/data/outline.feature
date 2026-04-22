@@ -1,3 +1,4 @@
+@api @data-driven @crud
 Feature: simple data driven testing
 
   Background:

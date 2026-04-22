@@ -1,4 +1,5 @@
-Feature:
+@smoke @api @crud
+Feature: simple crud flow against the todo API
 
   Background:
     * url serverUrl + '/api/todos'

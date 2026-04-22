@@ -1,4 +1,4 @@
-@external
+@external @api @data-driven @setup
 Feature: using the results of an API call as a data-source
 
   @setup

@@ -1,3 +1,4 @@
+@api @setup
 Feature: helper to clear all todos
 
 Scenario:

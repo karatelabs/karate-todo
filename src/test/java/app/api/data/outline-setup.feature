@@ -1,3 +1,4 @@
+@api @data-driven @setup
 Feature: two api calls in a loop
 
   @setup

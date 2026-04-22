@@ -1,3 +1,4 @@
+@api @data-driven @setup
 Feature: generating data using a function
 
   @setup

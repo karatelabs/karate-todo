@@ -1,7 +1,7 @@
 # TODO(karate-js): re-enable once karate-js 2.0.5 parses `() => ...`
 # zero-param arrow functions correctly.
-@todo
-Feature:
+@todo @ui @cleanup
+Feature: clear completed todos
 
   Background:
     * driver serverUrl

@@ -1,4 +1,5 @@
-Feature:
+@api @java-interop
+Feature: Java interop from feature files
 
   Scenario: calling static method
     * def helper = Java.type('app.api.interop.Helper')

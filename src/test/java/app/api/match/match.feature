@@ -1,4 +1,5 @@
-Feature:
+@api @match @assertions
+Feature: match assertion examples
 
 Scenario: match examples
 * def cat = 

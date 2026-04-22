@@ -1,4 +1,4 @@
-@external
+@external @api @data-driven
 Feature: converting empty cells to null from a csv
 
   @setup

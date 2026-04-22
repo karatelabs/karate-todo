@@ -1,7 +1,7 @@
 # TODO(karate-js): re-enable once karate-js 2.0.5 fixes the JS regressions
 # surfaced by `waitFor(...).mouse().doubleClick()`.
-@todo
-Feature:
+@todo @ui @edit
+Feature: edit an existing todo via double-click
 
   Background:
     * driver serverUrl

@@ -1,5 +1,5 @@
-@external
-Feature: browser automation demo
+@external @ui
+Feature: cross-site browser automation demo
 
   Background:
     * configure driver = { type: 'chrome' }

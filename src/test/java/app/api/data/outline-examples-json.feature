@@ -1,4 +1,4 @@
-@external
+@external @api @data-driven
 Feature: using nulls and inline json
 
   Scenario Outline:

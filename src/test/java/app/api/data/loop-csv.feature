@@ -1,4 +1,4 @@
-@external
+@external @api @data-driven
 Feature: looping over a json array converted from a csv
 
   Scenario:

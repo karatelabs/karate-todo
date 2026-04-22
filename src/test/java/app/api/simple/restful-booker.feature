@@ -1,4 +1,4 @@
-@external
+@external @api @crud
 Feature: API test using RESTfulBooker application
 
 Background:

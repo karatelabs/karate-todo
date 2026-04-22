@@ -1,4 +1,4 @@
-@external
+@external @api @call
 Feature: mixing 2 http calls but the second one in a loop
 
   Scenario:

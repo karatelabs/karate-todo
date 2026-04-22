@@ -1,5 +1,5 @@
-@external
-Feature: simple requests
+@external @api @crud
+Feature: simple requests against httpbin
 
   Scenario: simple POST and GET
     * url 'http://httpbin.org/anything'

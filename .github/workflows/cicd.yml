@@ -8,6 +8,12 @@ on:
 permissions:
   contents: write
 
+# Opt into Node.js 24 for JS actions (actions/checkout, setup-java,
+# upload-artifact, download-artifact, peaceiris/actions-gh-pages) so the Node 20
+# deprecation warnings go away ahead of the 2026-06-02 forced switch.
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
+
 jobs:
   api:
     name: API tests

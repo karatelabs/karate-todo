@@ -1,5 +1,5 @@
-@external
-Feature: sample karate api test script
+@external @api @crud
+Feature: sample karate api test against jsonplaceholder
 
   Background:
     * url 'https://jsonplaceholder.typicode.com'

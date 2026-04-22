@@ -1,4 +1,4 @@
-@external
+@external @api @data-driven
 Feature: reading payloads from json files
 
   Scenario:
