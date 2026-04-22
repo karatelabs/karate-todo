@@ -9,6 +9,21 @@ to [karatelabs.github.io/karate-todo](https://karatelabs.github.io/karate-todo/l
 
 Great for trainings, demos, or as a sandbox to learn Karate. No prior programming experience needed.
 
+## See it live
+
+These are produced fresh on every green push to `main`:
+
+| Report | Link |
+|---|---|
+| Karate summary (API + UI) | [karate-summary.html](https://karatelabs.github.io/karate-todo/latest/karate/karate-summary.html) |
+| Parallel timeline | [karate-timeline.html](https://karatelabs.github.io/karate-todo/latest/karate/karate-timeline.html) |
+| UI feature with embedded screenshots | [simple.feature](https://karatelabs.github.io/karate-todo/latest/karate/feature-html/target.test-classes.app.ui.simple.simple.html) |
+| API CRUD feature (request / response log) | [simple.feature](https://karatelabs.github.io/karate-todo/latest/karate/feature-html/target.test-classes.app.api.simple.simple.html) |
+| Gatling performance report | [index.html](https://karatelabs.github.io/karate-todo/latest/gatling/index.html) |
+
+In the Karate summary, try the **tag filter** (top right) to narrow down to `@smoke`, `@crud`, `@api`, `@ui`, `@data-driven`,
+`@java-interop`, `@match`, or `@call`.
+
 ## Quickstart
 
 ```
