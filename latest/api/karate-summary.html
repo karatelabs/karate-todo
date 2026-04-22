@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link rel="stylesheet" href="res/bootstrap.min.css"/>
+    <link rel="stylesheet" href="res/karate-report.css"/>
+    <link rel="icon" href="res/favicon.ico"/>
+    <script src="res/alpine.min.js" defer></script>
+    <title>Karate Summary</title>
+    <style>
+        .sortable { cursor: pointer; user-select: none; }
+        .sortable:hover { background-color: var(--bs-tertiary-bg); }
+        .tag-chip { font-size: 0.8rem; }
+        .scenario-row { background-color: var(--bs-tertiary-bg); }
+        .expand-btn { width: 24px; text-align: center; }
+        tr.highlight-match > td { background-color: rgba(255, 193, 7, 0.35) !important; }
+        [data-bs-theme="dark"] tr.highlight-match > td { background-color: rgba(255, 193, 7, 0.45) !important; }
+    </style>
+</head>
+<body x-data="KarateReport.summaryData()">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="karate-summary.html">
+                <img src="res/karate-logo.svg" alt="Karate" height="32" class="d-inline-block align-middle me-2"/>
+                Summary
+            </a>
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="karate-timeline.html">Timeline</a>
+                </li>
+            </ul>
+            <button class="btn btn-sm btn-outline-light ms-2" @click="toggleTheme()" title="Toggle theme">
+                <span x-show="theme === 'light'">&#9790;</span>
+                <span x-show="theme === 'dark'">&#9788;</span>
+            </button>
+        </div>
+    </nav>
+
+    <div class="container-fluid p-4">
+        <p class="text-muted">
+            <span x-text="data.reportDate">Date</span>
+            <span x-show="data.env" class="ms-2">| env: <span class="badge bg-info" x-text="data.env"></span></span>
+        </p>
+
+        <!-- Summary Cards -->
+        <div class="row mb-4">
+            <div :class="data.summary?.scenario_skipped > 0 ? 'col-md-3 col-xl' : 'col-md-3'">
+                <div class="card text-white bg-primary">
+                    <div class="card-body">
+                        <h5 class="card-title">Features</h5>
+                        <h2 class="card-text" x-text="data.summary?.feature_count || 0">0</h2>
+                    </div>
+                </div>
+            </div>
+            <div :class="data.summary?.scenario_skipped > 0 ? 'col-md-3 col-xl' : 'col-md-3'">
+                <div class="card text-white bg-success">
+                    <div class="card-body">
+                        <h5 class="card-title">Scenarios Passed</h5>
+                        <h2 class="card-text" x-text="data.summary?.scenario_passed || 0">0</h2>
+                    </div>
+                </div>
+            </div>
+            <div :class="data.summary?.scenario_skipped > 0 ? 'col-md-3 col-xl' : 'col-md-3'">
+                <div class="card text-white bg-danger">
+                    <div class="card-body">
+                        <h5 class="card-title">Scenarios Failed</h5>
+                        <h2 class="card-text" x-text="data.summary?.scenario_failed || 0">0</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 col-xl" x-show="data.summary?.scenario_skipped > 0">
+                <div class="card text-white bg-warning">
+                    <div class="card-body">
+                        <h5 class="card-title">Scenarios Skipped</h5>
+                        <h2 class="card-text" x-text="data.summary?.scenario_skipped || 0">0</h2>
+                    </div>
+                </div>
+            </div>
+            <div :class="data.summary?.scenario_skipped > 0 ? 'col-md-3 col-xl' : 'col-md-3'">
+                <div class="card text-white bg-secondary">
+                    <div class="card-body">
+                        <h5 class="card-title">Duration</h5>
+                        <h2 class="card-text"><span x-text="data.summary?.duration_millis || 0">0</span> ms</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tag Filter Chips -->
+        <div class="mb-3" x-show="allTags.length > 0">
+            <span class="fw-bold me-2">Filter by tag:</span>
+            <template x-for="tag in allTags" :key="tag">
+                <button class="btn btn-sm me-1 mb-1 tag-chip"
+                        :class="selectedTags.includes(tag) ? 'btn-info' : 'btn-outline-secondary'"
+                        @click="toggleTag(tag)"
+                        x-text="tag"></button>
+            </template>
+            <button x-show="selectedTags.length > 0"
+                    class="btn btn-sm btn-outline-danger mb-1"
+                    @click="selectedTags = []">Clear</button>
+            <label x-show="selectedTags.length > 0" class="form-check form-check-inline ms-3 mb-1">
+                <input type="checkbox" class="form-check-input" x-model="highlightMode">
+                <span class="form-check-label small">Highlight only</span>
+            </label>
+        </div>
+
+        <h2>Features</h2>
+        <table class="table table-hover">
+            <thead class="table-dark">
+                <tr>
+                    <th class="sortable" @click="sortBy('name')">
+                        Feature
+                        <span x-show="sortField === 'name'" x-text="sortDir === 'asc' ? ' \u2191' : ' \u2193'"></span>
+                    </th>
+                    <th class="sortable" @click="sortBy('scenarioCount')" style="width: 100px;">
+                        Scenarios
+                        <span x-show="sortField === 'scenarioCount'" x-text="sortDir === 'asc' ? ' \u2191' : ' \u2193'"></span>
+                    </th>
+                    <th class="sortable" @click="sortBy('passedCount')" style="width: 80px;">
+                        Passed
+                        <span x-show="sortField === 'passedCount'" x-text="sortDir === 'asc' ? ' \u2191' : ' \u2193'"></span>
+                    </th>
+                    <th class="sortable" @click="sortBy('failedCount')" style="width: 80px;">
+                        Failed
+                        <span x-show="sortField === 'failedCount'" x-text="sortDir === 'asc' ? ' \u2191' : ' \u2193'"></span>
+                    </th>
+                    <th class="sortable" @click="sortBy('passRate')" style="width: 90px;">
+                        Pass %
+                        <span x-show="sortField === 'passRate'" x-text="sortDir === 'asc' ? ' \u2191' : ' \u2193'"></span>
+                    </th>
+                    <th class="sortable" @click="sortBy('durationMillis')" style="width: 120px;">
+                        Duration
+                        <span x-show="sortField === 'durationMillis'" x-text="sortDir === 'asc' ? ' \u2191' : ' \u2193'"></span>
+                    </th>
+                    <th style="width: 80px;">Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                <template x-for="f in filteredFeatures" :key="f.fileName">
+                    <template x-if="highlightMode || featureMatchesTags(f)">
+                        <tr :class="{ 'highlight-match': selectedTags.length > 0 && highlightMode && featureMatchesTags(f) }">
+                            <td>
+                                <button x-show="selectedTags.length > 0 && f.scenarios?.length > 0"
+                                        class="btn btn-sm btn-link p-0 me-1 expand-btn"
+                                        @click="f.expanded = !f.expanded">
+                                    <span x-text="f.expanded ? '\u25BC' : '\u25B6'"></span>
+                                </button>
+                                <a :href="'feature-html/' + f.fileName + '.html'" x-text="f.name || f.relativePath">Feature</a>
+                                <br/>
+                                <small class="text-muted" x-text="f.relativePath">path</small>
+                                <template x-if="getFeatureTagCounts(f).length > 0">
+                                    <div class="mt-1">
+                                        <template x-for="[tag, count] in getFeatureTagCounts(f)" :key="tag">
+                                            <span class="badge bg-secondary me-1" style="font-size: 0.7rem;"
+                                                  x-text="tag + ' (' + count + ')'"></span>
+                                        </template>
+                                    </div>
+                                </template>
+                            </td>
+                            <td x-text="f.scenarioCount">0</td>
+                            <td x-text="f.passedCount">0</td>
+                            <td x-text="f.failedCount">0</td>
+                            <td x-text="formatPassRate(f.passRate)">&mdash;</td>
+                            <td><span x-text="f.durationMillis">0</span> ms</td>
+                            <td>
+                                <span x-show="f.passed" class="badge bg-success">PASSED</span>
+                                <span x-show="f.failed" class="badge bg-danger">FAILED</span>
+                            </td>
+                        </tr>
+                    </template>
+                </template>
+                <!-- Totals row -->
+                <tr class="table-secondary fw-bold" x-show="(data.features || []).length > 0">
+                    <td>Total (<span x-text="(data.features || []).length"></span> features)</td>
+                    <td x-text="totals.scenarios">0</td>
+                    <td x-text="totals.passed">0</td>
+                    <td x-text="totals.failed">0</td>
+                    <td x-text="formatPassRate(totals.passRate)">&mdash;</td>
+                    <td><span x-text="totals.durationMillis">0</span> ms</td>
+                    <td></td>
+                </tr>
+                <!-- Expanded Scenarios (when filtering by tags) -->
+                <template x-for="f in filteredFeatures" :key="'exp-' + f.fileName">
+                    <template x-if="f.expanded && selectedTags.length > 0">
+                        <template x-for="scenario in getMatchingScenarios(f)" :key="scenario.refId">
+                            <tr class="scenario-row">
+                                <td class="ps-5">
+                                    <small>
+                                        <span class="fw-bold" x-text="scenario.refId"></span>
+                                        <span x-text="scenario.name"></span>
+                                    </small>
+                                </td>
+                                <td colspan="3">
+                                    <template x-for="tag in scenario.tags || []" :key="tag">
+                                        <span class="badge bg-info me-1" x-text="tag"></span>
+                                    </template>
+                                </td>
+                                <td></td>
+                                <td><small x-text="scenario.durationMillis + ' ms'"></small></td>
+                                <td>
+                                    <span x-show="scenario.skipped" class="badge bg-warning">SKIP</span>
+                                    <span x-show="scenario.passed && !scenario.skipped" class="badge bg-success">PASS</span>
+                                    <span x-show="!scenario.passed" class="badge bg-danger">FAIL</span>
+                                </td>
+                            </tr>
+                        </template>
+                    </template>
+                </template>
+            </tbody>
+        </table>
+    </div>
+
+    <footer class="bg-body-tertiary text-center text-muted py-3 mt-4">
+        <small>Generated by Karate <span x-text="data.karateVersion">2.0</span></small>
+    </footer>
+
+    <script src="res/bootstrap.bundle.min.js"></script>
+    <script src="res/karate-report.js"></script>
+    <script id="karate-data" type="application/json">{
+  "env": null,
+  "reportDate": "2026-04-22 07:37:45",
+  "karateVersion": "2.0.4",
+  "summary": {
+    "feature_count": 19,
+    "feature_passed": 19,
+    "feature_failed": 0,
+    "scenario_count": 23,
+    "scenario_passed": 23,
+    "scenario_failed": 0,
+    "scenario_skipped": 0,
+    "duration_millis": 1464,
+    "status": "passed"
+  },
+  "features": [
+    {
+      "name": null,
+      "relativePath": "target/test-classes/app/api/match/match.feature",
+      "fileName": "target.test-classes.app.api.match.match",
+      "passed": true,
+      "failed": false,
+      "durationMillis": 92,
+      "scenarioCount": 1,
+      "passedCount": 1,
+      "failedCount": 0,
+      "skippedCount": 0,
+      "scenarios": [
+        {
+          "name": "match examples",
+          "refId": "[1:3]",
+          "passed": true,
+          "skipped": false,
+          "durationMillis": 43,
+          "tags": null
+        }
+      ]
+    },
+    {
+      "name": "mixing 2 http calls but the second one in a loop",
+      "relativePath": "target/test-classes/app/api/call/call-data.feature",
+      "fileName": "target.test-classes.app.api.call.call-data",
+      "passed": true,
+      "failed": false,
+      "durationMillis": 1,
+      "scenarioCount": 0,
+      "passedCount": 0,
+      "failedCount": 0,
+      "skippedCount": 0,
+      "scenarios": [
+      ]
+    },
+    {
+      "name": "using a response json array to loop",
+      "relativePath": "target/test-classes/app/api/call/call-tag.feature",
+      "fileName": "target.test-classes.app.api.call.call-tag",
+      "passed": true,
+      "failed": false,
+      "durationMillis": 0,
+      "scenarioCount": 0,
+      "passedCount": 0,
+      "failedCount": 0,
+      "skippedCount": 0,
+      "scenarios": [
+      ]
+    },
+    {
+      "name": null,
+      "relativePath": "target/test-classes/app/api/call/caller.feature",
+      "fileName": "target.test-classes.app.api.call.caller",
+      "passed": true,
+      "failed": false,
+      "durationMillis": 3,
+      "scenarioCount": 1,
+      "passedCount": 1,
+      "failedCount": 0,
+      "skippedCount": 0,
+      "scenarios": [
+        {
+          "name": null,
+          "refId": "[1:3]",
+          "passed": true,
+          "skipped": false,
+          "durationMillis": 2,
+          "tags": null
+        }
+      ]
+    },
+    {
+      "name": null,
+      "relativePath": "target/test-classes/app/api/interop/interop.feature",
+      "fileName": "target.test-classes.app.api.interop.interop",
+      "passed": true,
+      "failed": false,
+      "durationMillis": 20,
+      "scenarioCount": 2,
+      "passedCount": 2,
+      "failedCount": 0,
+      "skippedCount": 0,
+      "scenarios": [
+        {
+          "name": "calling static method",
+          "refId": "[1:3]",
+          "passed": true,
+          "skipped": false,
+          "durationMillis": 2,
+          "tags": null
+        },
+        {
+          "name": null,
+          "refId": "[2:8]",
+          "passed": true,
+          "skipped": false,
+          "durationMillis": 16,
+          "tags": null
+        }
+      ]
+    },
+    {
+      "name": "helper to clear all todos",
+      "relativePath": "target/test-classes/app/api/simple/reset.feature",
+      "fileName": "target.test-classes.app.api.simple.reset",
+      "passed": true,
+      "failed": false,
+      "durationMillis": 345,
+      "scenarioCount": 1,
+      "passedCount": 1,
+      "failedCount": 0,
+      "skippedCount": 0,
+      "scenarios": [
+        {
+          "name": null,
+          "refId": "[1:3]",
+          "passed": true,
+          "skipped": false,
+          "durationMillis": 344,
+          "tags": null
+        }
+      ]
+    },
+    {
+      "name": "API test using RESTfulBooker application",
+      "relativePath": "target/test-classes/app/api/simple/restful-booker.feature",
+      "fileName": "target.test-classes.app.api.simple.restful-booker",
+      "passed": true,
+      "failed": false,
+      "durationMillis": 0,
+      "scenarioCount": 0,
+      "passedCount": 0,
+      "failedCount": 0,
+      "skippedCount": 0,
+      "scenarios": [
+      ]
+    },
+    {
+      "name": "sample karate api test script",
+      "relativePath": "target/test-classes/app/api/simple/jsonplace.feature",
+      "fileName": "target.test-classes.app.api.simple.jsonplace",
+      "passed": true,
+      "failed": false,
+      "durationMillis": 0,
+      "scenarioCount": 0,
+      "passedCount": 0,
+      "failedCount": 0,
+      "skippedCount": 0,
+      "scenarios": [
+      ]
+    },
+    {
+      "name": null,
+      "relativePath": "target/test-classes/app/api/simple/simple.feature",
+      "fileName": "target.test-classes.app.api.simple.simple",
+      "passed": true,
+      "failed": false,
+      "durationMillis": 49,
+      "scenarioCount": 1,
+      "passedCount": 1,
+      "failedCount": 0,
+      "skippedCount": 0,
+      "scenarios": [
+        {
+          "name": "simple crud flow",
+          "refId": "[1:6]",
+          "passed": true,
+          "skipped": false,
+          "durationMillis": 49,
+          "tags": null
+        }
+      ]
+    },
+    {
+      "name": "simple requests",
+      "relativePath": "target/test-classes/app/api/simple/httpbin.feature",
+      "fileName": "target.test-classes.app.api.simple.httpbin",
+      "passed": true,
+      "failed": false,
+      "durationMillis": 0,
+      "scenarioCount": 0,
+      "passedCount": 0,
+      "failedCount": 0,
+      "skippedCount": 0,
+      "scenarios": [
+      ]
+    },
+    {
+      "name": "using a csv file for data-driven testing",
+      "relativePath": "target/test-classes/app/api/data/outline-csv.feature",
+      "fileName": "target.test-classes.app.api.data.outline-csv",
+      "passed": true,
+      "failed": false,
+      "durationMillis": 11,
+      "scenarioCount": 2,
+      "passedCount": 2,
+      "failedCount": 0,
+      "skippedCount": 0,
+      "scenarios": [
+        {
+          "name": "dynamic ${__num + 1}",
+          "refId": "[1.1:7]",
+          "passed": true,
+          "skipped": false,
+          "durationMillis": 0,
+          "tags": null
+        },
+        {
+          "name": "dynamic ${__num + 1}",
+          "refId": "[1.2:7]",
+          "passed": true,
+          "skipped": false,
+          "durationMillis": 0,
+          "tags": null
+        }
+      ]
+    },
+    {
+      "name": "looping over a json array converted from a csv",
+      "relativePath": "target/test-classes/app/api/data/loop-csv.feature",
+      "fileName": "target.test-classes.app.api.data.loop-csv",
+      "passed": true,
+      "failed": false,
+      "durationMillis": 0,
+      "scenarioCount": 0,
+      "passedCount": 0,
+      "failedCount": 0,
+      "skippedCount": 0,
+      "scenarios": [
+      ]
+    },
+    {
+      "name": "generating data using a function",
+      "relativePath": "target/test-classes/app/api/data/outline-setup-function.feature",
+      "fileName": "target.test-classes.app.api.data.outline-setup-function",
+      "passed": true,
+      "failed": false,
+      "durationMillis": 12,
+      "scenarioCount": 10,
+      "passedCount": 10,
+      "failedCount": 0,
+      "skippedCount": 0,
+      "scenarios": [
+        {
+          "name": null,
+          "refId": "[2.1:16]",
+          "passed": true,
+          "skipped": false,
+          "durationMillis": 0,
+          "tags": null
+        },
+        {
+          "name": null,
+          "refId": "[2.2:16]",
+          "passed": true,
+          "skipped": false,
+          "durationMillis": 0,
+          "tags": null
+        },
+        {
+          "name": null,
+          "refId": "[2.3:16]",
+          "passed": true,
+          "skipped": false,
+          "durationMillis": 0,
+          "tags": null
+        },
+        {
+          "name": null,
+          "refId": "[2.4:16]",
+          "passed": true,
+          "skipped": false,
+          "durationMillis": 0,
+          "tags": null
+        },
+        {
+          "name": null,
+          "refId": "[2.5:16]",
+          "passed": true,
+          "skipped": false,
+          "durationMillis": 0,
+          "tags": null
+        },
+        {
+          "name": null,
+          "refId": "[2.6:16]",
+          "passed": true,
+          "skipped": false,
+          "durationMillis": 0,
+          "tags": null
+        },
+        {
+          "name": null,
+          "refId": "[2.7:16]",
+          "passed": true,
+          "skipped": false,
+          "durationMillis": 0,
+          "tags": null
+        },
+        {
+          "name": null,
+          "refId": "[2.8:16]",
+          "passed": true,
+          "skipped": false,
+          "durationMillis": 0,
+          "tags": null
+        },
+        {
+          "name": null,
+          "refId": "[2.9:16]",
+          "passed": true,
+          "skipped": false,
+          "durationMillis": 0,
+          "tags": null
+        },
+        {
+          "name": null,
+          "refId": "[2.10:16]",
+          "passed": true,
+          "skipped": false,
+          "durationMillis": 0,
+          "tags": null
+        }
+      ]
+    },
+    {
+      "name": "reading payloads from json files",
+      "relativePath": "target/test-classes/app/api/data/read-json.feature",
+      "fileName": "target.test-classes.app.api.data.read-json",
+      "passed": true,
+      "failed": false,
+      "durationMillis": 0,
+      "scenarioCount": 0,
+      "passedCount": 0,
+      "failedCount": 0,
+      "skippedCount": 0,
+      "scenarios": [
+      ]
+    },
+    {
+      "name": "using nulls and inline json",
+      "relativePath": "target/test-classes/app/api/data/outline-examples-json.feature",
+      "fileName": "target.test-classes.app.api.data.outline-examples-json",
+      "passed": true,
+      "failed": false,
+      "durationMillis": 1,
+      "scenarioCount": 0,
+      "passedCount": 0,
+      "failedCount": 0,
+      "skippedCount": 0,
+      "scenarios": [
+      ]
+    },
+    {
+      "name": "two api calls in a loop",
+      "relativePath": "target/test-classes/app/api/data/outline-setup.feature",
+      "fileName": "target.test-classes.app.api.data.outline-setup",
+      "passed": true,
+      "failed": false,
+      "durationMillis": 741,
+      "scenarioCount": 2,
+      "passedCount": 2,
+      "failedCount": 0,
+      "skippedCount": 0,
+      "scenarios": [
+        {
+          "name": "id: 1",
+          "refId": "[2.1:12]",
+          "passed": true,
+          "skipped": false,
+          "durationMillis": 343,
+          "tags": null
+        },
+        {
+          "name": "id: 2",
+          "refId": "[2.2:12]",
+          "passed": true,
+          "skipped": false,
+          "durationMillis": 393,
+          "tags": null
+        }
+      ]
+    },
+    {
+      "name": "using the results of an API call as a data-source",
+      "relativePath": "target/test-classes/app/api/data/outline-setup-http.feature",
+      "fileName": "target.test-classes.app.api.data.outline-setup-http",
+      "passed": true,
+      "failed": false,
+      "durationMillis": 119,
+      "scenarioCount": 0,
+      "passedCount": 0,
+      "failedCount": 0,
+      "skippedCount": 0,
+      "scenarios": [
+      ]
+    },
+    {
+      "name": "simple data driven testing",
+      "relativePath": "target/test-classes/app/api/data/outline.feature",
+      "fileName": "target.test-classes.app.api.data.outline",
+      "passed": true,
+      "failed": false,
+      "durationMillis": 19,
+      "scenarioCount": 3,
+      "passedCount": 3,
+      "failedCount": 0,
+      "skippedCount": 0,
+      "scenarios": [
+        {
+          "name": "using title: One",
+          "refId": "[1.1:12]",
+          "passed": true,
+          "skipped": false,
+          "durationMillis": 6,
+          "tags": null
+        },
+        {
+          "name": "using title: Two",
+          "refId": "[1.2:12]",
+          "passed": true,
+          "skipped": false,
+          "durationMillis": 5,
+          "tags": null
+        },
+        {
+          "name": "using title: Three",
+          "refId": "[1.3:12]",
+          "passed": true,
+          "skipped": false,
+          "durationMillis": 6,
+          "tags": null
+        }
+      ]
+    },
+    {
+      "name": "converting empty cells to null from a csv",
+      "relativePath": "target/test-classes/app/api/data/outline-examples-csv.feature",
+      "fileName": "target.test-classes.app.api.data.outline-examples-csv",
+      "passed": true,
+      "failed": false,
+      "durationMillis": 3,
+      "scenarioCount": 0,
+      "passedCount": 0,
+      "failedCount": 0,
+      "skippedCount": 0,
+      "scenarios": [
+      ]
+    }
+  ]
+}</script>
+</body>
+</html>
