@@ -107,7 +107,14 @@ jobs:
       - uses: actions/download-artifact@v4
         with:
           name: gatling-report
-          path: public/latest/gatling
+          path: public/latest/gatling-raw
+      - name: Flatten Gatling output
+        run: |
+          # Gatling writes into `gatling/todosimulation-<timestamp>/` — move the
+          # contents up one level so /latest/gatling/ has the index.html directly.
+          sim=$(ls -d public/latest/gatling-raw/todosimulation-* | head -1)
+          mv "$sim" public/latest/gatling
+          rm -rf public/latest/gatling-raw
       - name: Generate index
         run: |
           cat > public/latest/index.html <<'HTML'
