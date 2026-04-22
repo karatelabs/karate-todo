@@ -63,9 +63,10 @@ jobs:
           cache: maven
       - name: Start app in background
         run: |
+          mkdir -p target
           nohup ./mvnw -B test -Dtest=LocalRunner > target/local-runner.log 2>&1 &
           echo $! > target/local-runner.pid
-          for i in {1..30}; do
+          for i in {1..60}; do
             if nc -z localhost 8080; then break; fi
             sleep 1
           done
