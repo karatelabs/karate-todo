@@ -219,27 +219,408 @@
     <script src="res/karate-report.js"></script>
     <script id="karate-data" type="application/json">{
   "env": null,
-  "reportDate": "2026-04-22 07:49:10",
+  "reportDate": "2026-04-22 07:50:39",
   "karateVersion": "2.0.4",
   "summary": {
-    "feature_count": 7,
-    "feature_passed": 7,
+    "feature_count": 26,
+    "feature_passed": 26,
     "feature_failed": 0,
-    "scenario_count": 1,
-    "scenario_passed": 1,
+    "scenario_count": 11,
+    "scenario_passed": 11,
     "scenario_failed": 0,
     "scenario_skipped": 0,
-    "duration_millis": 1967,
+    "duration_millis": 2362,
     "status": "passed"
   },
   "features": [
+    {
+      "name": "match assertion examples",
+      "relativePath": "target/test-classes/app/api/match/match.feature",
+      "fileName": "target.test-classes.app.api.match.match",
+      "passed": true,
+      "failed": false,
+      "durationMillis": 71,
+      "scenarioCount": 1,
+      "passedCount": 1,
+      "failedCount": 0,
+      "skippedCount": 0,
+      "scenarios": [
+        {
+          "name": "match examples",
+          "refId": "[1:4]",
+          "passed": true,
+          "skipped": false,
+          "durationMillis": 31,
+          "tags": [
+            "@api",
+            "@match",
+            "@assertions"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "mixing 2 http calls but the second one in a loop",
+      "relativePath": "target/test-classes/app/api/call/call-data.feature",
+      "fileName": "target.test-classes.app.api.call.call-data",
+      "passed": true,
+      "failed": false,
+      "durationMillis": 1,
+      "scenarioCount": 0,
+      "passedCount": 0,
+      "failedCount": 0,
+      "skippedCount": 0,
+      "scenarios": [
+      ]
+    },
+    {
+      "name": "using a response json array to loop",
+      "relativePath": "target/test-classes/app/api/call/call-tag.feature",
+      "fileName": "target.test-classes.app.api.call.call-tag",
+      "passed": true,
+      "failed": false,
+      "durationMillis": 0,
+      "scenarioCount": 0,
+      "passedCount": 0,
+      "failedCount": 0,
+      "skippedCount": 0,
+      "scenarios": [
+      ]
+    },
+    {
+      "name": "calling another feature file",
+      "relativePath": "target/test-classes/app/api/call/caller.feature",
+      "fileName": "target.test-classes.app.api.call.caller",
+      "passed": true,
+      "failed": false,
+      "durationMillis": 2,
+      "scenarioCount": 1,
+      "passedCount": 1,
+      "failedCount": 0,
+      "skippedCount": 0,
+      "scenarios": [
+        {
+          "name": null,
+          "refId": "[1:4]",
+          "passed": true,
+          "skipped": false,
+          "durationMillis": 2,
+          "tags": [
+            "@api",
+            "@call"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Java interop from feature files",
+      "relativePath": "target/test-classes/app/api/interop/interop.feature",
+      "fileName": "target.test-classes.app.api.interop.interop",
+      "passed": true,
+      "failed": false,
+      "durationMillis": 17,
+      "scenarioCount": 2,
+      "passedCount": 2,
+      "failedCount": 0,
+      "skippedCount": 0,
+      "scenarios": [
+        {
+          "name": "calling static method",
+          "refId": "[1:4]",
+          "passed": true,
+          "skipped": false,
+          "durationMillis": 3,
+          "tags": [
+            "@api",
+            "@java-interop"
+          ]
+        },
+        {
+          "name": null,
+          "refId": "[2:9]",
+          "passed": true,
+          "skipped": false,
+          "durationMillis": 14,
+          "tags": [
+            "@api",
+            "@java-interop"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "helper to clear all todos",
+      "relativePath": "target/test-classes/app/api/simple/reset.feature",
+      "fileName": "target.test-classes.app.api.simple.reset",
+      "passed": true,
+      "failed": false,
+      "durationMillis": 0,
+      "scenarioCount": 0,
+      "passedCount": 0,
+      "failedCount": 0,
+      "skippedCount": 0,
+      "scenarios": [
+      ]
+    },
+    {
+      "name": "API test using RESTfulBooker application",
+      "relativePath": "target/test-classes/app/api/simple/restful-booker.feature",
+      "fileName": "target.test-classes.app.api.simple.restful-booker",
+      "passed": true,
+      "failed": false,
+      "durationMillis": 0,
+      "scenarioCount": 0,
+      "passedCount": 0,
+      "failedCount": 0,
+      "skippedCount": 0,
+      "scenarios": [
+      ]
+    },
+    {
+      "name": "sample karate api test against jsonplaceholder",
+      "relativePath": "target/test-classes/app/api/simple/jsonplace.feature",
+      "fileName": "target.test-classes.app.api.simple.jsonplace",
+      "passed": true,
+      "failed": false,
+      "durationMillis": 0,
+      "scenarioCount": 0,
+      "passedCount": 0,
+      "failedCount": 0,
+      "skippedCount": 0,
+      "scenarios": [
+      ]
+    },
+    {
+      "name": "simple crud flow against the todo API",
+      "relativePath": "target/test-classes/app/api/simple/simple.feature",
+      "fileName": "target.test-classes.app.api.simple.simple",
+      "passed": true,
+      "failed": false,
+      "durationMillis": 449,
+      "scenarioCount": 1,
+      "passedCount": 1,
+      "failedCount": 0,
+      "skippedCount": 0,
+      "scenarios": [
+        {
+          "name": "simple crud flow",
+          "refId": "[1:7]",
+          "passed": true,
+          "skipped": false,
+          "durationMillis": 448,
+          "tags": [
+            "@smoke",
+            "@api",
+            "@crud"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "simple requests against httpbin",
+      "relativePath": "target/test-classes/app/api/simple/httpbin.feature",
+      "fileName": "target.test-classes.app.api.simple.httpbin",
+      "passed": true,
+      "failed": false,
+      "durationMillis": 0,
+      "scenarioCount": 0,
+      "passedCount": 0,
+      "failedCount": 0,
+      "skippedCount": 0,
+      "scenarios": [
+      ]
+    },
+    {
+      "name": "using a csv file for data-driven testing",
+      "relativePath": "target/test-classes/app/api/data/outline-csv.feature",
+      "fileName": "target.test-classes.app.api.data.outline-csv",
+      "passed": true,
+      "failed": false,
+      "durationMillis": 10,
+      "scenarioCount": 2,
+      "passedCount": 2,
+      "failedCount": 0,
+      "skippedCount": 0,
+      "scenarios": [
+        {
+          "name": "dynamic ${__num + 1}",
+          "refId": "[1.1:8]",
+          "passed": true,
+          "skipped": false,
+          "durationMillis": 0,
+          "tags": [
+            "@api",
+            "@data-driven"
+          ]
+        },
+        {
+          "name": "dynamic ${__num + 1}",
+          "refId": "[1.2:8]",
+          "passed": true,
+          "skipped": false,
+          "durationMillis": 0,
+          "tags": [
+            "@api",
+            "@data-driven"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "looping over a json array converted from a csv",
+      "relativePath": "target/test-classes/app/api/data/loop-csv.feature",
+      "fileName": "target.test-classes.app.api.data.loop-csv",
+      "passed": true,
+      "failed": false,
+      "durationMillis": 0,
+      "scenarioCount": 0,
+      "passedCount": 0,
+      "failedCount": 0,
+      "skippedCount": 0,
+      "scenarios": [
+      ]
+    },
+    {
+      "name": "generating data using a function",
+      "relativePath": "target/test-classes/app/api/data/outline-setup-function.feature",
+      "fileName": "target.test-classes.app.api.data.outline-setup-function",
+      "passed": true,
+      "failed": false,
+      "durationMillis": 3,
+      "scenarioCount": 0,
+      "passedCount": 0,
+      "failedCount": 0,
+      "skippedCount": 0,
+      "scenarios": [
+      ]
+    },
+    {
+      "name": "reading payloads from json files",
+      "relativePath": "target/test-classes/app/api/data/read-json.feature",
+      "fileName": "target.test-classes.app.api.data.read-json",
+      "passed": true,
+      "failed": false,
+      "durationMillis": 0,
+      "scenarioCount": 0,
+      "passedCount": 0,
+      "failedCount": 0,
+      "skippedCount": 0,
+      "scenarios": [
+      ]
+    },
+    {
+      "name": "using nulls and inline json",
+      "relativePath": "target/test-classes/app/api/data/outline-examples-json.feature",
+      "fileName": "target.test-classes.app.api.data.outline-examples-json",
+      "passed": true,
+      "failed": false,
+      "durationMillis": 1,
+      "scenarioCount": 0,
+      "passedCount": 0,
+      "failedCount": 0,
+      "skippedCount": 0,
+      "scenarios": [
+      ]
+    },
+    {
+      "name": "two api calls in a loop",
+      "relativePath": "target/test-classes/app/api/data/outline-setup.feature",
+      "fileName": "target.test-classes.app.api.data.outline-setup",
+      "passed": true,
+      "failed": false,
+      "durationMillis": 1,
+      "scenarioCount": 0,
+      "passedCount": 0,
+      "failedCount": 0,
+      "skippedCount": 0,
+      "scenarios": [
+      ]
+    },
+    {
+      "name": "using the results of an API call as a data-source",
+      "relativePath": "target/test-classes/app/api/data/outline-setup-http.feature",
+      "fileName": "target.test-classes.app.api.data.outline-setup-http",
+      "passed": true,
+      "failed": false,
+      "durationMillis": 205,
+      "scenarioCount": 0,
+      "passedCount": 0,
+      "failedCount": 0,
+      "skippedCount": 0,
+      "scenarios": [
+      ]
+    },
+    {
+      "name": "simple data driven testing",
+      "relativePath": "target/test-classes/app/api/data/outline.feature",
+      "fileName": "target.test-classes.app.api.data.outline",
+      "passed": true,
+      "failed": false,
+      "durationMillis": 31,
+      "scenarioCount": 3,
+      "passedCount": 3,
+      "failedCount": 0,
+      "skippedCount": 0,
+      "scenarios": [
+        {
+          "name": "using title: One",
+          "refId": "[1.1:13]",
+          "passed": true,
+          "skipped": false,
+          "durationMillis": 7,
+          "tags": [
+            "@api",
+            "@data-driven",
+            "@crud"
+          ]
+        },
+        {
+          "name": "using title: Two",
+          "refId": "[1.2:13]",
+          "passed": true,
+          "skipped": false,
+          "durationMillis": 6,
+          "tags": [
+            "@api",
+            "@data-driven",
+            "@crud"
+          ]
+        },
+        {
+          "name": "using title: Three",
+          "refId": "[1.3:13]",
+          "passed": true,
+          "skipped": false,
+          "durationMillis": 13,
+          "tags": [
+            "@api",
+            "@data-driven",
+            "@crud"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "converting empty cells to null from a csv",
+      "relativePath": "target/test-classes/app/api/data/outline-examples-csv.feature",
+      "fileName": "target.test-classes.app.api.data.outline-examples-csv",
+      "passed": true,
+      "failed": false,
+      "durationMillis": 5,
+      "scenarioCount": 0,
+      "passedCount": 0,
+      "failedCount": 0,
+      "skippedCount": 0,
+      "scenarios": [
+      ]
+    },
     {
       "name": "drive the UI then verify via the HTTP API",
       "relativePath": "target/test-classes/app/ui/hybrid/hybrid.feature",
       "fileName": "target.test-classes.app.ui.hybrid.hybrid",
       "passed": true,
       "failed": false,
-      "durationMillis": 18,
+      "durationMillis": 1,
       "scenarioCount": 0,
       "passedCount": 0,
       "failedCount": 0,
@@ -309,7 +690,7 @@
       "fileName": "target.test-classes.app.ui.simple.simple",
       "passed": true,
       "failed": false,
-      "durationMillis": 1884,
+      "durationMillis": 1508,
       "scenarioCount": 1,
       "passedCount": 1,
       "failedCount": 0,
@@ -320,7 +701,7 @@
           "refId": "[1:7]",
           "passed": true,
           "skipped": false,
-          "durationMillis": 1864,
+          "durationMillis": 1503,
           "tags": [
             "@smoke",
             "@ui",
