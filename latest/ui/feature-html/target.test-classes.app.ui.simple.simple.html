@@ -165,19 +165,19 @@
     <script src="../res/karate-report.js"></script>
     <script id="karate-data" type="application/json">{
   "path": "target/test-classes/app/ui/simple/simple.feature",
-  "name": null,
+  "name": "add a todo via the UI",
   "relativePath": "target/test-classes/app/ui/simple/simple.feature",
   "passed": true,
-  "durationMillis": 1666,
+  "durationMillis": 1884,
   "scenarios": [
     {
-      "name": "add a todo via the UI",
-      "line": 6,
+      "name": "add and verify a todo",
+      "line": 7,
       "passed": true,
-      "durationMillis": 1646,
-      "startTime": 1776843813054,
-      "endTime": 1776843814700,
-      "refId": "[1:6]",
+      "durationMillis": 1864,
+      "startTime": 1776844150673,
+      "endTime": 1776844152537,
+      "refId": "[1:7]",
       "sectionIndex": 1,
       "exampleIndex": -1,
       "isOutlineExample": false,
@@ -188,9 +188,9 @@
           "prefix": "*",
           "keyword": "driver",
           "text": "serverUrl",
-          "line": 4,
+          "line": 5,
           "status": "passed",
-          "durationMillis": 992,
+          "durationMillis": 855,
           "hasLogs": false,
           "hasEmbeds": false,
           "hasCallResults": false
@@ -198,10 +198,28 @@
         {
           "prefix": "*",
           "keyword": null,
-          "text": "input('input[name=title]', 'Task One' + Key.ENTER)",
-          "line": 7,
+          "text": "screenshot()",
+          "line": 8,
           "status": "passed",
-          "durationMillis": 142,
+          "durationMillis": 248,
+          "hasLogs": false,
+          "hasEmbeds": true,
+          "embeds": [
+            {
+              "mime_type": "image/png",
+              "file": "001_screenshot_png.png",
+              "name": "screenshot.png"
+            }
+          ],
+          "hasCallResults": false
+        },
+        {
+          "prefix": "*",
+          "keyword": null,
+          "text": "input('input[name=title]', 'Task One' + Key.ENTER)",
+          "line": 9,
+          "status": "passed",
+          "durationMillis": 120,
           "hasLogs": false,
           "hasEmbeds": false,
           "hasCallResults": false
@@ -210,11 +228,29 @@
           "prefix": "*",
           "keyword": null,
           "text": "waitFor('.border-bottom')",
-          "line": 8,
+          "line": 10,
           "status": "passed",
-          "durationMillis": 508,
+          "durationMillis": 593,
           "hasLogs": false,
           "hasEmbeds": false,
+          "hasCallResults": false
+        },
+        {
+          "prefix": "*",
+          "keyword": null,
+          "text": "screenshot()",
+          "line": 11,
+          "status": "passed",
+          "durationMillis": 45,
+          "hasLogs": false,
+          "hasEmbeds": true,
+          "embeds": [
+            {
+              "mime_type": "image/png",
+              "file": "002_screenshot_png.png",
+              "name": "screenshot.png"
+            }
+          ],
           "hasCallResults": false
         }
       ]

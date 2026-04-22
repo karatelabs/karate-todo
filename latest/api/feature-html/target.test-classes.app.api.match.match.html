@@ -165,19 +165,19 @@
     <script src="../res/karate-report.js"></script>
     <script id="karate-data" type="application/json">{
   "path": "target/test-classes/app/api/match/match.feature",
-  "name": null,
+  "name": "match assertion examples",
   "relativePath": "target/test-classes/app/api/match/match.feature",
   "passed": true,
-  "durationMillis": 78,
+  "durationMillis": 6,
   "scenarios": [
     {
       "name": "match examples",
-      "line": 3,
+      "line": 4,
       "passed": true,
-      "durationMillis": 34,
-      "startTime": 1776843782248,
-      "endTime": 1776843782282,
-      "refId": "[1:3]",
+      "durationMillis": 4,
+      "startTime": 1776844119326,
+      "endTime": 1776844119330,
+      "refId": "[1:4]",
       "sectionIndex": 1,
       "exampleIndex": -1,
       "isOutlineExample": false,
@@ -188,9 +188,9 @@
           "prefix": "*",
           "keyword": "def",
           "text": "cat =",
-          "line": 4,
+          "line": 5,
           "status": "passed",
-          "durationMillis": 2,
+          "durationMillis": 0,
           "hasLogs": false,
           "hasEmbeds": false,
           "hasCallResults": false
@@ -199,12 +199,12 @@
           "prefix": "*",
           "keyword": "match",
           "text": "cat.kittens[0].name == 'Bob'",
-          "line": 16,
+          "line": 17,
           "comments": [
             "# using js-style access patterns"
           ],
           "status": "passed",
-          "durationMillis": 3,
+          "durationMillis": 0,
           "hasLogs": false,
           "hasEmbeds": false,
           "hasCallResults": false
@@ -213,12 +213,12 @@
           "prefix": "*",
           "keyword": "match",
           "text": "cat.kittens[*].id == [23, 42]",
-          "line": 19,
+          "line": 20,
           "comments": [
             "# using Json-Path"
           ],
           "status": "passed",
-          "durationMillis": 22,
+          "durationMillis": 1,
           "hasLogs": false,
           "hasEmbeds": false,
           "hasCallResults": false
@@ -227,7 +227,7 @@
           "prefix": "*",
           "keyword": "match",
           "text": "cat.kittens[*].id contains 23",
-          "line": 22,
+          "line": 23,
           "comments": [
             "# contains"
           ],
@@ -241,7 +241,7 @@
           "prefix": "*",
           "keyword": "match",
           "text": "cat.kittens[*].id contains [42, 23]",
-          "line": 23,
+          "line": 24,
           "status": "passed",
           "durationMillis": 0,
           "hasLogs": false,
@@ -252,7 +252,7 @@
           "prefix": "*",
           "keyword": "match",
           "text": "cat..name == ['Billie', 'Bob', 'Wild']",
-          "line": 26,
+          "line": 27,
           "comments": [
             "# any depth"
           ],
@@ -266,7 +266,7 @@
           "prefix": "*",
           "keyword": "match",
           "text": "cat.kittens contains [{ id: 42, name: 'Wild' }, { id: 23, name: 'Bob' }]",
-          "line": 29,
+          "line": 30,
           "comments": [
             "# accessing nested objects"
           ],
@@ -280,12 +280,12 @@
           "prefix": "*",
           "keyword": "match",
           "text": "cat.kittens contains { id: 42, name: '#string' }",
-          "line": 32,
+          "line": 33,
           "comments": [
             "# using fuzzy-matching"
           ],
           "status": "passed",
-          "durationMillis": 1,
+          "durationMillis": 0,
           "hasLogs": false,
           "hasEmbeds": false,
           "hasCallResults": false

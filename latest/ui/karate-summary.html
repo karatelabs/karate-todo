@@ -219,7 +219,7 @@
     <script src="res/karate-report.js"></script>
     <script id="karate-data" type="application/json">{
   "env": null,
-  "reportDate": "2026-04-22 07:43:32",
+  "reportDate": "2026-04-22 07:49:10",
   "karateVersion": "2.0.4",
   "summary": {
     "feature_count": 7,
@@ -229,17 +229,17 @@
     "scenario_passed": 1,
     "scenario_failed": 0,
     "scenario_skipped": 0,
-    "duration_millis": 1727,
+    "duration_millis": 1967,
     "status": "passed"
   },
   "features": [
     {
-      "name": null,
+      "name": "drive the UI then verify via the HTTP API",
       "relativePath": "target/test-classes/app/ui/hybrid/hybrid.feature",
       "fileName": "target.test-classes.app.ui.hybrid.hybrid",
       "passed": true,
       "failed": false,
-      "durationMillis": 20,
+      "durationMillis": 18,
       "scenarioCount": 0,
       "passedCount": 0,
       "failedCount": 0,
@@ -248,7 +248,7 @@
       ]
     },
     {
-      "name": null,
+      "name": "delete every todo one by one",
       "relativePath": "target/test-classes/app/ui/delete/delete.feature",
       "fileName": "target.test-classes.app.ui.delete.delete",
       "passed": true,
@@ -262,7 +262,7 @@
       ]
     },
     {
-      "name": null,
+      "name": "edit an existing todo via double-click",
       "relativePath": "target/test-classes/app/ui/edit/edit.feature",
       "fileName": "target.test-classes.app.ui.edit.edit",
       "passed": true,
@@ -276,7 +276,7 @@
       ]
     },
     {
-      "name": null,
+      "name": "clear completed todos",
       "relativePath": "target/test-classes/app/ui/clear/clear.feature",
       "fileName": "target.test-classes.app.ui.clear.clear",
       "passed": true,
@@ -290,12 +290,12 @@
       ]
     },
     {
-      "name": "browser automation demo",
+      "name": "cross-site browser automation demo",
       "relativePath": "target/test-classes/app/ui/simple/google.feature",
       "fileName": "target.test-classes.app.ui.simple.google",
       "passed": true,
       "failed": false,
-      "durationMillis": 1,
+      "durationMillis": 0,
       "scenarioCount": 0,
       "passedCount": 0,
       "failedCount": 0,
@@ -304,29 +304,33 @@
       ]
     },
     {
-      "name": null,
+      "name": "add a todo via the UI",
       "relativePath": "target/test-classes/app/ui/simple/simple.feature",
       "fileName": "target.test-classes.app.ui.simple.simple",
       "passed": true,
       "failed": false,
-      "durationMillis": 1666,
+      "durationMillis": 1884,
       "scenarioCount": 1,
       "passedCount": 1,
       "failedCount": 0,
       "skippedCount": 0,
       "scenarios": [
         {
-          "name": "add a todo via the UI",
-          "refId": "[1:6]",
+          "name": "add and verify a todo",
+          "refId": "[1:7]",
           "passed": true,
           "skipped": false,
-          "durationMillis": 1646,
-          "tags": null
+          "durationMillis": 1864,
+          "tags": [
+            "@smoke",
+            "@ui",
+            "@crud"
+          ]
         }
       ]
     },
     {
-      "name": null,
+      "name": "data-driven UI flow via a called feature",
       "relativePath": "target/test-classes/app/ui/data/data.feature",
       "fileName": "target.test-classes.app.ui.data.data",
       "passed": true,
