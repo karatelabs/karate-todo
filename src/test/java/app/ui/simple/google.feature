@@ -1,3 +1,4 @@
+@external
 Feature: browser automation demo
 
   Background:

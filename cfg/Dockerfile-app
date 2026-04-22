@@ -1,9 +1,0 @@
-FROM eclipse-temurin:17-jre
-
-RUN curl -L -o karate.jar https://github.com/karatelabs/karate/releases/download/v1.5.0/karate-1.5.0.jar
-
-ADD target/karate-todo-1.0-SNAPSHOT.jar /app.jar
-
-EXPOSE 8080
-
-CMD ["java", "-cp", "karate.jar:app.jar", "app.App", "classpath:app"]

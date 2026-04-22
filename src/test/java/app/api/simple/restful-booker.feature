@@ -1,3 +1,4 @@
+@external
 Feature: API test using RESTfulBooker application
 
 Background:

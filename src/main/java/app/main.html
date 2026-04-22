@@ -6,46 +6,54 @@
   var showing;
   var filtered;
   if (request.post) {
-    // TODO(karate-js): revert to switch/case once `break` inside `switch` no
-    // longer escapes the enclosing `if` in the karate-js engine. Same for the
-    // GET branch below.
     var id = request.param('id');
-    if (action === 'add') {
-      var title = request.param('title');
-      todos.push({id: context.uuid(), title: title, complete: false});
-    } else if (action === 'remove') {
-      var index = todos.findIndex(x => x.id === id);
-      todos.splice(index, 1);
-    } else if (action === 'toggle') {
-      var found = todos.find(x => x.id === id);
-      found.complete = !found.complete;
-    } else if (action === 'removeComplete') {
-      todos = todos.filter(x => !x.complete);
-      session.todos = todos;
-    } else if (action === 'update') {
-      var title = request.param('title');
-      if (title !== '') { // escape key
+    switch (action) {
+      case 'add':
+        var title = request.param('title');
+        todos.push({id: context.uuid(), title: title, complete: false});
+        break;
+      case 'remove':
+        var index = todos.findIndex(x => x.id === id);
+        todos.splice(index, 1);
+        break;
+      case 'toggle':
         var found = todos.find(x => x.id === id);
-        found.title = title;
-      }
-      session.editing = null;
-    } else if (action === 'edit') {
-      session.editing = id;
-    } else if (action === 'toggleAll') {
-      var anyActive = !!todos.find(x => !x.complete);
-      todos.forEach(x => x.complete = anyActive);
+        found.complete = !found.complete;
+        break;
+      case 'removeComplete':
+        todos = todos.filter(x => !x.complete);
+        session.todos = todos;
+        break;
+      case 'update':
+        var title = request.param('title');
+        if (title !== '') { // escape key
+          var found = todos.find(x => x.id === id);
+          found.title = title;
+        }
+        session.editing = null;
+        break;
+      case 'edit':
+        session.editing = id;
+        break;
+      case 'toggleAll':
+        var anyActive = !!todos.find(x => !x.complete);
+        todos.forEach(x => x.complete = anyActive);
+        break;
     }
     filtered = todos;
     showing = 'all';
   } else { // GET
     showing = action;
-    if (action === 'active') {
-      filtered = todos.filter(x => !x.complete);
-    } else if (action === 'complete') {
-      filtered = todos.filter(x => x.complete);
-    } else {
-      filtered = todos;
-      showing = 'all';
+    switch (action) {
+      case 'active':
+        filtered = todos.filter(x => !x.complete);
+        break;
+      case 'complete':
+        filtered = todos.filter(x => x.complete);
+        break;
+      default:
+        filtered = todos;
+        showing = 'all';
     }
   }
   // v2 templates cannot read script-local vars directly — expose via _.

@@ -1,3 +1,4 @@
+@external
 Feature: simple requests
 
   Scenario: simple POST and GET

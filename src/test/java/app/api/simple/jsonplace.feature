@@ -1,3 +1,4 @@
+@external
 Feature: sample karate api test script
 
   Background:
