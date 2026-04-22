@@ -148,6 +148,15 @@ jobs:
           </body>
           </html>
           HTML
+          # Root-level redirect so the bare Pages URL lands on /latest/.
+          cat > public/index.html <<'HTML'
+          <!doctype html>
+          <html>
+          <head><meta charset="utf-8"><meta http-equiv="refresh" content="0; url=latest/">
+          <link rel="canonical" href="latest/"></head>
+          <body><a href="latest/">latest reports</a></body>
+          </html>
+          HTML
       - name: Deploy to gh-pages
         uses: peaceiris/actions-gh-pages@v4
         with:
