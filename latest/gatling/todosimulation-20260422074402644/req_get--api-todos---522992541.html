@@ -14,7 +14,7 @@
 <script src="js/highstock.js"></script>
 <script src="js/highcharts-more.js"></script>
 <script src="js/theme.js"></script>
-<title>Gatling Stats - POST /api/todos</title>
+<title>Gatling Stats - GET /api/todos/{id}</title>
 </head>
 <body>
 <script>
@@ -49,14 +49,14 @@
 </div>
 <div class="container details">
   <div class="nav">
-    <ul><li data-parent="ROOT" class="on">
+    <ul><li data-parent="ROOT" >
   <span id="menu-req_post--api-todos--1031516951" style="margin-left: 0px;" class="expand-button hidden">&nbsp;</span>
   <a href="req_post--api-todos--1031516951.html" class="item withTooltip">
     <span class="nav-tooltip" id="parent-menu-label-req_post--api-todos--1031516951" data-toggle="popover" data-placement="right" data-container="body" data-content="">
       <span onmouseover="isEllipsed('menu-label-req_post--api-todos--1031516951')" id="menu-label-req_post--api-todos--1031516951" class="nav-label ellipsed-name">POST /api/todos</span>
     </span>
   </a>
-</li><li data-parent="ROOT" >
+</li><li data-parent="ROOT" class="on">
   <span id="menu-req_get--api-todos---522992541" style="margin-left: 0px;" class="expand-button hidden">&nbsp;</span>
   <a href="req_get--api-todos---522992541.html" class="item withTooltip">
     <span class="nav-tooltip" id="parent-menu-label-req_get--api-todos---522992541" data-toggle="popover" data-placement="right" data-container="body" data-content="">
@@ -107,14 +107,14 @@
                                         <tbody>
                                             <tr>
                                                 <td class="title">Total count</td>
-                                                <td class="total">20</td>
-                                                <td class="ok">20</td>
+                                                <td class="total">10</td>
+                                                <td class="ok">10</td>
                                                 <td class="ko">0</td>
                                             </tr>
                                             <tr>
                                                 <td class="title">Mean count/s</abbr></td>
-                                                <td class="total">4</td>
-                                                <td class="ok">4</td>
+                                                <td class="total">2</td>
+                                                <td class="ok">2</td>
                                                 <td class="ko">0</td>
                                             </tr>
                                         </tbody>
@@ -132,8 +132,8 @@
                                         <tbody>
                                             <tr>
                                                 <td class="title">Min</td>
-                                                <td class="total">1</td>
-                                                <td class="ok">1</td>
+                                                <td class="total">2</td>
+                                                <td class="ok">2</td>
                                                 <td class="ko">-</td>
                                             </tr>
                                             <tr>
@@ -144,38 +144,38 @@
                                             </tr>
                                             <tr>
                                                 <td class="title">75th percentile</td>
-                                                <td class="total">4</td>
-                                                <td class="ok">4</td>
+                                                <td class="total">3</td>
+                                                <td class="ok">3</td>
                                                 <td class="ko">-</td>
                                             </tr>
                                             <tr>
                                                 <td class="title">95th percentile</td>
-                                                <td class="total">100</td>
-                                                <td class="ok">100</td>
-                                                <td class="ko">-</td>
-                                            </tr>
-                                            <tr>
-                                                <td class="title">99th percentile</td>
-                                                <td class="total">100</td>
-                                                <td class="ok">100</td>
-                                                <td class="ko">-</td>
-                                            </tr>
-                                            <tr>
-                                                <td class="title">Max</td>
-                                                <td class="total">100</td>
-                                                <td class="ok">100</td>
-                                                <td class="ko">-</td>
-                                            </tr>
-                                            <tr>
-                                                <td class="title">Mean</td>
                                                 <td class="total">8</td>
                                                 <td class="ok">8</td>
                                                 <td class="ko">-</td>
                                             </tr>
                                             <tr>
+                                                <td class="title">99th percentile</td>
+                                                <td class="total">8</td>
+                                                <td class="ok">8</td>
+                                                <td class="ko">-</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="title">Max</td>
+                                                <td class="total">8</td>
+                                                <td class="ok">8</td>
+                                                <td class="ko">-</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="title">Mean</td>
+                                                <td class="total">3</td>
+                                                <td class="ok">3</td>
+                                                <td class="ko">-</td>
+                                            </tr>
+                                            <tr>
                                                 <td class="title">Standard Deviation</td>
-                                                <td class="total">21</td>
-                                                <td class="ok">21</td>
+                                                <td class="total">2</td>
+                                                <td class="ok">2</td>
                                                 <td class="ko">-</td>
                                             </tr>
                                         </tbody>
@@ -268,7 +268,7 @@ new Highcharts.Chart({
       type: 'column',
       data: [{
       	color: '#68b65c',
-      	y: 20
+      	y: 10
       },
       {
       	color: '#FFDD00',
@@ -341,7 +341,7 @@ new Highcharts.Chart({
     maskInside: false
   },
   xAxis: {
-    categories: ['1', '2', '3', '4', '5', '7', '100'],
+    categories: ['2', '3', '4', '8'],
     tickInterval: 20
   },
   yAxis: {
@@ -369,7 +369,7 @@ type: 'column',
 color: '#68b65c',
 name: 'OK',
 data: [
-  5.0,25.0,25.0,30.0,5.0,5.0,5.0
+  50.0,30.0,10.0,10.0
 ],
 tooltip: { yDecimals: 0, ySuffix: 'ms' }
 },
@@ -479,7 +479,7 @@ new Highcharts.StockChart({
          {
 pointInterval: 1000,
 name: 'min',
-data: [[1776843528000, 3], [1776843529000, 2], [1776843530000, 2], [1776843531000, 2], [1776843532000, 1]],
+data: [[1776843843000, 8], [1776843844000, 2], [1776843845000, 2], [1776843846000, 3], [1776843847000, 2]],
 tooltip: { yDecimals: 0, ySuffix: 'ms' },
 type : 'area',
 yAxis: 0,
@@ -488,7 +488,7 @@ zIndex: 10
          {
 pointInterval: 1000,
 name: '25%',
-data: [[1776843528000, 3], [1776843529000, 2], [1776843530000, 3], [1776843531000, 2], [1776843532000, 2]],
+data: [[1776843843000, 8], [1776843844000, 2], [1776843845000, 2], [1776843846000, 3], [1776843847000, 2]],
 tooltip: { yDecimals: 0, ySuffix: 'ms' },
 type : 'area',
 yAxis: 0,
@@ -497,7 +497,7 @@ zIndex: 9
          {
 pointInterval: 1000,
 name: '50%',
-data: [[1776843528000, 5], [1776843529000, 4], [1776843530000, 4], [1776843531000, 3], [1776843532000, 3]],
+data: [[1776843843000, 8], [1776843844000, 4], [1776843845000, 2], [1776843846000, 3], [1776843847000, 2]],
 tooltip: { yDecimals: 0, ySuffix: 'ms' },
 type : 'area',
 yAxis: 0,
@@ -506,7 +506,7 @@ zIndex: 8
          {
 pointInterval: 1000,
 name: '75%',
-data: [[1776843528000, 100], [1776843529000, 7], [1776843530000, 4], [1776843531000, 4], [1776843532000, 3]],
+data: [[1776843843000, 8], [1776843844000, 4], [1776843845000, 3], [1776843846000, 3], [1776843847000, 3]],
 tooltip: { yDecimals: 0, ySuffix: 'ms' },
 type : 'area',
 yAxis: 0,
@@ -515,7 +515,7 @@ zIndex: 7
          {
 pointInterval: 1000,
 name: '80%',
-data: [[1776843528000, 100], [1776843529000, 7], [1776843530000, 4], [1776843531000, 4], [1776843532000, 4]],
+data: [[1776843843000, 8], [1776843844000, 4], [1776843845000, 3], [1776843846000, 3], [1776843847000, 3]],
 tooltip: { yDecimals: 0, ySuffix: 'ms' },
 type : 'area',
 yAxis: 0,
@@ -524,7 +524,7 @@ zIndex: 6
          {
 pointInterval: 1000,
 name: '85%',
-data: [[1776843528000, 100], [1776843529000, 7], [1776843530000, 4], [1776843531000, 4], [1776843532000, 4]],
+data: [[1776843843000, 8], [1776843844000, 4], [1776843845000, 3], [1776843846000, 3], [1776843847000, 3]],
 tooltip: { yDecimals: 0, ySuffix: 'ms' },
 type : 'area',
 yAxis: 0,
@@ -533,7 +533,7 @@ zIndex: 5
          {
 pointInterval: 1000,
 name: '90%',
-data: [[1776843528000, 100], [1776843529000, 7], [1776843530000, 4], [1776843531000, 4], [1776843532000, 4]],
+data: [[1776843843000, 8], [1776843844000, 4], [1776843845000, 3], [1776843846000, 3], [1776843847000, 3]],
 tooltip: { yDecimals: 0, ySuffix: 'ms' },
 type : 'area',
 yAxis: 0,
@@ -542,7 +542,7 @@ zIndex: 4
          {
 pointInterval: 1000,
 name: '95%',
-data: [[1776843528000, 100], [1776843529000, 7], [1776843530000, 4], [1776843531000, 4], [1776843532000, 4]],
+data: [[1776843843000, 8], [1776843844000, 4], [1776843845000, 3], [1776843846000, 3], [1776843847000, 3]],
 tooltip: { yDecimals: 0, ySuffix: 'ms' },
 type : 'area',
 yAxis: 0,
@@ -551,7 +551,7 @@ zIndex: 3
          {
 pointInterval: 1000,
 name: '99%',
-data: [[1776843528000, 100], [1776843529000, 7], [1776843530000, 4], [1776843531000, 4], [1776843532000, 4]],
+data: [[1776843843000, 8], [1776843844000, 4], [1776843845000, 3], [1776843846000, 3], [1776843847000, 3]],
 tooltip: { yDecimals: 0, ySuffix: 'ms' },
 type : 'area',
 yAxis: 0,
@@ -560,7 +560,7 @@ zIndex: 2
          {
 pointInterval: 1000,
 name: 'max',
-data: [[1776843528000, 100], [1776843529000, 7], [1776843530000, 4], [1776843531000, 4], [1776843532000, 4]],
+data: [[1776843843000, 8], [1776843844000, 4], [1776843845000, 3], [1776843846000, 3], [1776843847000, 3]],
 tooltip: { yDecimals: 0, ySuffix: 'ms' },
 type : 'area',
 yAxis: 0,
@@ -662,7 +662,7 @@ new Highcharts.StockChart({
     {
 color: '#5E7BE2',
 name: 'All',
-data: [[1776843528000, 3], [1776843529000, 3], [1776843530000, 5], [1776843531000, 4], [1776843532000, 5]],
+data: [[1776843843000, 1], [1776843844000, 2], [1776843845000, 3], [1776843846000, 1], [1776843847000, 3]],
 tooltip: { yDecimals: 0, ySuffix: '', valueDecimals: 0 }
 ,type: 'area'
 }
@@ -762,21 +762,21 @@ new Highcharts.StockChart({
     {
 color: '#5E7BE2',
 name: 'All',
-data: [[1776843528000, 2], [1776843529000, 4], [1776843530000, 5], [1776843531000, 4], [1776843532000, 5]],
+data: [[1776843843000, 1], [1776843844000, 2], [1776843845000, 3], [1776843846000, 1], [1776843847000, 3]],
 tooltip: { yDecimals: 0, ySuffix: '', valueDecimals: 0 }
 
 },
 {
 color: '#68b65c',
 name: 'OK',
-data: [[1776843528000, 2], [1776843529000, 4], [1776843530000, 5], [1776843531000, 4], [1776843532000, 5]],
+data: [[1776843843000, 1], [1776843844000, 2], [1776843845000, 3], [1776843846000, 1], [1776843847000, 3]],
 tooltip: { yDecimals: 0, ySuffix: '', valueDecimals: 0 }
 ,type: 'area'
 },
 {
 color: '#f15b4f',
 name: 'KO',
-data: [[1776843528000, 0], [1776843529000, 0], [1776843530000, 0], [1776843531000, 0], [1776843532000, 0]],
+data: [[1776843843000, 0], [1776843844000, 0], [1776843845000, 0], [1776843846000, 0], [1776843847000, 0]],
 tooltip: { yDecimals: 0, ySuffix: '', valueDecimals: 0 }
 ,type: 'area'
 },
@@ -784,7 +784,7 @@ tooltip: { yDecimals: 0, ySuffix: '', valueDecimals: 0 }
 type: 'pie',
 name: 'Distribution',
 data: [
-  {name: 'OK', y: 20, color: '#68b65c'},
+  {name: 'OK', y: 10, color: '#68b65c'},
   {name: 'KO', y: 0, color: '#f15b4f'}
 ],
 center: [775, -40],
@@ -859,7 +859,7 @@ type: 'scatter',
 color: '#68b65c',
 name: 'OK',
 data: [
-[6,100],[9,7],[10,4],[12,4],[13,4]
+[6,8],[9,4],[9,3],[12,3],[14,3]
 ]},
 	  {
 type: 'scatter',
