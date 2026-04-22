@@ -20,6 +20,7 @@
     <logger name="app" level="DEBUG"/>
     <logger name="karate.http" level="DEBUG"/>
     <logger name="karate.mock" level="DEBUG"/>
+    <logger name="karate.server" level="DEBUG"/>
    
     <root level="warn">
         <appender-ref ref="STDOUT" />

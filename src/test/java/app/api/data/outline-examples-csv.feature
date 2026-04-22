@@ -1,3 +1,4 @@
+@external
 Feature: converting empty cells to null from a csv
 
   @setup

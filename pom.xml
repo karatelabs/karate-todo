@@ -15,6 +15,7 @@
         <karate.version>2.0.4</karate.version>
         <junit.version>5.11.4</junit.version>
         <gatling.plugin.version>4.7.0</gatling.plugin.version>
+        <testcontainers.version>1.21.4</testcontainers.version>
     </properties>
 
     <dependencies>
@@ -43,6 +44,27 @@
             <artifactId>karate-gatling</artifactId>
             <version>${karate.version}</version>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.testcontainers</groupId>
+            <artifactId>testcontainers</artifactId>
+            <version>${testcontainers.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.testcontainers</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <version>${testcontainers.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <!-- testcontainers' docker-java-api pulls in jackson-annotations 2.10.3
+             which is too old for thymeleaf's StandardJavaScriptSerializer
+             (needs JsonSerializeAs, added in Jackson 2.12). Pin to match
+             jackson-databind shipped with karate-core/thymeleaf. -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-annotations</artifactId>
+            <version>2.21</version>
         </dependency>
     </dependencies>
 
@@ -78,12 +100,36 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>${maven.surefire.version}</version>
-            </plugin>                       
-        </plugins>        
+                <configuration>
+                    <!-- UiTest needs Docker (via testcontainers) — opt in with -Pui -->
+                    <excludes>
+                        <exclude>**/UiTest.java</exclude>
+                    </excludes>
+                </configuration>
+            </plugin>
+        </plugins>
     </build>
     
     <profiles>
-        <profile> 
+        <profile>
+            <id>ui</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-surefire-plugin</artifactId>
+                        <version>${maven.surefire.version}</version>
+                        <configuration>
+                            <excludes combine.self="override"/>
+                            <includes>
+                                <include>**/UiTest.java</include>
+                            </includes>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
             <id>gatling</id>
             <build>
                 <plugins>           

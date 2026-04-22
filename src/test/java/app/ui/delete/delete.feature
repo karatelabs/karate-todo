@@ -1,8 +1,10 @@
+# TODO(karate-js): re-enable once karate-js 2.0.5 fixes arrow/closure regressions.
+# Also not ideal for CI in parallel — clears shared app state.
+@todo
 Feature:
 
   Background:
-    * configure driver = { type: 'chrome' }
-    * driver 'http://localhost:8080'
+    * driver serverUrl
 
   Scenario:
     * def remove =

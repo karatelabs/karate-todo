@@ -1,3 +1,4 @@
+@external
 Feature: using the results of an API call as a data-source
 
   @setup

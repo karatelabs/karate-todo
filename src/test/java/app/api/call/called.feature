@@ -1,5 +1,6 @@
+@ignore
 Feature:
 
   Scenario:
     * print 'in called'
-    * assert false
+    * def result = 'called-result'

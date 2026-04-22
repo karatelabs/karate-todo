@@ -1,8 +1,10 @@
+# TODO(karate-js): re-enable once karate-js 2.0.5 parses `() => ...`
+# zero-param arrow functions correctly.
+@todo
 Feature:
 
   Background:
-    * configure driver = { type: 'chrome' }
-    * driver 'http://localhost:8080'
+    * driver serverUrl
 
   Scenario:
     * def find = read('find.js')
@@ -10,7 +12,7 @@ Feature:
     * def id = waitUntil(() => find('One'))
     * print 'created id:', id
 
-    * url 'http://localhost:8080/api/todos'
+    * url apiUrl + '/api/todos'
     * path id
     * method get
     * status 200

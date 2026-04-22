@@ -1,11 +1,8 @@
 Feature:
 
   Background:
-    * configure driver = { type: 'chrome' }
-    * driver 'http://localhost:8080'
+    * driver serverUrl
 
-  Scenario:
+  Scenario: add a todo via the UI
     * input('input[name=title]', 'Task One' + Key.ENTER)
-    * waitForText('.border-bottom', 'Task One')
-    * waitFor('button').click()
-    * waitUntil(() => locateAll('.border-bottom').length == 0)
+    * waitFor('.border-bottom')

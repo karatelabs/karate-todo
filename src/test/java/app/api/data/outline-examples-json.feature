@@ -1,3 +1,4 @@
+@external
 Feature: using nulls and inline json
 
   Scenario Outline:

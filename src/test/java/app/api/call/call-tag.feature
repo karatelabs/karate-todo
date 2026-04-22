@@ -1,3 +1,4 @@
+@external
 Feature: using a response json array to loop
 
   Background:

@@ -1,3 +1,4 @@
+@external
 Feature: reading payloads from json files
 
   Scenario:

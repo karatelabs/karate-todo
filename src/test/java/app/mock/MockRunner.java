@@ -31,7 +31,7 @@ class MockRunner {
     @Test
     void testApi() {
         SuiteResult result = Runner.path("classpath:app/api/simple/simple.feature")
-                .systemProperty("url.base", "http://localhost:" + server.getPort())
+                .systemProperty("serverUrl", "http://localhost:" + server.getPort())
                 .parallel(1);
         assertEquals(0, result.getScenarioFailedCount(), String.join("\n", result.getErrors()));
     }
