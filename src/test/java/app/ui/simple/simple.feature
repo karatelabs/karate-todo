@@ -1,4 +1,4 @@
-@smoke @ui @crud
+@smoke @ui @crud @lock=ui
 Feature: add a todo via the UI
 
   Background:

@@ -1,6 +1,6 @@
-# TODO(karate-js): re-enable once karate-js 2.0.5 fixes the JS regressions
-# surfaced by `waitFor(...).mouse().doubleClick()`.
-@todo @ui @edit
+# TODO: `waitFor(...).mouse().doubleClick()` fails with `.mouse is not a function`
+# on karate-js 2.0.5 — needs a separate investigation into the driver element API.
+@todo @ui @edit @lock=ui
 Feature: edit an existing todo via double-click
 
   Background:

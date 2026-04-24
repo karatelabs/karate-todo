@@ -1,6 +1,5 @@
-# TODO(karate-js): re-enable once karate-js 2.0.5 fixes arrow/closure regressions.
-# Also not ideal for CI in parallel — clears shared app state.
-@todo @ui @cleanup
+# Not safe to run in parallel — clears shared app state. Opt in explicitly.
+@ignore @ui @cleanup
 Feature: delete every todo one by one
 
   Background:

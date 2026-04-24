@@ -1,6 +1,6 @@
-# TODO(karate-js): re-enable once karate-js 2.0.5 parses `() => ...`
-# zero-param arrow functions correctly.
-@todo @ui @hybrid
+# TODO: `waitUntil(() => find('One'))` times out on karate-js 2.0.5 — the zero-param
+# arrow + closure-read(.js) pattern needs a separate investigation.
+@todo @ui @hybrid @lock=ui
 Feature: drive the UI then verify via the HTTP API
 
   Background:

@@ -53,12 +53,12 @@ class UiTest {
         // container) hits host.docker.internal.
         SuiteResult result = Runner.path("classpath:app/api", "classpath:app/ui")
                 // @external: features that hit external hosts (google, httpbin, ...).
-                // @todo: features gated on a karate-js 2.0.5 fix (see TODOs).
+                // @todo: features awaiting a karate-js fix (see TODO headers).
                 .tags("~@external", "~@todo")
                 .systemProperty("serverUrl", chrome.getHostAccessUrl(PORT))
                 .systemProperty("apiUrl", "http://localhost:" + PORT)
                 .driverProvider(provider)
-                .parallel(1);
+                .parallel(3);
         assertEquals(0, result.getScenarioFailedCount(), String.join("\n", result.getErrors()));
     }
 
