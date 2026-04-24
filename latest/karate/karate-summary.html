@@ -219,17 +219,17 @@
     <script src="res/karate-report.js"></script>
     <script id="karate-data" type="application/json">{
   "env": null,
-  "reportDate": "2026-04-22 07:59:50",
-  "karateVersion": "2.0.4",
+  "reportDate": "2026-04-24 11:04:56",
+  "karateVersion": "2.0.5",
   "summary": {
-    "feature_count": 26,
-    "feature_passed": 26,
+    "feature_count": 8,
+    "feature_passed": 8,
     "feature_failed": 0,
-    "scenario_count": 11,
-    "scenario_passed": 11,
+    "scenario_count": 12,
+    "scenario_passed": 12,
     "scenario_failed": 0,
     "scenario_skipped": 0,
-    "duration_millis": 2311,
+    "duration_millis": 2005,
     "status": "passed"
   },
   "features": [
@@ -239,7 +239,7 @@
       "fileName": "target.test-classes.app.api.match.match",
       "passed": true,
       "failed": false,
-      "durationMillis": 71,
+      "durationMillis": 89,
       "scenarioCount": 1,
       "passedCount": 1,
       "failedCount": 0,
@@ -250,7 +250,7 @@
           "refId": "[1:4]",
           "passed": true,
           "skipped": false,
-          "durationMillis": 31,
+          "durationMillis": 59,
           "tags": [
             "@api",
             "@match",
@@ -260,134 +260,53 @@
       ]
     },
     {
-      "name": "mixing 2 http calls but the second one in a loop",
-      "relativePath": "target/test-classes/app/api/call/call-data.feature",
-      "fileName": "target.test-classes.app.api.call.call-data",
+      "name": "simple data driven testing",
+      "relativePath": "target/test-classes/app/api/data/outline.feature",
+      "fileName": "target.test-classes.app.api.data.outline",
       "passed": true,
       "failed": false,
-      "durationMillis": 0,
-      "scenarioCount": 0,
-      "passedCount": 0,
-      "failedCount": 0,
-      "skippedCount": 0,
-      "scenarios": [
-      ]
-    },
-    {
-      "name": "using a response json array to loop",
-      "relativePath": "target/test-classes/app/api/call/call-tag.feature",
-      "fileName": "target.test-classes.app.api.call.call-tag",
-      "passed": true,
-      "failed": false,
-      "durationMillis": 0,
-      "scenarioCount": 0,
-      "passedCount": 0,
-      "failedCount": 0,
-      "skippedCount": 0,
-      "scenarios": [
-      ]
-    },
-    {
-      "name": "calling another feature file",
-      "relativePath": "target/test-classes/app/api/call/caller.feature",
-      "fileName": "target.test-classes.app.api.call.caller",
-      "passed": true,
-      "failed": false,
-      "durationMillis": 3,
-      "scenarioCount": 1,
-      "passedCount": 1,
+      "durationMillis": 572,
+      "scenarioCount": 3,
+      "passedCount": 3,
       "failedCount": 0,
       "skippedCount": 0,
       "scenarios": [
         {
-          "name": null,
-          "refId": "[1:4]",
+          "name": "using title: One",
+          "refId": "[1.1:13]",
           "passed": true,
           "skipped": false,
-          "durationMillis": 2,
+          "durationMillis": 454,
           "tags": [
             "@api",
-            "@call"
-          ]
-        }
-      ]
-    },
-    {
-      "name": "Java interop from feature files",
-      "relativePath": "target/test-classes/app/api/interop/interop.feature",
-      "fileName": "target.test-classes.app.api.interop.interop",
-      "passed": true,
-      "failed": false,
-      "durationMillis": 19,
-      "scenarioCount": 2,
-      "passedCount": 2,
-      "failedCount": 0,
-      "skippedCount": 0,
-      "scenarios": [
-        {
-          "name": "calling static method",
-          "refId": "[1:4]",
-          "passed": true,
-          "skipped": false,
-          "durationMillis": 3,
-          "tags": [
-            "@api",
-            "@java-interop"
+            "@data-driven",
+            "@crud"
           ]
         },
         {
-          "name": null,
-          "refId": "[2:9]",
+          "name": "using title: Two",
+          "refId": "[1.2:13]",
           "passed": true,
           "skipped": false,
-          "durationMillis": 15,
+          "durationMillis": 13,
           "tags": [
             "@api",
-            "@java-interop"
+            "@data-driven",
+            "@crud"
+          ]
+        },
+        {
+          "name": "using title: Three",
+          "refId": "[1.3:13]",
+          "passed": true,
+          "skipped": false,
+          "durationMillis": 14,
+          "tags": [
+            "@api",
+            "@data-driven",
+            "@crud"
           ]
         }
-      ]
-    },
-    {
-      "name": "helper to clear all todos",
-      "relativePath": "target/test-classes/app/api/simple/reset.feature",
-      "fileName": "target.test-classes.app.api.simple.reset",
-      "passed": true,
-      "failed": false,
-      "durationMillis": 0,
-      "scenarioCount": 0,
-      "passedCount": 0,
-      "failedCount": 0,
-      "skippedCount": 0,
-      "scenarios": [
-      ]
-    },
-    {
-      "name": "API test using RESTfulBooker application",
-      "relativePath": "target/test-classes/app/api/simple/restful-booker.feature",
-      "fileName": "target.test-classes.app.api.simple.restful-booker",
-      "passed": true,
-      "failed": false,
-      "durationMillis": 0,
-      "scenarioCount": 0,
-      "passedCount": 0,
-      "failedCount": 0,
-      "skippedCount": 0,
-      "scenarios": [
-      ]
-    },
-    {
-      "name": "sample karate api test against jsonplaceholder",
-      "relativePath": "target/test-classes/app/api/simple/jsonplace.feature",
-      "fileName": "target.test-classes.app.api.simple.jsonplace",
-      "passed": true,
-      "failed": false,
-      "durationMillis": 1,
-      "scenarioCount": 0,
-      "passedCount": 0,
-      "failedCount": 0,
-      "skippedCount": 0,
-      "scenarios": [
       ]
     },
     {
@@ -396,7 +315,7 @@
       "fileName": "target.test-classes.app.api.simple.simple",
       "passed": true,
       "failed": false,
-      "durationMillis": 455,
+      "durationMillis": 586,
       "scenarioCount": 1,
       "passedCount": 1,
       "failedCount": 0,
@@ -407,7 +326,7 @@
           "refId": "[1:7]",
           "passed": true,
           "skipped": false,
-          "durationMillis": 453,
+          "durationMillis": 563,
           "tags": [
             "@smoke",
             "@api",
@@ -417,17 +336,53 @@
       ]
     },
     {
-      "name": "simple requests against httpbin",
-      "relativePath": "target/test-classes/app/api/simple/httpbin.feature",
-      "fileName": "target.test-classes.app.api.simple.httpbin",
+      "name": "nested called features \u2014 a chain of reusable helpers",
+      "relativePath": "target/test-classes/app/api/call/nested.feature",
+      "fileName": "target.test-classes.app.api.call.nested",
       "passed": true,
       "failed": false,
-      "durationMillis": 0,
-      "scenarioCount": 0,
-      "passedCount": 0,
+      "durationMillis": 588,
+      "scenarioCount": 1,
+      "passedCount": 1,
       "failedCount": 0,
       "skippedCount": 0,
       "scenarios": [
+        {
+          "name": "create several todos by chaining helpers",
+          "refId": "[1:11]",
+          "passed": true,
+          "skipped": false,
+          "durationMillis": 562,
+          "tags": [
+            "@api",
+            "@call"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "using a called feature to set up test data",
+      "relativePath": "target/test-classes/app/api/call/caller.feature",
+      "fileName": "target.test-classes.app.api.call.caller",
+      "passed": true,
+      "failed": false,
+      "durationMillis": 602,
+      "scenarioCount": 1,
+      "passedCount": 1,
+      "failedCount": 0,
+      "skippedCount": 0,
+      "scenarios": [
+        {
+          "name": "create a todo via a helper, then verify it exists",
+          "refId": "[1:8]",
+          "passed": true,
+          "skipped": false,
+          "durationMillis": 29,
+          "tags": [
+            "@api",
+            "@call"
+          ]
+        }
       ]
     },
     {
@@ -436,7 +391,7 @@
       "fileName": "target.test-classes.app.api.data.outline-csv",
       "passed": true,
       "failed": false,
-      "durationMillis": 12,
+      "durationMillis": 601,
       "scenarioCount": 2,
       "passedCount": 2,
       "failedCount": 0,
@@ -458,7 +413,7 @@
           "refId": "[1.2:8]",
           "passed": true,
           "skipped": false,
-          "durationMillis": 1,
+          "durationMillis": 0,
           "tags": [
             "@api",
             "@data-driven"
@@ -467,221 +422,39 @@
       ]
     },
     {
-      "name": "looping over a json array converted from a csv",
-      "relativePath": "target/test-classes/app/api/data/loop-csv.feature",
-      "fileName": "target.test-classes.app.api.data.loop-csv",
+      "name": "Java interop from feature files",
+      "relativePath": "target/test-classes/app/api/interop/interop.feature",
+      "fileName": "target.test-classes.app.api.interop.interop",
       "passed": true,
       "failed": false,
-      "durationMillis": 2,
-      "scenarioCount": 0,
-      "passedCount": 0,
-      "failedCount": 0,
-      "skippedCount": 0,
-      "scenarios": [
-      ]
-    },
-    {
-      "name": "generating data using a function",
-      "relativePath": "target/test-classes/app/api/data/outline-setup-function.feature",
-      "fileName": "target.test-classes.app.api.data.outline-setup-function",
-      "passed": true,
-      "failed": false,
-      "durationMillis": 3,
-      "scenarioCount": 0,
-      "passedCount": 0,
-      "failedCount": 0,
-      "skippedCount": 0,
-      "scenarios": [
-      ]
-    },
-    {
-      "name": "reading payloads from json files",
-      "relativePath": "target/test-classes/app/api/data/read-json.feature",
-      "fileName": "target.test-classes.app.api.data.read-json",
-      "passed": true,
-      "failed": false,
-      "durationMillis": 0,
-      "scenarioCount": 0,
-      "passedCount": 0,
-      "failedCount": 0,
-      "skippedCount": 0,
-      "scenarios": [
-      ]
-    },
-    {
-      "name": "using nulls and inline json",
-      "relativePath": "target/test-classes/app/api/data/outline-examples-json.feature",
-      "fileName": "target.test-classes.app.api.data.outline-examples-json",
-      "passed": true,
-      "failed": false,
-      "durationMillis": 1,
-      "scenarioCount": 0,
-      "passedCount": 0,
-      "failedCount": 0,
-      "skippedCount": 0,
-      "scenarios": [
-      ]
-    },
-    {
-      "name": "two api calls in a loop",
-      "relativePath": "target/test-classes/app/api/data/outline-setup.feature",
-      "fileName": "target.test-classes.app.api.data.outline-setup",
-      "passed": true,
-      "failed": false,
-      "durationMillis": 1,
-      "scenarioCount": 0,
-      "passedCount": 0,
-      "failedCount": 0,
-      "skippedCount": 0,
-      "scenarios": [
-      ]
-    },
-    {
-      "name": "using the results of an API call as a data-source",
-      "relativePath": "target/test-classes/app/api/data/outline-setup-http.feature",
-      "fileName": "target.test-classes.app.api.data.outline-setup-http",
-      "passed": true,
-      "failed": false,
-      "durationMillis": 243,
-      "scenarioCount": 0,
-      "passedCount": 0,
-      "failedCount": 0,
-      "skippedCount": 0,
-      "scenarios": [
-      ]
-    },
-    {
-      "name": "simple data driven testing",
-      "relativePath": "target/test-classes/app/api/data/outline.feature",
-      "fileName": "target.test-classes.app.api.data.outline",
-      "passed": true,
-      "failed": false,
-      "durationMillis": 33,
-      "scenarioCount": 3,
-      "passedCount": 3,
+      "durationMillis": 625,
+      "scenarioCount": 2,
+      "passedCount": 2,
       "failedCount": 0,
       "skippedCount": 0,
       "scenarios": [
         {
-          "name": "using title: One",
-          "refId": "[1.1:13]",
+          "name": "calling static method",
+          "refId": "[1:4]",
           "passed": true,
           "skipped": false,
-          "durationMillis": 9,
+          "durationMillis": 4,
           "tags": [
             "@api",
-            "@data-driven",
-            "@crud"
+            "@java-interop"
           ]
         },
         {
-          "name": "using title: Two",
-          "refId": "[1.2:13]",
+          "name": null,
+          "refId": "[2:9]",
           "passed": true,
           "skipped": false,
-          "durationMillis": 9,
+          "durationMillis": 36,
           "tags": [
             "@api",
-            "@data-driven",
-            "@crud"
-          ]
-        },
-        {
-          "name": "using title: Three",
-          "refId": "[1.3:13]",
-          "passed": true,
-          "skipped": false,
-          "durationMillis": 13,
-          "tags": [
-            "@api",
-            "@data-driven",
-            "@crud"
+            "@java-interop"
           ]
         }
-      ]
-    },
-    {
-      "name": "converting empty cells to null from a csv",
-      "relativePath": "target/test-classes/app/api/data/outline-examples-csv.feature",
-      "fileName": "target.test-classes.app.api.data.outline-examples-csv",
-      "passed": true,
-      "failed": false,
-      "durationMillis": 2,
-      "scenarioCount": 0,
-      "passedCount": 0,
-      "failedCount": 0,
-      "skippedCount": 0,
-      "scenarios": [
-      ]
-    },
-    {
-      "name": "drive the UI then verify via the HTTP API",
-      "relativePath": "target/test-classes/app/ui/hybrid/hybrid.feature",
-      "fileName": "target.test-classes.app.ui.hybrid.hybrid",
-      "passed": true,
-      "failed": false,
-      "durationMillis": 0,
-      "scenarioCount": 0,
-      "passedCount": 0,
-      "failedCount": 0,
-      "skippedCount": 0,
-      "scenarios": [
-      ]
-    },
-    {
-      "name": "delete every todo one by one",
-      "relativePath": "target/test-classes/app/ui/delete/delete.feature",
-      "fileName": "target.test-classes.app.ui.delete.delete",
-      "passed": true,
-      "failed": false,
-      "durationMillis": 0,
-      "scenarioCount": 0,
-      "passedCount": 0,
-      "failedCount": 0,
-      "skippedCount": 0,
-      "scenarios": [
-      ]
-    },
-    {
-      "name": "edit an existing todo via double-click",
-      "relativePath": "target/test-classes/app/ui/edit/edit.feature",
-      "fileName": "target.test-classes.app.ui.edit.edit",
-      "passed": true,
-      "failed": false,
-      "durationMillis": 0,
-      "scenarioCount": 0,
-      "passedCount": 0,
-      "failedCount": 0,
-      "skippedCount": 0,
-      "scenarios": [
-      ]
-    },
-    {
-      "name": "clear completed todos",
-      "relativePath": "target/test-classes/app/ui/clear/clear.feature",
-      "fileName": "target.test-classes.app.ui.clear.clear",
-      "passed": true,
-      "failed": false,
-      "durationMillis": 0,
-      "scenarioCount": 0,
-      "passedCount": 0,
-      "failedCount": 0,
-      "skippedCount": 0,
-      "scenarios": [
-      ]
-    },
-    {
-      "name": "cross-site browser automation demo",
-      "relativePath": "target/test-classes/app/ui/simple/google.feature",
-      "fileName": "target.test-classes.app.ui.simple.google",
-      "passed": true,
-      "failed": false,
-      "durationMillis": 0,
-      "scenarioCount": 0,
-      "passedCount": 0,
-      "failedCount": 0,
-      "skippedCount": 0,
-      "scenarios": [
       ]
     },
     {
@@ -690,7 +463,7 @@
       "fileName": "target.test-classes.app.ui.simple.simple",
       "passed": true,
       "failed": false,
-      "durationMillis": 1392,
+      "durationMillis": 1967,
       "scenarioCount": 1,
       "passedCount": 1,
       "failedCount": 0,
@@ -701,27 +474,14 @@
           "refId": "[1:7]",
           "passed": true,
           "skipped": false,
-          "durationMillis": 1391,
+          "durationMillis": 1374,
           "tags": [
             "@smoke",
             "@ui",
-            "@crud"
+            "@crud",
+            "@lock=ui"
           ]
         }
-      ]
-    },
-    {
-      "name": "data-driven UI flow via a called feature",
-      "relativePath": "target/test-classes/app/ui/data/data.feature",
-      "fileName": "target.test-classes.app.ui.data.data",
-      "passed": true,
-      "failed": false,
-      "durationMillis": 0,
-      "scenarioCount": 0,
-      "passedCount": 0,
-      "failedCount": 0,
-      "skippedCount": 0,
-      "scenarios": [
       ]
     }
   ]
