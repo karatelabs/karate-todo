@@ -43,7 +43,25 @@ public class App {
     }
 
     public static Function<io.karatelabs.http.HttpRequest, io.karatelabs.http.HttpResponse> handler(ServerConfig config) {
-        return new ServerRequestHandler(config, new RootResourceResolver(config.getResourceRoot()));
+        Function<io.karatelabs.http.HttpRequest, io.karatelabs.http.HttpResponse> inner =
+                new ServerRequestHandler(config, new RootResourceResolver(config.getResourceRoot()));
+        // Serialize requests across worker threads. The JS handlers in src/main/java/app/api
+        // mutate session.todos (push/splice) on a shared singleton session — and JS array
+        // operations (push, splice, ...) are non-atomic read-then-write sequences in the
+        // engine, so concurrent requests silently lose items or surface 500s from
+        // IndexOutOfBoundsException / ConcurrentModificationException inside the engine's
+        // length-update path. A whole-request lock is the simplest fix; karate-feature
+        // mocks already do this internally. Fine for an in-memory demo app — a real
+        // multi-tenant service would use per-resource or per-session locking instead.
+        java.util.concurrent.locks.ReentrantLock lock = new java.util.concurrent.locks.ReentrantLock();
+        return req -> {
+            lock.lock();
+            try {
+                return inner.apply(req);
+            } finally {
+                lock.unlock();
+            }
+        };
     }
 
     public static HttpServer start(ServerConfig config, int port) {

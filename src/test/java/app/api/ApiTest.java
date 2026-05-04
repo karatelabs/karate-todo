@@ -33,7 +33,7 @@ class ApiTest {
         SuiteResult result = Runner.path("classpath:app/api")
                 .tags("~@external")
                 .systemProperty("serverUrl", "http://localhost:" + server.getPort())
-                .parallel(1);
+                .parallel(3);
         assertEquals(0, result.getScenarioFailedCount(), String.join("\n", result.getErrors()));
     }
 
