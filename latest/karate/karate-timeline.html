@@ -99,17 +99,17 @@
     <script src="res/karate-report.js"></script>
     <script id="karate-data" type="application/json">{
   "env": null,
-  "reportDate": "2026-04-29 07:33:36",
+  "reportDate": "2026-05-04 15:14:38",
   "threads": 3,
-  "karateVersion": "2.0.6",
+  "karateVersion": "2.0.7",
   "groups": [
     {
       "id": 1,
-      "content": "1"
+      "content": "3"
     },
     {
       "id": 2,
-      "content": "3"
+      "content": "1"
     },
     {
       "id": 3,
@@ -120,109 +120,109 @@
     {
       "id": 1,
       "group": 1,
-      "content": "match[1:4]",
-      "start": 1777448016253,
-      "end": 1777448016301,
-      "title": "match[1:4] 07:33:36.253 (49 ms) match examples",
+      "content": "caller[1:8]",
+      "start": 1777907678814,
+      "end": 1777907679352,
+      "title": "caller[1:8] 15:14:38.814 (539 ms) create a todo via a helper, then verify it exists",
       "className": "passed"
     },
     {
       "id": 2,
       "group": 2,
-      "content": "outline-csv[1.1:8]",
-      "start": 1777448016292,
-      "end": 1777448016300,
-      "title": "outline-csv[1.1:8] 07:33:36.292 (9 ms) dynamic ${__num + 1}",
+      "content": "simple[1:7]",
+      "start": 1777907678814,
+      "end": 1777907679385,
+      "title": "simple[1:7] 15:14:38.814 (572 ms) simple crud flow",
       "className": "passed"
     },
     {
       "id": 3,
-      "group": 2,
-      "content": "outline-csv[1.2:8]",
-      "start": 1777448016302,
-      "end": 1777448016302,
-      "title": "outline-csv[1.2:8] 07:33:36.302 (1 ms) dynamic ${__num + 1}",
+      "group": 3,
+      "content": "nested[1:11]",
+      "start": 1777907678815,
+      "end": 1777907679391,
+      "title": "nested[1:11] 15:14:38.815 (577 ms) create several todos by chaining helpers",
       "className": "passed"
     },
     {
       "id": 4,
-      "group": 2,
+      "group": 1,
       "content": "interop[1:4]",
-      "start": 1777448016254,
-      "end": 1777448016288,
-      "title": "interop[1:4] 07:33:36.254 (35 ms) calling static method",
+      "start": 1777907679354,
+      "end": 1777907679362,
+      "title": "interop[1:4] 15:14:39.354 (9 ms) calling static method",
       "className": "passed"
     },
     {
       "id": 5,
       "group": 1,
       "content": "interop[2:9]",
-      "start": 1777448016303,
-      "end": 1777448016332,
-      "title": "interop[2:9] 07:33:36.303 (30 ms)",
+      "start": 1777907679363,
+      "end": 1777907679395,
+      "title": "interop[2:9] 15:14:39.363 (33 ms)",
       "className": "passed"
     },
     {
       "id": 6,
-      "group": 3,
-      "content": "caller[1:8]",
-      "start": 1777448016254,
-      "end": 1777448016730,
-      "title": "caller[1:8] 07:33:36.254 (477 ms) create a todo via a helper, then verify it exists",
+      "group": 2,
+      "content": "match[1:4]",
+      "start": 1777907679391,
+      "end": 1777907679401,
+      "title": "match[1:4] 15:14:39.391 (11 ms) match examples",
       "className": "passed"
     },
     {
       "id": 7,
-      "group": 2,
-      "content": "outline[1.1:13]",
-      "start": 1777448016321,
-      "end": 1777448016707,
-      "title": "outline[1.1:13] 07:33:36.321 (387 ms) using title: One",
+      "group": 3,
+      "content": "outline-csv[1.1:8]",
+      "start": 1777907679414,
+      "end": 1777907679414,
+      "title": "outline-csv[1.1:8] 15:14:39.414 (1 ms) dynamic ${__num + 1}",
       "className": "passed"
     },
     {
       "id": 8,
-      "group": 1,
-      "content": "outline[1.2:13]",
-      "start": 1777448016334,
-      "end": 1777448016708,
-      "title": "outline[1.2:13] 07:33:36.334 (375 ms) using title: Two",
+      "group": 3,
+      "content": "outline-csv[1.2:8]",
+      "start": 1777907679415,
+      "end": 1777907679415,
+      "title": "outline-csv[1.2:8] 15:14:39.415 (1 ms) dynamic ${__num + 1}",
       "className": "passed"
     },
     {
       "id": 9,
-      "group": 2,
-      "content": "outline[1.3:13]",
-      "start": 1777448016711,
-      "end": 1777448016729,
-      "title": "outline[1.3:13] 07:33:36.711 (19 ms) using title: Three",
+      "group": 3,
+      "content": "outline[1.1:13]",
+      "start": 1777907679393,
+      "end": 1777907679412,
+      "title": "outline[1.1:13] 15:14:39.393 (20 ms) using title: One",
       "className": "passed"
     },
     {
       "id": 10,
-      "group": 3,
-      "content": "nested[1:11]",
-      "start": 1777448016733,
-      "end": 1777448016826,
-      "title": "nested[1:11] 07:33:36.733 (94 ms) create several todos by chaining helpers",
+      "group": 1,
+      "content": "outline[1.2:13]",
+      "start": 1777907679402,
+      "end": 1777907679410,
+      "title": "outline[1.2:13] 15:14:39.402 (9 ms) using title: Two",
       "className": "passed"
     },
     {
       "id": 11,
       "group": 2,
-      "content": "simple[1:7]",
-      "start": 1777448016731,
-      "end": 1777448016834,
-      "title": "simple[1:7] 07:33:36.731 (104 ms) simple crud flow",
+      "content": "outline[1.3:13]",
+      "start": 1777907679402,
+      "end": 1777907679417,
+      "title": "outline[1.3:13] 15:14:39.402 (16 ms) using title: Three",
       "className": "passed"
     },
     {
       "id": 12,
       "group": 1,
       "content": "simple[1:7]",
-      "start": 1777448016711,
-      "end": 1777448018230,
-      "title": "simple[1:7] 07:33:36.711 (1520 ms) add and verify a todo",
+      "start": 1777907679412,
+      "end": 1777907680786,
+      "title": "simple[1:7] 15:14:39.412 (1375 ms) add and verify a todo",
       "className": "passed"
     }
   ]
