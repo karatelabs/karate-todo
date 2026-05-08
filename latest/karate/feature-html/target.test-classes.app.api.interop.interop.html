@@ -168,15 +168,15 @@
   "name": "Java interop from feature files",
   "relativePath": "target/test-classes/app/api/interop/interop.feature",
   "passed": true,
-  "durationMillis": 608,
+  "durationMillis": 558,
   "scenarios": [
     {
       "name": "calling static method",
       "line": 4,
       "passed": true,
-      "durationMillis": 9,
-      "startTime": 1777907679354,
-      "endTime": 1777907679363,
+      "durationMillis": 6,
+      "startTime": 1778223105054,
+      "endTime": 1778223105060,
       "refId": "[1:4]",
       "sectionIndex": 1,
       "exampleIndex": -1,
@@ -190,7 +190,7 @@
           "text": "helper = Java.type('app.api.interop.Helper')",
           "line": 5,
           "status": "passed",
-          "durationMillis": 4,
+          "durationMillis": 1,
           "hasLogs": false,
           "hasEmbeds": false,
           "hasCallResults": false
@@ -201,7 +201,7 @@
           "text": "result = helper.doWork('hello world')",
           "line": 6,
           "status": "passed",
-          "durationMillis": 1,
+          "durationMillis": 4,
           "hasLogs": false,
           "hasEmbeds": false,
           "hasCallResults": false
@@ -212,7 +212,7 @@
           "text": "result == { \"message\": \"hello world\" }",
           "line": 7,
           "status": "passed",
-          "durationMillis": 3,
+          "durationMillis": 0,
           "hasLogs": false,
           "hasEmbeds": false,
           "hasCallResults": false
@@ -223,14 +223,14 @@
       "name": null,
       "line": 9,
       "passed": true,
-      "durationMillis": 33,
-      "startTime": 1777907679363,
-      "endTime": 1777907679396,
+      "durationMillis": 40,
+      "startTime": 1778223105054,
+      "endTime": 1778223105094,
       "refId": "[2:9]",
       "sectionIndex": 2,
       "exampleIndex": -1,
       "isOutlineExample": false,
-      "thread": "3",
+      "thread": "2",
       "skipped": false,
       "steps": [
         {
@@ -239,7 +239,7 @@
           "text": "helper = Java.type('app.api.interop.Helper')",
           "line": 10,
           "status": "passed",
-          "durationMillis": 0,
+          "durationMillis": 1,
           "hasLogs": false,
           "hasEmbeds": false,
           "hasCallResults": false
@@ -250,7 +250,7 @@
           "text": "encoded = karate.readAsBytes('encoded.bin')",
           "line": 11,
           "status": "passed",
-          "durationMillis": 3,
+          "durationMillis": 0,
           "hasLogs": false,
           "hasEmbeds": false,
           "hasCallResults": false
@@ -261,7 +261,7 @@
           "text": "decoded = helper.fromBrotli(encoded)",
           "line": 12,
           "status": "passed",
-          "durationMillis": 28,
+          "durationMillis": 35,
           "hasLogs": false,
           "hasEmbeds": false,
           "hasCallResults": false
@@ -283,7 +283,7 @@
           "text": "json = karate.fromString(decoded)",
           "line": 14,
           "status": "passed",
-          "durationMillis": 0,
+          "durationMillis": 1,
           "hasLogs": false,
           "hasEmbeds": false,
           "hasCallResults": false
