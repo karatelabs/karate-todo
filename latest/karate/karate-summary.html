@@ -125,9 +125,9 @@
                         Failed
                         <span x-show="sortField === 'failedCount'" x-text="sortDir === 'asc' ? ' \u2191' : ' \u2193'"></span>
                     </th>
-                    <th class="sortable" @click="sortBy('passRate')" style="width: 90px;">
+                    <th class="sortable" @click="sortBy('passedRate')" style="width: 90px;">
                         Pass %
-                        <span x-show="sortField === 'passRate'" x-text="sortDir === 'asc' ? ' \u2191' : ' \u2193'"></span>
+                        <span x-show="sortField === 'passedRate'" x-text="sortDir === 'asc' ? ' \u2191' : ' \u2193'"></span>
                     </th>
                     <th class="sortable" @click="sortBy('durationMillis')" style="width: 120px;">
                         Duration
@@ -161,7 +161,7 @@
                             <td x-text="f.scenarioCount">0</td>
                             <td x-text="f.passedCount">0</td>
                             <td x-text="f.failedCount">0</td>
-                            <td x-text="formatPassRate(f.passRate)">&mdash;</td>
+                            <td x-text="formatPassedRate(f.passedRate)">&mdash;</td>
                             <td><span x-text="f.durationMillis">0</span> ms</td>
                             <td>
                                 <span x-show="f.passed" class="badge bg-success">PASSED</span>
@@ -176,7 +176,7 @@
                     <td x-text="totals.scenarios">0</td>
                     <td x-text="totals.passed">0</td>
                     <td x-text="totals.failed">0</td>
-                    <td x-text="formatPassRate(totals.passRate)">&mdash;</td>
+                    <td x-text="formatPassedRate(totals.passedRate)">&mdash;</td>
                     <td><span x-text="totals.durationMillis">0</span> ms</td>
                     <td></td>
                 </tr>
@@ -219,8 +219,8 @@
     <script src="res/karate-report.js"></script>
     <script id="karate-data" type="application/json">{
   "env": null,
-  "reportDate": "2026-05-08 06:51:44",
-  "karateVersion": "2.0.8",
+  "reportDate": "2026-05-13 04:30:07",
+  "karateVersion": "2.0.9",
   "summary": {
     "feature_count": 8,
     "feature_passed": 8,
@@ -229,164 +229,29 @@
     "scenario_passed": 12,
     "scenario_failed": 0,
     "scenario_skipped": 0,
-    "duration_millis": 2135,
+    "duration_millis": 2092,
     "status": "passed"
   },
   "features": [
-    {
-      "name": "simple data driven testing",
-      "relativePath": "target/test-classes/app/api/data/outline.feature",
-      "fileName": "target.test-classes.app.api.data.outline",
-      "passed": true,
-      "failed": false,
-      "durationMillis": 508,
-      "scenarioCount": 3,
-      "passedCount": 3,
-      "failedCount": 0,
-      "skippedCount": 0,
-      "scenarios": [
-        {
-          "name": "using title: One",
-          "refId": "[1.1:13]",
-          "passed": true,
-          "skipped": false,
-          "durationMillis": 479,
-          "tags": [
-            "@api",
-            "@data-driven",
-            "@crud"
-          ]
-        },
-        {
-          "name": "using title: Two",
-          "refId": "[1.2:13]",
-          "passed": true,
-          "skipped": false,
-          "durationMillis": 481,
-          "tags": [
-            "@api",
-            "@data-driven",
-            "@crud"
-          ]
-        },
-        {
-          "name": "using title: Three",
-          "refId": "[1.3:13]",
-          "passed": true,
-          "skipped": false,
-          "durationMillis": 481,
-          "tags": [
-            "@api",
-            "@data-driven",
-            "@crud"
-          ]
-        }
-      ]
-    },
-    {
-      "name": "using a called feature to set up test data",
-      "relativePath": "target/test-classes/app/api/call/caller.feature",
-      "fileName": "target.test-classes.app.api.call.caller",
-      "passed": true,
-      "failed": false,
-      "durationMillis": 550,
-      "scenarioCount": 1,
-      "passedCount": 1,
-      "failedCount": 0,
-      "skippedCount": 0,
-      "scenarios": [
-        {
-          "name": "create a todo via a helper, then verify it exists",
-          "refId": "[1:8]",
-          "passed": true,
-          "skipped": false,
-          "durationMillis": 39,
-          "tags": [
-            "@api",
-            "@call"
-          ]
-        }
-      ]
-    },
-    {
-      "name": "Java interop from feature files",
-      "relativePath": "target/test-classes/app/api/interop/interop.feature",
-      "fileName": "target.test-classes.app.api.interop.interop",
-      "passed": true,
-      "failed": false,
-      "durationMillis": 558,
-      "scenarioCount": 2,
-      "passedCount": 2,
-      "failedCount": 0,
-      "skippedCount": 0,
-      "scenarios": [
-        {
-          "name": "calling static method",
-          "refId": "[1:4]",
-          "passed": true,
-          "skipped": false,
-          "durationMillis": 6,
-          "tags": [
-            "@api",
-            "@java-interop"
-          ]
-        },
-        {
-          "name": null,
-          "refId": "[2:9]",
-          "passed": true,
-          "skipped": false,
-          "durationMillis": 40,
-          "tags": [
-            "@api",
-            "@java-interop"
-          ]
-        }
-      ]
-    },
-    {
-      "name": "nested called features \u2014 a chain of reusable helpers",
-      "relativePath": "target/test-classes/app/api/call/nested.feature",
-      "fileName": "target.test-classes.app.api.call.nested",
-      "passed": true,
-      "failed": false,
-      "durationMillis": 585,
-      "scenarioCount": 1,
-      "passedCount": 1,
-      "failedCount": 0,
-      "skippedCount": 0,
-      "scenarios": [
-        {
-          "name": "create several todos by chaining helpers",
-          "refId": "[1:11]",
-          "passed": true,
-          "skipped": false,
-          "durationMillis": 72,
-          "tags": [
-            "@api",
-            "@call"
-          ]
-        }
-      ]
-    },
     {
       "name": "match assertion examples",
       "relativePath": "target/test-classes/app/api/match/match.feature",
       "fileName": "target.test-classes.app.api.match.match",
       "passed": true,
       "failed": false,
-      "durationMillis": 602,
+      "durationMillis": 386,
       "scenarioCount": 1,
       "passedCount": 1,
       "failedCount": 0,
       "skippedCount": 0,
+      "passedRate": 100,
       "scenarios": [
         {
           "name": "match examples",
           "refId": "[1:4]",
           "passed": true,
           "skipped": false,
-          "durationMillis": 13,
+          "durationMillis": 8,
           "tags": [
             "@api",
             "@match",
@@ -401,29 +266,30 @@
       "fileName": "target.test-classes.app.api.data.outline-csv",
       "passed": true,
       "failed": false,
-      "durationMillis": 602,
+      "durationMillis": 374,
       "scenarioCount": 2,
       "passedCount": 2,
       "failedCount": 0,
       "skippedCount": 0,
+      "passedRate": 100,
       "scenarios": [
         {
-          "name": "dynamic ${__num + 1}",
+          "name": "dynamic 1",
           "refId": "[1.1:8]",
           "passed": true,
           "skipped": false,
-          "durationMillis": 0,
+          "durationMillis": 1,
           "tags": [
             "@api",
             "@data-driven"
           ]
         },
         {
-          "name": "dynamic ${__num + 1}",
+          "name": "dynamic 2",
           "refId": "[1.2:8]",
           "passed": true,
           "skipped": false,
-          "durationMillis": 1,
+          "durationMillis": 0,
           "tags": [
             "@api",
             "@data-driven"
@@ -437,22 +303,163 @@
       "fileName": "target.test-classes.app.api.simple.simple",
       "passed": true,
       "failed": false,
-      "durationMillis": 636,
+      "durationMillis": 424,
       "scenarioCount": 1,
       "passedCount": 1,
       "failedCount": 0,
       "skippedCount": 0,
+      "passedRate": 100,
       "scenarios": [
         {
           "name": "simple crud flow",
           "refId": "[1:7]",
           "passed": true,
           "skipped": false,
-          "durationMillis": 88,
+          "durationMillis": 404,
           "tags": [
             "@smoke",
             "@api",
             "@crud"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "nested called features — a chain of reusable helpers",
+      "relativePath": "target/test-classes/app/api/call/nested.feature",
+      "fileName": "target.test-classes.app.api.call.nested",
+      "passed": true,
+      "failed": false,
+      "durationMillis": 428,
+      "scenarioCount": 1,
+      "passedCount": 1,
+      "failedCount": 0,
+      "skippedCount": 0,
+      "passedRate": 100,
+      "scenarios": [
+        {
+          "name": "create several todos by chaining helpers",
+          "refId": "[1:11]",
+          "passed": true,
+          "skipped": false,
+          "durationMillis": 404,
+          "tags": [
+            "@api",
+            "@call"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "using a called feature to set up test data",
+      "relativePath": "target/test-classes/app/api/call/caller.feature",
+      "fileName": "target.test-classes.app.api.call.caller",
+      "passed": true,
+      "failed": false,
+      "durationMillis": 425,
+      "scenarioCount": 1,
+      "passedCount": 1,
+      "failedCount": 0,
+      "skippedCount": 0,
+      "passedRate": 100,
+      "scenarios": [
+        {
+          "name": "create a todo via a helper, then verify it exists",
+          "refId": "[1:8]",
+          "passed": true,
+          "skipped": false,
+          "durationMillis": 32,
+          "tags": [
+            "@api",
+            "@call"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "simple data driven testing",
+      "relativePath": "target/test-classes/app/api/data/outline.feature",
+      "fileName": "target.test-classes.app.api.data.outline",
+      "passed": true,
+      "failed": false,
+      "durationMillis": 437,
+      "scenarioCount": 3,
+      "passedCount": 3,
+      "failedCount": 0,
+      "skippedCount": 0,
+      "passedRate": 100,
+      "scenarios": [
+        {
+          "name": "using title: One",
+          "refId": "[1.1:13]",
+          "passed": true,
+          "skipped": false,
+          "durationMillis": 347,
+          "tags": [
+            "@api",
+            "@data-driven",
+            "@crud"
+          ]
+        },
+        {
+          "name": "using title: Two",
+          "refId": "[1.2:13]",
+          "passed": true,
+          "skipped": false,
+          "durationMillis": 15,
+          "tags": [
+            "@api",
+            "@data-driven",
+            "@crud"
+          ]
+        },
+        {
+          "name": "using title: Three",
+          "refId": "[1.3:13]",
+          "passed": true,
+          "skipped": false,
+          "durationMillis": 7,
+          "tags": [
+            "@api",
+            "@data-driven",
+            "@crud"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Java interop from feature files",
+      "relativePath": "target/test-classes/app/api/interop/interop.feature",
+      "fileName": "target.test-classes.app.api.interop.interop",
+      "passed": true,
+      "failed": false,
+      "durationMillis": 489,
+      "scenarioCount": 2,
+      "passedCount": 2,
+      "failedCount": 0,
+      "skippedCount": 0,
+      "passedRate": 100,
+      "scenarios": [
+        {
+          "name": "calling static method",
+          "refId": "[1:4]",
+          "passed": true,
+          "skipped": false,
+          "durationMillis": 11,
+          "tags": [
+            "@api",
+            "@java-interop"
+          ]
+        },
+        {
+          "name": null,
+          "refId": "[2:9]",
+          "passed": true,
+          "skipped": false,
+          "durationMillis": 45,
+          "tags": [
+            "@api",
+            "@java-interop"
           ]
         }
       ]
@@ -463,18 +470,19 @@
       "fileName": "target.test-classes.app.ui.simple.simple",
       "passed": true,
       "failed": false,
-      "durationMillis": 2090,
+      "durationMillis": 2056,
       "scenarioCount": 1,
       "passedCount": 1,
       "failedCount": 0,
       "skippedCount": 0,
+      "passedRate": 100,
       "scenarios": [
         {
           "name": "add and verify a todo",
           "refId": "[1:7]",
           "passed": true,
           "skipped": false,
-          "durationMillis": 1541,
+          "durationMillis": 1624,
           "tags": [
             "@smoke",
             "@ui",

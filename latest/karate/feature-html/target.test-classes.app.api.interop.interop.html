@@ -168,20 +168,20 @@
   "name": "Java interop from feature files",
   "relativePath": "target/test-classes/app/api/interop/interop.feature",
   "passed": true,
-  "durationMillis": 558,
+  "durationMillis": 489,
   "scenarios": [
     {
       "name": "calling static method",
       "line": 4,
       "passed": true,
-      "durationMillis": 6,
-      "startTime": 1778223105054,
-      "endTime": 1778223105060,
+      "durationMillis": 11,
+      "startTime": 1778646608425,
+      "endTime": 1778646608436,
       "refId": "[1:4]",
       "sectionIndex": 1,
       "exampleIndex": -1,
       "isOutlineExample": false,
-      "thread": "3",
+      "thread": "1",
       "skipped": false,
       "steps": [
         {
@@ -190,7 +190,7 @@
           "text": "helper = Java.type('app.api.interop.Helper')",
           "line": 5,
           "status": "passed",
-          "durationMillis": 1,
+          "durationMillis": 9,
           "hasLogs": false,
           "hasEmbeds": false,
           "hasCallResults": false
@@ -201,7 +201,7 @@
           "text": "result = helper.doWork('hello world')",
           "line": 6,
           "status": "passed",
-          "durationMillis": 4,
+          "durationMillis": 1,
           "hasLogs": false,
           "hasEmbeds": false,
           "hasCallResults": false
@@ -223,14 +223,14 @@
       "name": null,
       "line": 9,
       "passed": true,
-      "durationMillis": 40,
-      "startTime": 1778223105054,
-      "endTime": 1778223105094,
+      "durationMillis": 45,
+      "startTime": 1778646608437,
+      "endTime": 1778646608482,
       "refId": "[2:9]",
       "sectionIndex": 2,
       "exampleIndex": -1,
       "isOutlineExample": false,
-      "thread": "2",
+      "thread": "3",
       "skipped": false,
       "steps": [
         {
@@ -239,7 +239,7 @@
           "text": "helper = Java.type('app.api.interop.Helper')",
           "line": 10,
           "status": "passed",
-          "durationMillis": 1,
+          "durationMillis": 0,
           "hasLogs": false,
           "hasEmbeds": false,
           "hasCallResults": false
@@ -261,7 +261,7 @@
           "text": "decoded = helper.fromBrotli(encoded)",
           "line": 12,
           "status": "passed",
-          "durationMillis": 35,
+          "durationMillis": 42,
           "hasLogs": false,
           "hasEmbeds": false,
           "hasCallResults": false
@@ -283,7 +283,7 @@
           "text": "json = karate.fromString(decoded)",
           "line": 14,
           "status": "passed",
-          "durationMillis": 1,
+          "durationMillis": 0,
           "hasLogs": false,
           "hasEmbeds": false,
           "hasCallResults": false
