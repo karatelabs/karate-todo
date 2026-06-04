@@ -1,226 +1,342 @@
 <!DOCTYPE html>
-<html lang="en" data-bs-theme="light">
+<html lang="en" data-theme="light">
 <head>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
-    <link rel="stylesheet" href="res/bootstrap.min.css"/>
     <link rel="stylesheet" href="res/karate-report.css"/>
     <link rel="icon" href="res/favicon.ico"/>
     <script src="res/alpine.min.js" defer></script>
+    <!-- FOUC fix: set theme before paint, ahead of Alpine + karate-report.js. -->
+    <script>document.documentElement.setAttribute('data-theme', localStorage.getItem('karate-theme') || 'light');</script>
+    
     <title>Karate Summary</title>
-    <style>
-        .sortable { cursor: pointer; user-select: none; }
-        .sortable:hover { background-color: var(--bs-tertiary-bg); }
-        .tag-chip { font-size: 0.8rem; }
-        .scenario-row { background-color: var(--bs-tertiary-bg); }
-        .expand-btn { width: 24px; text-align: center; }
-        tr.highlight-match > td { background-color: rgba(255, 193, 7, 0.35) !important; }
-        [data-bs-theme="dark"] tr.highlight-match > td { background-color: rgba(255, 193, 7, 0.45) !important; }
-    </style>
 </head>
-<body x-data="KarateReport.summaryData()">
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="karate-summary.html">
-                <img src="res/karate-logo.svg" alt="Karate" height="32" class="d-inline-block align-middle me-2"/>
-                Summary
-            </a>
-            <ul class="navbar-nav ms-auto">
-                <li class="nav-item">
-                    <a class="nav-link" href="karate-timeline.html">Timeline</a>
-                </li>
-            </ul>
-            <button class="btn btn-sm btn-outline-light ms-2" @click="toggleTheme()" title="Toggle theme">
-                <span x-show="theme === 'light'">&#9790;</span>
-                <span x-show="theme === 'dark'">&#9788;</span>
+<body class="bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100 font-sans antialiased" x-data="KarateReport.summaryData()">
+    <!-- Karate report inline SVG sprite (Heroicons v2, MIT). Spliced into the KARATE_ICONS placeholder by HtmlReportWriter. -->
+<svg xmlns="http://www.w3.org/2000/svg" style="display:none" aria-hidden="true">
+
+    <!-- Status: passed -->
+    <symbol id="icon-check-circle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+    </symbol>
+
+    <!-- Status: failed -->
+    <symbol id="icon-x-circle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path stroke-linecap="round" stroke-linejoin="round" d="m9.75 9.75 4.5 4.5m0-4.5-4.5 4.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+    </symbol>
+
+    <!-- Status: skipped -->
+    <symbol id="icon-minus-circle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75h6m6 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+    </symbol>
+
+    <!-- Sort indicator: ascending -->
+    <symbol id="icon-chevron-up" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 15.75 7.5-7.5 7.5 7.5" />
+    </symbol>
+
+    <!-- Sort indicator: descending / row expanded -->
+    <symbol id="icon-chevron-down" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
+    </symbol>
+
+    <!-- Row collapsed (replaces the unicode ▶ used in the current templates) -->
+    <symbol id="icon-chevron-right" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+    </symbol>
+
+    <!-- Theme toggle: switch to light -->
+    <symbol id="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v2.25m6.364.386-1.591 1.591M21 12h-2.25m-.386 6.364-1.591-1.591M12 18.75V21m-4.773-4.227-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0Z" />
+    </symbol>
+
+    <!-- Theme toggle: switch to dark -->
+    <symbol id="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M21.752 15.002A9.72 9.72 0 0 1 18 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 0 0 3 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 0 0 9.002-5.998Z" />
+    </symbol>
+
+    <!-- Enterprise CTA: sparkle -->
+    <symbol id="icon-sparkle" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M12 2l1.5 5.5L19 9l-5.5 1.5L12 16l-1.5-5.5L5 9l5.5-1.5L12 2zm6 12l.8 2.7L21.5 18l-2.7.8L18 21.5l-.8-2.7L14.5 18l2.7-.8L18 14.5z"/>
+    </symbol>
+
+    <!-- Enterprise CTA: right arrow -->
+    <symbol id="icon-arrow-right" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14M12 5l7 7-7 7"/>
+    </symbol>
+
+    <!-- Hero meta: clock -->
+    <symbol id="icon-clock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
+    </symbol>
+
+    <!-- Hero meta: server / env -->
+    <symbol id="icon-server" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M5.25 14.25h13.5m-13.5 0a3 3 0 0 1-3-3V8.25a3 3 0 0 1 3-3h13.5a3 3 0 0 1 3 3v3a3 3 0 0 1-3 3m-13.5 0v3a3 3 0 0 0 3 3h7.5a3 3 0 0 0 3-3v-3M7.5 11.25h.008v.008H7.5v-.008Z"/>
+    </symbol>
+
+    <!-- Hero meta: cpu / threads -->
+    <symbol id="icon-cpu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M9 17.25v1.007a3 3 0 0 1-.879 2.122L7.5 21h9l-.621-.621A3 3 0 0 1 15 18.257V17.25m6-12v8.25a2.25 2.25 0 0 1-2.25 2.25H5.25a2.25 2.25 0 0 1-2.25-2.25V5.25m18 0A2.25 2.25 0 0 0 18.75 3H5.25A2.25 2.25 0 0 0 3 5.25m18 0V12a2.25 2.25 0 0 1-2.25 2.25H5.25A2.25 2.25 0 0 1 3 12V5.25"/>
+    </symbol>
+
+</svg>
+
+    <nav class="flex items-center justify-between px-4 py-2 bg-slate-100 dark:bg-brand-navbar text-slate-900 dark:text-white border-b border-slate-200 dark:border-transparent">
+        <a class="flex items-center gap-2 font-medium" href="karate-summary.html">
+            <img src="res/karate-logo.svg" alt="Karate" height="32" class="h-8"/>
+            <span>Summary</span>
+        </a>
+        <div class="flex items-center gap-4">
+            <a class="text-sm text-slate-600 hover:text-slate-900 dark:text-white/80 dark:hover:text-white" href="karate-timeline.html">Timeline</a>
+            
+            <button class="p-1.5 rounded hover:bg-slate-200 dark:hover:bg-white/10" @click="toggleTheme()" title="Toggle theme">
+                <svg x-show="theme === 'light'" class="w-4 h-4"><use href="#icon-moon"/></svg>
+                <svg x-show="theme === 'dark'" class="w-4 h-4"><use href="#icon-sun"/></svg>
             </button>
+            <span class="hidden sm:inline-block w-px h-5 bg-slate-300 dark:bg-white/20"></span>
+            <a href="https://karatelabs.io/karate-enterprise?utm_source=karate-os&utm_medium=report&utm_campaign=enterprise-cta&utm_content=summary"
+               target="_blank" rel="noopener"
+               class="group inline-flex items-center gap-1.5 px-2.5 py-1 rounded text-xs font-medium bg-accent text-white hover:bg-accent-dark transition-colors"
+               title="Karate Open Source vs Karate Enterprise — see what's included">
+                <svg class="w-3.5 h-3.5"><use href="#icon-sparkle"/></svg>
+                <span><span class="hidden md:inline">Try </span>Karate Enterprise</span>
+                <svg class="w-3 h-3 transition-transform group-hover:translate-x-0.5"><use href="#icon-arrow-right"/></svg>
+            </a>
         </div>
     </nav>
 
-    <div class="container-fluid p-4">
-        <p class="text-muted">
-            <span x-text="data.reportDate">Date</span>
-            <span x-show="data.env" class="ms-2">| env: <span class="badge bg-info" x-text="data.env"></span></span>
-        </p>
+    <div class="px-6 py-5">
+        <!-- Hero -->
+        <section class="mb-6 flex items-start justify-between gap-6">
+            <div class="min-w-0 flex-1">
+                <div class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full border text-xs font-medium" :class="heroStatus.pillCls">
+                    <span class="w-1.5 h-1.5 rounded-full" :class="heroStatus.dotCls"></span>
+                    <span x-text="heroStatus.label"></span>
+                </div>
+                <h1 class="mt-3 text-2xl md:text-3xl font-semibold tracking-tight">Karate Test Report</h1>
+                <div class="flex flex-wrap items-center gap-x-4 gap-y-1 mt-2 text-sm text-slate-500 dark:text-slate-400">
+                    <span class="inline-flex items-center gap-1.5"><svg class="w-4 h-4"><use href="#icon-clock"/></svg> <span x-text="data.reportDate">Date</span></span>
+                    <span x-show="data.env" class="inline-flex items-center gap-1.5"><svg class="w-4 h-4"><use href="#icon-server"/></svg> env <span class="font-mono" x-text="data.env"></span></span>
+                    <span x-show="data.threads" class="inline-flex items-center gap-1.5"><svg class="w-4 h-4"><use href="#icon-cpu"/></svg> <span x-text="data.threads"></span> threads</span>
+                </div>
+            </div>
+            <!-- Pass-rate donut. Three <circle> segments are unrolled (no x-for in SVG, see karate-report.js#donutPass). -->
+            <div class="relative shrink-0" x-show="donutTotal > 0">
+                <svg class="w-32 h-32 -rotate-90" viewBox="0 0 120 120">
+                    <circle cx="60" cy="60" r="50" fill="none" stroke="currentColor" stroke-width="14" class="text-slate-200 dark:text-slate-700"/>
+                    <circle x-show="donutPass" cx="60" cy="60" r="50" fill="none" stroke="currentColor" stroke-width="14"
+                            pathLength="100" stroke-linecap="butt" class="text-green-600"
+                            :stroke-dasharray="donutPass?.dash" :stroke-dashoffset="donutPass?.offset"/>
+                    <circle x-show="donutFail" cx="60" cy="60" r="50" fill="none" stroke="currentColor" stroke-width="14"
+                            pathLength="100" stroke-linecap="butt" class="text-red-600"
+                            :stroke-dasharray="donutFail?.dash" :stroke-dashoffset="donutFail?.offset"/>
+                    <circle x-show="donutSkip" cx="60" cy="60" r="50" fill="none" stroke="currentColor" stroke-width="14"
+                            pathLength="100" stroke-linecap="butt" class="text-amber-500"
+                            :stroke-dasharray="donutSkip?.dash" :stroke-dashoffset="donutSkip?.offset"/>
+                </svg>
+                <div class="absolute inset-0 flex flex-col items-center justify-center">
+                    <div class="text-2xl font-bold tabular-nums"><span x-text="donutPct"></span><span class="text-sm font-medium opacity-60">%</span></div>
+                    <div class="text-[0.65rem] uppercase tracking-wide text-slate-500 dark:text-slate-400">passing</div>
+                </div>
+            </div>
+        </section>
 
-        <!-- Summary Cards -->
-        <div class="row mb-4">
-            <div :class="data.summary?.scenario_skipped > 0 ? 'col-md-3 col-xl' : 'col-md-3'">
-                <div class="card text-white bg-primary">
-                    <div class="card-body">
-                        <h5 class="card-title">Features</h5>
-                        <h2 class="card-text" x-text="data.summary?.feature_count || 0">0</h2>
-                    </div>
-                </div>
+        <!-- KPI Cards -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 mb-6">
+            <div class="rounded-lg p-4 bg-accent text-white">
+                <div class="text-sm opacity-90">Features</div>
+                <div class="text-3xl font-bold mt-1" x-text="data.summary?.feature_count || 0">0</div>
             </div>
-            <div :class="data.summary?.scenario_skipped > 0 ? 'col-md-3 col-xl' : 'col-md-3'">
-                <div class="card text-white bg-success">
-                    <div class="card-body">
-                        <h5 class="card-title">Scenarios Passed</h5>
-                        <h2 class="card-text" x-text="data.summary?.scenario_passed || 0">0</h2>
-                    </div>
-                </div>
+            <div class="rounded-lg p-4 bg-green-600 text-white">
+                <div class="text-sm opacity-90">Scenarios Passed</div>
+                <div class="text-3xl font-bold mt-1" x-text="data.summary?.scenario_passed || 0">0</div>
             </div>
-            <div :class="data.summary?.scenario_skipped > 0 ? 'col-md-3 col-xl' : 'col-md-3'">
-                <div class="card text-white bg-danger">
-                    <div class="card-body">
-                        <h5 class="card-title">Scenarios Failed</h5>
-                        <h2 class="card-text" x-text="data.summary?.scenario_failed || 0">0</h2>
-                    </div>
-                </div>
+            <div class="rounded-lg p-4 bg-red-600 text-white">
+                <div class="text-sm opacity-90">Scenarios Failed</div>
+                <div class="text-3xl font-bold mt-1" x-text="data.summary?.scenario_failed || 0">0</div>
             </div>
-            <div class="col-md-3 col-xl" x-show="data.summary?.scenario_skipped > 0">
-                <div class="card text-white bg-warning">
-                    <div class="card-body">
-                        <h5 class="card-title">Scenarios Skipped</h5>
-                        <h2 class="card-text" x-text="data.summary?.scenario_skipped || 0">0</h2>
-                    </div>
-                </div>
+            <div class="rounded-lg p-4 bg-amber-500 text-white" x-show="data.summary?.scenario_skipped > 0">
+                <div class="text-sm opacity-90">Scenarios Skipped</div>
+                <div class="text-3xl font-bold mt-1" x-text="data.summary?.scenario_skipped || 0">0</div>
             </div>
-            <div :class="data.summary?.scenario_skipped > 0 ? 'col-md-3 col-xl' : 'col-md-3'">
-                <div class="card text-white bg-secondary">
-                    <div class="card-body">
-                        <h5 class="card-title">Duration</h5>
-                        <h2 class="card-text"><span x-text="data.summary?.duration_millis || 0">0</span> ms</h2>
-                    </div>
-                </div>
+            <div class="rounded-lg p-4 bg-brand-700 text-white">
+                <div class="text-sm opacity-90">Duration</div>
+                <div class="text-3xl font-bold mt-1"><span x-text="data.summary?.duration_millis || 0">0</span><span class="text-base font-medium ml-1">ms</span></div>
             </div>
         </div>
 
-        <!-- Tag Filter Chips -->
-        <div class="mb-3" x-show="allTags.length > 0">
-            <span class="fw-bold me-2">Filter by tag:</span>
+        <!-- Tile row: Failures (baked-in) + ext-contributed tiles via summary.panels slot.
+             Auto-fit grid means Failures spans full width when alone (Phase 1b) and
+             shares the row when exts contribute (Phase 2). Container is always
+             present so exts can target data-slot="summary.panels" without conditional
+             logic on the loader side. -->
+        <div class="grid gap-4 mb-6 grid-cols-[repeat(auto-fit,minmax(380px,1fr))]" x-show="failedScenarios.length > 0">
+            <!-- Failures tile -->
+            <div class="rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800/50 overflow-hidden" x-show="failedScenarios.length > 0">
+                <div class="flex items-center gap-2 px-4 py-2.5 border-b border-slate-200 dark:border-slate-700">
+                    <svg class="w-4 h-4 text-red-600 dark:text-red-400"><use href="#icon-x-circle"/></svg>
+                    <span class="font-medium">Failures</span>
+                    <span class="px-1.5 py-0.5 text-[0.65rem] rounded-full bg-red-100 dark:bg-red-900/50 text-red-700 dark:text-red-300 tabular-nums" x-text="failedScenarios.length"></span>
+                </div>
+                <div class="divide-y divide-slate-100 dark:divide-slate-700/50 max-h-80 overflow-y-auto">
+                    <template x-for="s in failedScenarios" :key="s.featureFile + s.refId">
+                        <a class="flex items-start gap-3 px-4 py-2.5 hover:bg-slate-50 dark:hover:bg-slate-800 group"
+                           :href="'feature-html/' + s.featureFile + '.html#' + s.refId">
+                            <span class="mt-0.5 w-1.5 h-1.5 rounded-full bg-red-500 shrink-0"></span>
+                            <div class="min-w-0 flex-1">
+                                <div class="text-sm truncate"><span class="font-mono text-xs text-slate-500 dark:text-slate-400 mr-1.5" x-text="s.refId"></span><span x-text="s.name || '(unnamed)'"></span></div>
+                                <div class="text-xs text-slate-500 dark:text-slate-400 font-mono truncate" x-text="s.relativePath"></div>
+                            </div>
+                            <svg class="w-3 h-3 text-slate-400 group-hover:text-accent shrink-0 mt-1"><use href="#icon-chevron-right"/></svg>
+                        </a>
+                    </template>
+                </div>
+            </div>
+            <!-- Ext-contributed tiles land here. See EXT.md § Slot model (summary.panels slot).
+                 empty:hidden removes the slot from the grid until an
+                 ext writes children into it, so the Failures tile spans full width. -->
+            <div data-slot="summary.panels" class="empty:hidden contents"></div>
+        </div>
+
+        <!-- Tag Filter -->
+        <div class="mb-4 flex flex-wrap items-center gap-2" x-show="allTags.length > 0">
+            <span class="font-semibold text-sm mr-1">Filter by tag:</span>
             <template x-for="tag in allTags" :key="tag">
-                <button class="btn btn-sm me-1 mb-1 tag-chip"
-                        :class="selectedTags.includes(tag) ? 'btn-info' : 'btn-outline-secondary'"
+                <button class="px-2 py-1 text-xs rounded border"
+                        :class="selectedTags.includes(tag)
+                            ? 'bg-accent text-white border-accent'
+                            : 'border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800'"
                         @click="toggleTag(tag)"
                         x-text="tag"></button>
             </template>
             <button x-show="selectedTags.length > 0"
-                    class="btn btn-sm btn-outline-danger mb-1"
+                    class="px-2 py-1 text-xs rounded border border-red-500 text-red-600 hover:bg-red-50 dark:hover:bg-red-950"
                     @click="selectedTags = []">Clear</button>
-            <label x-show="selectedTags.length > 0" class="form-check form-check-inline ms-3 mb-1">
-                <input type="checkbox" class="form-check-input" x-model="highlightMode">
-                <span class="form-check-label small">Highlight only</span>
+            <label x-show="selectedTags.length > 0" class="inline-flex items-center gap-1 ml-3 text-sm">
+                <input type="checkbox" class="rounded" x-model="highlightMode">
+                <span>Highlight only</span>
             </label>
         </div>
 
-        <h2>Features</h2>
-        <table class="table table-hover">
-            <thead class="table-dark">
+        <h2 class="text-xl font-semibold mb-3">Features</h2>
+        <div class="overflow-x-auto">
+        <table class="w-full text-sm border-collapse">
+            <thead class="bg-brand-700 text-white">
                 <tr>
-                    <th class="sortable" @click="sortBy('name')">
-                        Feature
-                        <span x-show="sortField === 'name'" x-text="sortDir === 'asc' ? ' \u2191' : ' \u2193'"></span>
-                    </th>
-                    <th class="sortable" @click="sortBy('scenarioCount')" style="width: 100px;">
-                        Scenarios
-                        <span x-show="sortField === 'scenarioCount'" x-text="sortDir === 'asc' ? ' \u2191' : ' \u2193'"></span>
-                    </th>
-                    <th class="sortable" @click="sortBy('passedCount')" style="width: 80px;">
-                        Passed
-                        <span x-show="sortField === 'passedCount'" x-text="sortDir === 'asc' ? ' \u2191' : ' \u2193'"></span>
-                    </th>
-                    <th class="sortable" @click="sortBy('failedCount')" style="width: 80px;">
-                        Failed
-                        <span x-show="sortField === 'failedCount'" x-text="sortDir === 'asc' ? ' \u2191' : ' \u2193'"></span>
-                    </th>
-                    <th class="sortable" @click="sortBy('passedRate')" style="width: 90px;">
-                        Pass %
-                        <span x-show="sortField === 'passedRate'" x-text="sortDir === 'asc' ? ' \u2191' : ' \u2193'"></span>
-                    </th>
-                    <th class="sortable" @click="sortBy('durationMillis')" style="width: 120px;">
-                        Duration
-                        <span x-show="sortField === 'durationMillis'" x-text="sortDir === 'asc' ? ' \u2191' : ' \u2193'"></span>
-                    </th>
-                    <th style="width: 80px;">Status</th>
+                    <template x-for="col in sortableColumns" :key="col.field">
+                        <th class="text-left px-3 py-2 cursor-pointer select-none hover:bg-brand-600"
+                            :class="col.thClass || ''"
+                            @click="sortBy(col.field)">
+                            <span x-text="col.label"></span>
+                            <svg x-show="sortField === col.field" class="w-3 h-3 inline-block align-middle ml-1">
+                                <use :href="sortDir === 'asc' ? '#icon-chevron-up' : '#icon-chevron-down'"/>
+                            </svg>
+                        </th>
+                    </template>
+                    <th class="text-left px-3 py-2 w-24">Status</th>
                 </tr>
             </thead>
-            <tbody>
-                <template x-for="f in filteredFeatures" :key="f.fileName">
+            <!-- One <tbody> per feature so expanded scenario rows stay nested under
+                 their parent feature row instead of collecting at table bottom. -->
+            <template x-for="f in filteredFeatures" :key="f.fileName">
+                <tbody class="divide-y divide-slate-200 dark:divide-slate-700 border-b border-slate-200 dark:border-slate-700">
                     <template x-if="highlightMode || featureMatchesTags(f)">
-                        <tr :class="{ 'highlight-match': selectedTags.length > 0 && highlightMode && featureMatchesTags(f) }">
-                            <td>
-                                <button x-show="selectedTags.length > 0 && f.scenarios?.length > 0"
-                                        class="btn btn-sm btn-link p-0 me-1 expand-btn"
-                                        @click="f.expanded = !f.expanded">
-                                    <span x-text="f.expanded ? '\u25BC' : '\u25B6'"></span>
-                                </button>
-                                <a :href="'feature-html/' + f.fileName + '.html'" x-text="f.name || f.relativePath">Feature</a>
-                                <br/>
-                                <small class="text-muted" x-text="f.relativePath">path</small>
+                        <tr class="hover:bg-slate-50 dark:hover:bg-slate-800"
+                            :class="{ 'bg-amber-100 dark:bg-amber-900/40': selectedTags.length > 0 && highlightMode && featureMatchesTags(f) }">
+                            <td class="px-3 py-2">
+                                <div class="flex items-start gap-1.5">
+                                    <button x-show="f.scenarios?.length > 0"
+                                            class="inline-flex items-center justify-center w-5 h-5 mt-0.5 rounded text-slate-400 hover:text-accent hover:bg-slate-100 dark:hover:bg-slate-700 shrink-0"
+                                            :title="f.expanded ? 'Collapse scenarios' : 'Expand to see ' + (f.scenarios?.length || 0) + ' scenarios'"
+                                            @click="f.expanded = !f.expanded">
+                                        <svg class="w-4 h-4"><use :href="f.expanded ? '#icon-chevron-down' : '#icon-chevron-right'"/></svg>
+                                    </button>
+                                    <div class="min-w-0 flex-1">
+                                        <a class="text-accent hover:underline" :href="'feature-html/' + f.fileName + '.html'" x-text="f.name || f.relativePath">Feature</a>
+                                        <div class="text-xs text-slate-500 dark:text-slate-400 mt-0.5" x-text="f.relativePath">path</div>
+                                    </div>
+                                </div>
                                 <template x-if="getFeatureTagCounts(f).length > 0">
-                                    <div class="mt-1">
+                                    <div class="mt-1 flex flex-wrap gap-1">
                                         <template x-for="[tag, count] in getFeatureTagCounts(f)" :key="tag">
-                                            <span class="badge bg-secondary me-1" style="font-size: 0.7rem;"
+                                            <span class="inline-block px-1.5 py-0.5 text-[0.65rem] rounded bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300"
                                                   x-text="tag + ' (' + count + ')'"></span>
                                         </template>
                                     </div>
                                 </template>
                             </td>
-                            <td x-text="f.scenarioCount">0</td>
-                            <td x-text="f.passedCount">0</td>
-                            <td x-text="f.failedCount">0</td>
-                            <td x-text="formatPassedRate(f.passedRate)">&mdash;</td>
-                            <td><span x-text="f.durationMillis">0</span> ms</td>
-                            <td>
-                                <span x-show="f.passed" class="badge bg-success">PASSED</span>
-                                <span x-show="f.failed" class="badge bg-danger">FAILED</span>
+                            <td class="px-3 py-2 tabular-nums" x-text="f.scenarioCount">0</td>
+                            <td class="px-3 py-2 tabular-nums" x-text="f.passedCount">0</td>
+                            <td class="px-3 py-2 tabular-nums" x-text="f.failedCount">0</td>
+                            <td class="px-3 py-2 tabular-nums" x-text="formatPassedRate(f.passedRate)">&mdash;</td>
+                            <td class="px-3 py-2 tabular-nums"><span x-text="f.durationMillis">0</span> ms</td>
+                            <td class="px-3 py-2">
+                                <template x-if="statusOfFeature(f)">
+                                    <span class="inline-block px-2 py-0.5 text-xs font-semibold rounded text-white"
+                                          :class="statusOfFeature(f).cls"
+                                          x-text="statusOfFeature(f).label"></span>
+                                </template>
                             </td>
                         </tr>
                     </template>
-                </template>
-                <!-- Totals row -->
-                <tr class="table-secondary fw-bold" x-show="(data.features || []).length > 0">
-                    <td>Total (<span x-text="(data.features || []).length"></span> features)</td>
-                    <td x-text="totals.scenarios">0</td>
-                    <td x-text="totals.passed">0</td>
-                    <td x-text="totals.failed">0</td>
-                    <td x-text="formatPassedRate(totals.passedRate)">&mdash;</td>
-                    <td><span x-text="totals.durationMillis">0</span> ms</td>
-                    <td></td>
-                </tr>
-                <!-- Expanded Scenarios (when filtering by tags) -->
-                <template x-for="f in filteredFeatures" :key="'exp-' + f.fileName">
-                    <template x-if="f.expanded && selectedTags.length > 0">
+                    <!-- Expanded scenarios under their parent feature. getMatchingScenarios
+                         returns all scenarios with no filter, just matches when filtering. -->
+                    <template x-if="f.expanded">
                         <template x-for="scenario in getMatchingScenarios(f)" :key="scenario.refId">
-                            <tr class="scenario-row">
-                                <td class="ps-5">
-                                    <small>
-                                        <span class="fw-bold" x-text="scenario.refId"></span>
-                                        <span x-text="scenario.name"></span>
-                                    </small>
+                            <tr class="bg-slate-50 dark:bg-slate-800/50 text-xs">
+                                <td class="px-3 py-1.5 pl-10 border-l-4 border-accent">
+                                    <a class="text-accent hover:underline" :href="'feature-html/' + f.fileName + '.html#' + scenario.refId">
+                                        <span class="font-bold" x-text="scenario.refId"></span>
+                                        <span x-text="' ' + (scenario.name || '')"></span>
+                                    </a>
                                 </td>
-                                <td colspan="3">
+                                <td colspan="3" class="px-3 py-1.5">
                                     <template x-for="tag in scenario.tags || []" :key="tag">
-                                        <span class="badge bg-info me-1" x-text="tag"></span>
+                                        <span class="inline-block px-1.5 py-0.5 text-[0.65rem] rounded bg-accent text-white mr-1" x-text="tag"></span>
                                     </template>
                                 </td>
                                 <td></td>
-                                <td><small x-text="scenario.durationMillis + ' ms'"></small></td>
-                                <td>
-                                    <span x-show="scenario.skipped" class="badge bg-warning">SKIP</span>
-                                    <span x-show="scenario.passed && !scenario.skipped" class="badge bg-success">PASS</span>
-                                    <span x-show="!scenario.passed" class="badge bg-danger">FAIL</span>
+                                <td class="px-3 py-1.5 tabular-nums" x-text="scenario.durationMillis + ' ms'"></td>
+                                <td class="px-3 py-1.5">
+                                    <span class="inline-block px-2 py-0.5 text-[0.65rem] font-semibold rounded text-white"
+                                          :class="statusOf(scenario).cls"
+                                          x-text="statusOf(scenario).label"></span>
                                 </td>
                             </tr>
                         </template>
                     </template>
-                </template>
+                </tbody>
+            </template>
+            <!-- Totals row in its own tbody so it stays at the table foot. -->
+            <tbody>
+                <tr class="bg-slate-100 dark:bg-slate-800 font-semibold" x-show="(data.features || []).length > 0">
+                    <td class="px-3 py-2">Total (<span x-text="(data.features || []).length"></span> features)</td>
+                    <td class="px-3 py-2 tabular-nums" x-text="totals.scenarios">0</td>
+                    <td class="px-3 py-2 tabular-nums" x-text="totals.passed">0</td>
+                    <td class="px-3 py-2 tabular-nums" x-text="totals.failed">0</td>
+                    <td class="px-3 py-2 tabular-nums" x-text="formatPassedRate(totals.passedRate)">&mdash;</td>
+                    <td class="px-3 py-2 tabular-nums"><span x-text="totals.durationMillis">0</span> ms</td>
+                    <td></td>
+                </tr>
             </tbody>
         </table>
+        </div>
     </div>
 
-    <footer class="bg-body-tertiary text-center text-muted py-3 mt-4">
-        <small>Generated by Karate <span x-text="data.karateVersion">2.0</span></small>
+    <footer class="border-t border-slate-200 dark:border-slate-700 text-center text-xs text-slate-500 dark:text-slate-400 py-4 mt-6">
+        Generated by <a href="https://karatelabs.io" target="_blank" rel="noopener" class="hover:text-accent">Karate <span x-text="data.karateVersion">2.0</span></a>
+        <span class="mx-1.5">·</span>
+        <span x-text="data.reportDate"></span>
+        <span class="mx-1.5">·</span>
+        <a href="https://docs.karatelabs.io/" target="_blank" rel="noopener" class="hover:text-accent">Documentation</a>
     </footer>
 
-    <script src="res/bootstrap.bundle.min.js"></script>
     <script src="res/karate-report.js"></script>
     <script id="karate-data" type="application/json">{
   "env": null,
-  "reportDate": "2026-05-13 04:30:07",
-  "karateVersion": "2.0.9",
+  "reportDate": "2026-06-04 08:38:56",
+  "karateVersion": "2.0.10",
   "summary": {
     "feature_count": 8,
     "feature_passed": 8,
@@ -229,17 +345,54 @@
     "scenario_passed": 12,
     "scenario_failed": 0,
     "scenario_skipped": 0,
-    "duration_millis": 2092,
+    "duration_millis": 2263,
     "status": "passed"
   },
   "features": [
+    {
+      "name": "Java interop from feature files",
+      "relativePath": "target/test-classes/app/api/interop/interop.feature",
+      "fileName": "target.test-classes.app.api.interop.interop",
+      "passed": true,
+      "failed": false,
+      "durationMillis": 137,
+      "scenarioCount": 2,
+      "passedCount": 2,
+      "failedCount": 0,
+      "skippedCount": 0,
+      "passedRate": 100,
+      "scenarios": [
+        {
+          "name": "calling static method",
+          "refId": "[1:4]",
+          "passed": true,
+          "skipped": false,
+          "durationMillis": 22,
+          "tags": [
+            "@api",
+            "@java-interop"
+          ]
+        },
+        {
+          "name": null,
+          "refId": "[2:9]",
+          "passed": true,
+          "skipped": false,
+          "durationMillis": 36,
+          "tags": [
+            "@api",
+            "@java-interop"
+          ]
+        }
+      ]
+    },
     {
       "name": "match assertion examples",
       "relativePath": "target/test-classes/app/api/match/match.feature",
       "fileName": "target.test-classes.app.api.match.match",
       "passed": true,
       "failed": false,
-      "durationMillis": 386,
+      "durationMillis": 108,
       "scenarioCount": 1,
       "passedCount": 1,
       "failedCount": 0,
@@ -251,11 +404,114 @@
           "refId": "[1:4]",
           "passed": true,
           "skipped": false,
-          "durationMillis": 8,
+          "durationMillis": 28,
           "tags": [
             "@api",
             "@match",
             "@assertions"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "simple data driven testing",
+      "relativePath": "target/test-classes/app/api/data/outline.feature",
+      "fileName": "target.test-classes.app.api.data.outline",
+      "passed": true,
+      "failed": false,
+      "durationMillis": 598,
+      "scenarioCount": 3,
+      "passedCount": 3,
+      "failedCount": 0,
+      "skippedCount": 0,
+      "passedRate": 100,
+      "scenarios": [
+        {
+          "name": "using title: One",
+          "refId": "[1.1:13]",
+          "passed": true,
+          "skipped": false,
+          "durationMillis": 503,
+          "tags": [
+            "@api",
+            "@data-driven",
+            "@crud"
+          ]
+        },
+        {
+          "name": "using title: Two",
+          "refId": "[1.2:13]",
+          "passed": true,
+          "skipped": false,
+          "durationMillis": 472,
+          "tags": [
+            "@api",
+            "@data-driven",
+            "@crud"
+          ]
+        },
+        {
+          "name": "using title: Three",
+          "refId": "[1.3:13]",
+          "passed": true,
+          "skipped": false,
+          "durationMillis": 18,
+          "tags": [
+            "@api",
+            "@data-driven",
+            "@crud"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "using a called feature to set up test data",
+      "relativePath": "target/test-classes/app/api/call/caller.feature",
+      "fileName": "target.test-classes.app.api.call.caller",
+      "passed": true,
+      "failed": false,
+      "durationMillis": 655,
+      "scenarioCount": 1,
+      "passedCount": 1,
+      "failedCount": 0,
+      "skippedCount": 0,
+      "passedRate": 100,
+      "scenarios": [
+        {
+          "name": "create a todo via a helper, then verify it exists",
+          "refId": "[1:8]",
+          "passed": true,
+          "skipped": false,
+          "durationMillis": 43,
+          "tags": [
+            "@api",
+            "@call"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "nested called features — a chain of reusable helpers",
+      "relativePath": "target/test-classes/app/api/call/nested.feature",
+      "fileName": "target.test-classes.app.api.call.nested",
+      "passed": true,
+      "failed": false,
+      "durationMillis": 726,
+      "scenarioCount": 1,
+      "passedCount": 1,
+      "failedCount": 0,
+      "skippedCount": 0,
+      "passedRate": 100,
+      "scenarios": [
+        {
+          "name": "create several todos by chaining helpers",
+          "refId": "[1:11]",
+          "passed": true,
+          "skipped": false,
+          "durationMillis": 653,
+          "tags": [
+            "@api",
+            "@call"
           ]
         }
       ]
@@ -266,7 +522,7 @@
       "fileName": "target.test-classes.app.api.data.outline-csv",
       "passed": true,
       "failed": false,
-      "durationMillis": 374,
+      "durationMillis": 703,
       "scenarioCount": 2,
       "passedCount": 2,
       "failedCount": 0,
@@ -278,7 +534,7 @@
           "refId": "[1.1:8]",
           "passed": true,
           "skipped": false,
-          "durationMillis": 1,
+          "durationMillis": 5,
           "tags": [
             "@api",
             "@data-driven"
@@ -303,7 +559,7 @@
       "fileName": "target.test-classes.app.api.simple.simple",
       "passed": true,
       "failed": false,
-      "durationMillis": 424,
+      "durationMillis": 744,
       "scenarioCount": 1,
       "passedCount": 1,
       "failedCount": 0,
@@ -315,151 +571,11 @@
           "refId": "[1:7]",
           "passed": true,
           "skipped": false,
-          "durationMillis": 404,
+          "durationMillis": 118,
           "tags": [
             "@smoke",
             "@api",
             "@crud"
-          ]
-        }
-      ]
-    },
-    {
-      "name": "nested called features — a chain of reusable helpers",
-      "relativePath": "target/test-classes/app/api/call/nested.feature",
-      "fileName": "target.test-classes.app.api.call.nested",
-      "passed": true,
-      "failed": false,
-      "durationMillis": 428,
-      "scenarioCount": 1,
-      "passedCount": 1,
-      "failedCount": 0,
-      "skippedCount": 0,
-      "passedRate": 100,
-      "scenarios": [
-        {
-          "name": "create several todos by chaining helpers",
-          "refId": "[1:11]",
-          "passed": true,
-          "skipped": false,
-          "durationMillis": 404,
-          "tags": [
-            "@api",
-            "@call"
-          ]
-        }
-      ]
-    },
-    {
-      "name": "using a called feature to set up test data",
-      "relativePath": "target/test-classes/app/api/call/caller.feature",
-      "fileName": "target.test-classes.app.api.call.caller",
-      "passed": true,
-      "failed": false,
-      "durationMillis": 425,
-      "scenarioCount": 1,
-      "passedCount": 1,
-      "failedCount": 0,
-      "skippedCount": 0,
-      "passedRate": 100,
-      "scenarios": [
-        {
-          "name": "create a todo via a helper, then verify it exists",
-          "refId": "[1:8]",
-          "passed": true,
-          "skipped": false,
-          "durationMillis": 32,
-          "tags": [
-            "@api",
-            "@call"
-          ]
-        }
-      ]
-    },
-    {
-      "name": "simple data driven testing",
-      "relativePath": "target/test-classes/app/api/data/outline.feature",
-      "fileName": "target.test-classes.app.api.data.outline",
-      "passed": true,
-      "failed": false,
-      "durationMillis": 437,
-      "scenarioCount": 3,
-      "passedCount": 3,
-      "failedCount": 0,
-      "skippedCount": 0,
-      "passedRate": 100,
-      "scenarios": [
-        {
-          "name": "using title: One",
-          "refId": "[1.1:13]",
-          "passed": true,
-          "skipped": false,
-          "durationMillis": 347,
-          "tags": [
-            "@api",
-            "@data-driven",
-            "@crud"
-          ]
-        },
-        {
-          "name": "using title: Two",
-          "refId": "[1.2:13]",
-          "passed": true,
-          "skipped": false,
-          "durationMillis": 15,
-          "tags": [
-            "@api",
-            "@data-driven",
-            "@crud"
-          ]
-        },
-        {
-          "name": "using title: Three",
-          "refId": "[1.3:13]",
-          "passed": true,
-          "skipped": false,
-          "durationMillis": 7,
-          "tags": [
-            "@api",
-            "@data-driven",
-            "@crud"
-          ]
-        }
-      ]
-    },
-    {
-      "name": "Java interop from feature files",
-      "relativePath": "target/test-classes/app/api/interop/interop.feature",
-      "fileName": "target.test-classes.app.api.interop.interop",
-      "passed": true,
-      "failed": false,
-      "durationMillis": 489,
-      "scenarioCount": 2,
-      "passedCount": 2,
-      "failedCount": 0,
-      "skippedCount": 0,
-      "passedRate": 100,
-      "scenarios": [
-        {
-          "name": "calling static method",
-          "refId": "[1:4]",
-          "passed": true,
-          "skipped": false,
-          "durationMillis": 11,
-          "tags": [
-            "@api",
-            "@java-interop"
-          ]
-        },
-        {
-          "name": null,
-          "refId": "[2:9]",
-          "passed": true,
-          "skipped": false,
-          "durationMillis": 45,
-          "tags": [
-            "@api",
-            "@java-interop"
           ]
         }
       ]
@@ -470,7 +586,7 @@
       "fileName": "target.test-classes.app.ui.simple.simple",
       "passed": true,
       "failed": false,
-      "durationMillis": 2056,
+      "durationMillis": 2185,
       "scenarioCount": 1,
       "passedCount": 1,
       "failedCount": 0,
@@ -482,7 +598,7 @@
           "refId": "[1:7]",
           "passed": true,
           "skipped": false,
-          "durationMillis": 1624,
+          "durationMillis": 1584,
           "tags": [
             "@smoke",
             "@ui",

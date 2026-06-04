@@ -1,182 +1,252 @@
 <!DOCTYPE html>
-<html lang="en" data-bs-theme="light">
+<html lang="en" data-theme="light">
 <head>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
-    <link rel="stylesheet" href="../res/bootstrap.min.css"/>
     <link rel="stylesheet" href="../res/karate-report.css"/>
+    <link rel="stylesheet" href="../res/prism-karate.css"/>
     <link rel="icon" href="../res/favicon.ico"/>
+    <!-- data-manual: content is injected by Alpine after load, so we highlight on
+         insert via KarateReport._highlightCode rather than Prism's auto-run. -->
+    <script src="../res/prism.min.js" data-manual></script>
     <script src="../res/alpine.min.js" defer></script>
+    <script>document.documentElement.setAttribute('data-theme', localStorage.getItem('karate-theme') || 'light');</script>
+    
     <title>Karate Feature</title>
-    <style>
-        .sidebar {
-            position: fixed;
-            top: 56px;
-            bottom: 0;
-            left: 0;
-            width: 220px;
-            overflow-y: auto;
-            border-right: 1px solid var(--bs-border-color);
-        }
-        .main-content {
-            margin-left: 220px;
-            padding: 1rem;
-        }
-        .step-row {
-            border-bottom: 1px solid var(--bs-border-color);
-            padding: 0.25rem 0;
-            font-family: var(--bs-font-monospace);
-            font-size: 0.875rem;
-        }
-        .step-row:hover {
-            background-color: var(--bs-tertiary-bg);
-        }
-        .step-row.clickable {
-            cursor: pointer;
-        }
-        .step-logs {
-            background-color: var(--bs-dark-bg-subtle);
-            border-radius: 0.25rem;
-            margin: 0.25rem 0 0.25rem 50px;
-            padding: 0.5rem;
-            font-size: 0.8rem;
-        }
-        .nav-scenario {
-            font-size: 0.8rem;
-            padding: 0.25rem 0.5rem;
-            border-left: 3px solid transparent;
-        }
-        .nav-scenario:hover {
-            background-color: var(--bs-tertiary-bg);
-        }
-        .nav-scenario.active {
-            border-left-color: var(--bs-primary);
-            background-color: var(--bs-tertiary-bg);
-        }
-        .log-indicator {
-            font-size: 0.6rem;
-            vertical-align: middle;
-        }
-        .nested-call {
-            border-left: 3px solid var(--bs-info);
-            margin: 0.5rem 0 0.5rem 50px;
-            padding-left: 0.5rem;
-            background-color: var(--bs-tertiary-bg);
-        }
-        .nested-scenario {
-            border-radius: 0.25rem;
-            margin: 0.25rem 0;
-            padding: 0.5rem;
-            font-size: 0.85rem;
-        }
-        .nested-scenario .nested-step {
-            font-family: var(--bs-font-monospace);
-            font-size: 0.8rem;
-            padding: 0.125rem 0;
-        }
-        @media (max-width: 768px) {
-            .sidebar { display: none; }
-            .main-content { margin-left: 0; }
-        }
-    </style>
 </head>
-<body x-data="KarateReport.featureData()">
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="../karate-summary.html">
-                <img src="../res/karate-logo.svg" alt="Karate" height="32" class="d-inline-block align-middle me-2"/>
-                <span x-text="featureSimpleName">Feature</span>
-            </a>
-            <ul class="navbar-nav ms-auto">
-                <li class="nav-item">
-                    <a class="nav-link" href="../karate-summary.html">Summary</a>
-                </li>
-            </ul>
-            <button class="btn btn-sm btn-outline-light ms-2" @click="toggleTheme()" title="Toggle theme">
-                <span x-show="theme === 'light'">&#9790;</span>
-                <span x-show="theme === 'dark'">&#9788;</span>
+<body class="bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100 font-sans antialiased" x-data="KarateReport.featureData()">
+    <!-- Karate report inline SVG sprite (Heroicons v2, MIT). Spliced into the KARATE_ICONS placeholder by HtmlReportWriter. -->
+<svg xmlns="http://www.w3.org/2000/svg" style="display:none" aria-hidden="true">
+
+    <!-- Status: passed -->
+    <symbol id="icon-check-circle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+    </symbol>
+
+    <!-- Status: failed -->
+    <symbol id="icon-x-circle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path stroke-linecap="round" stroke-linejoin="round" d="m9.75 9.75 4.5 4.5m0-4.5-4.5 4.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+    </symbol>
+
+    <!-- Status: skipped -->
+    <symbol id="icon-minus-circle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75h6m6 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+    </symbol>
+
+    <!-- Sort indicator: ascending -->
+    <symbol id="icon-chevron-up" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 15.75 7.5-7.5 7.5 7.5" />
+    </symbol>
+
+    <!-- Sort indicator: descending / row expanded -->
+    <symbol id="icon-chevron-down" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
+    </symbol>
+
+    <!-- Row collapsed (replaces the unicode ▶ used in the current templates) -->
+    <symbol id="icon-chevron-right" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+    </symbol>
+
+    <!-- Theme toggle: switch to light -->
+    <symbol id="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v2.25m6.364.386-1.591 1.591M21 12h-2.25m-.386 6.364-1.591-1.591M12 18.75V21m-4.773-4.227-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0Z" />
+    </symbol>
+
+    <!-- Theme toggle: switch to dark -->
+    <symbol id="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M21.752 15.002A9.72 9.72 0 0 1 18 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 0 0 3 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 0 0 9.002-5.998Z" />
+    </symbol>
+
+    <!-- Enterprise CTA: sparkle -->
+    <symbol id="icon-sparkle" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M12 2l1.5 5.5L19 9l-5.5 1.5L12 16l-1.5-5.5L5 9l5.5-1.5L12 2zm6 12l.8 2.7L21.5 18l-2.7.8L18 21.5l-.8-2.7L14.5 18l2.7-.8L18 14.5z"/>
+    </symbol>
+
+    <!-- Enterprise CTA: right arrow -->
+    <symbol id="icon-arrow-right" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14M12 5l7 7-7 7"/>
+    </symbol>
+
+    <!-- Hero meta: clock -->
+    <symbol id="icon-clock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
+    </symbol>
+
+    <!-- Hero meta: server / env -->
+    <symbol id="icon-server" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M5.25 14.25h13.5m-13.5 0a3 3 0 0 1-3-3V8.25a3 3 0 0 1 3-3h13.5a3 3 0 0 1 3 3v3a3 3 0 0 1-3 3m-13.5 0v3a3 3 0 0 0 3 3h7.5a3 3 0 0 0 3-3v-3M7.5 11.25h.008v.008H7.5v-.008Z"/>
+    </symbol>
+
+    <!-- Hero meta: cpu / threads -->
+    <symbol id="icon-cpu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M9 17.25v1.007a3 3 0 0 1-.879 2.122L7.5 21h9l-.621-.621A3 3 0 0 1 15 18.257V17.25m6-12v8.25a2.25 2.25 0 0 1-2.25 2.25H5.25a2.25 2.25 0 0 1-2.25-2.25V5.25m18 0A2.25 2.25 0 0 0 18.75 3H5.25A2.25 2.25 0 0 0 3 5.25m18 0V12a2.25 2.25 0 0 1-2.25 2.25H5.25A2.25 2.25 0 0 1 3 12V5.25"/>
+    </symbol>
+
+</svg>
+
+    <nav class="fixed top-0 inset-x-0 z-30 flex items-center justify-between px-4 py-2 bg-slate-100 dark:bg-brand-navbar text-slate-900 dark:text-white border-b border-slate-200 dark:border-transparent h-14">
+        <a class="flex items-center gap-2 font-medium min-w-0" href="../karate-summary.html">
+            <img src="../res/karate-logo.svg" alt="Karate" height="32" class="h-8 shrink-0"/>
+            <span class="truncate" x-text="featureSimpleName">Feature</span>
+        </a>
+        <div class="flex items-center gap-4 shrink-0">
+            <a class="text-sm text-slate-600 hover:text-slate-900 dark:text-white/80 dark:hover:text-white" href="../karate-summary.html">Summary</a>
+            
+            <button class="p-1.5 rounded hover:bg-slate-200 dark:hover:bg-white/10" @click="toggleTheme()" title="Toggle theme">
+                <svg x-show="theme === 'light'" class="w-4 h-4"><use href="#icon-moon"/></svg>
+                <svg x-show="theme === 'dark'" class="w-4 h-4"><use href="#icon-sun"/></svg>
             </button>
+            <span class="hidden sm:inline-block w-px h-5 bg-slate-300 dark:bg-white/20"></span>
+            <a href="https://karatelabs.io/karate-enterprise?utm_source=karate-os&utm_medium=report&utm_campaign=enterprise-cta&utm_content=feature"
+               target="_blank" rel="noopener"
+               class="group inline-flex items-center gap-1.5 px-2.5 py-1 rounded text-xs font-medium bg-accent text-white hover:bg-accent-dark transition-colors"
+               title="Karate Open Source vs Karate Enterprise — see what's included">
+                <svg class="w-3.5 h-3.5"><use href="#icon-sparkle"/></svg>
+                <span><span class="hidden md:inline">Try </span>Karate Enterprise</span>
+                <svg class="w-3 h-3 transition-transform group-hover:translate-x-0.5"><use href="#icon-arrow-right"/></svg>
+            </a>
         </div>
     </nav>
 
-    <!-- Left Sidebar -->
-    <nav class="sidebar bg-body-tertiary pt-3">
-        <div class="px-3 mb-2">
-            <small class="text-muted">Scenarios</small>
+    <!-- Sticky left sidebar -->
+    <nav class="hidden md:block fixed top-14 bottom-0 left-0 w-56 overflow-y-auto border-r border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50 py-3">
+        <div class="px-3 mb-2 text-xs uppercase tracking-wide text-slate-500 dark:text-slate-400">Scenarios</div>
+        <!-- Filter chips: All / Failed. Hidden when there are no failures
+             (one-state filter is just noise). -->
+        <div class="px-3 mb-2 flex gap-1.5" x-show="heroCounts.failed > 0">
+            <button type="button" @click="sidebarFilter = 'all'"
+                    class="px-2 py-0.5 text-xs rounded-full border transition-colors"
+                    :class="sidebarFilter === 'all'
+                        ? 'bg-accent text-white border-accent'
+                        : 'bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 border-slate-300 dark:border-slate-600 hover:border-accent'">
+                All <span class="opacity-75" x-text="'(' + data.scenarios.length + ')'"></span>
+            </button>
+            <button type="button" @click="sidebarFilter = 'failed'"
+                    class="px-2 py-0.5 text-xs rounded-full border transition-colors"
+                    :class="sidebarFilter === 'failed'
+                        ? 'bg-red-600 text-white border-red-600'
+                        : 'bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 border-slate-300 dark:border-slate-600 hover:border-red-500'">
+                Failed <span class="opacity-75" x-text="'(' + heroCounts.failed + ')'"></span>
+            </button>
         </div>
-        <template x-for="scenario in data.scenarios" :key="scenario.refId">
-            <a class="nav-scenario d-block text-decoration-none"
-               :class="scenario.skipped ? 'text-warning' : (scenario.passed ? 'text-success' : 'text-danger')"
+        <template x-for="scenario in filteredSidebar" :key="scenario.refId">
+            <a class="block px-3 py-1.5 text-xs border-l-2 border-transparent hover:bg-slate-100 dark:hover:bg-slate-800 hover:border-accent"
+               :class="scenario.skipped
+                   ? 'text-amber-600 dark:text-amber-400'
+                   : (scenario.passed ? 'text-green-700 dark:text-green-400' : 'text-red-700 dark:text-red-400')"
                :href="'#' + scenario.refId"
                :title="scenario.name">
-                <span class="fw-bold" x-text="scenario.refId"></span>
+                <span class="font-bold" x-text="scenario.refId"></span>
                 <span x-text="scenario.name ? ' ' + truncate(scenario.name, 20) : ''"></span>
             </a>
         </template>
     </nav>
 
-    <!-- Main Content -->
-    <main class="main-content" style="margin-top: 56px;">
-        <nav aria-label="breadcrumb" class="mb-3">
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="../karate-summary.html">Summary</a></li>
-                <li class="breadcrumb-item active" aria-current="page" x-text="data.name || data.path">Feature</li>
-            </ol>
+    <!-- Main content -->
+    <main class="md:ml-56 mt-14 p-4">
+        <nav aria-label="breadcrumb" class="mb-3 text-sm">
+            <a class="text-accent hover:underline" href="../karate-summary.html">Summary</a>
+            <span class="mx-2 text-slate-400">/</span>
+            <span class="text-slate-700 dark:text-slate-300" x-text="data.name || data.path">Feature</span>
         </nav>
 
-        <h4 x-text="data.name || 'Feature'">Feature Name</h4>
-        <p class="text-muted small" x-text="data.path">path/to/feature</p>
+        <!-- Hero -->
+        <section class="mb-5">
+            <div class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full border text-xs font-medium" :class="heroStatus.pillCls">
+                <span class="w-1.5 h-1.5 rounded-full" :class="heroStatus.dotCls"></span>
+                <span x-text="heroStatus.label"></span>
+            </div>
+            <h1 class="mt-3 text-xl md:text-2xl font-semibold tracking-tight" x-text="data.name || 'Feature'">Feature Name</h1>
+            <p class="text-xs text-slate-500 dark:text-slate-400 font-mono mt-1" x-text="data.path">path/to/feature</p>
+            <div class="flex flex-wrap items-center gap-x-4 gap-y-1 mt-2 text-sm text-slate-500 dark:text-slate-400">
+                <span x-show="data.reportDate" class="inline-flex items-center gap-1.5"><svg class="w-4 h-4"><use href="#icon-clock"/></svg> <span x-text="data.reportDate">Date</span></span>
+                <span class="inline-flex items-center gap-1.5"><svg class="w-4 h-4"><use href="#icon-check-circle"/></svg> <span x-text="heroCounts.passed"></span> passed</span>
+                <span x-show="heroCounts.failed > 0" class="inline-flex items-center gap-1.5 text-red-600 dark:text-red-400"><svg class="w-4 h-4"><use href="#icon-x-circle"/></svg> <span x-text="heroCounts.failed"></span> failed</span>
+                <span x-show="heroCounts.skipped > 0" class="inline-flex items-center gap-1.5 text-amber-600 dark:text-amber-400"><svg class="w-4 h-4"><use href="#icon-minus-circle"/></svg> <span x-text="heroCounts.skipped"></span> skipped</span>
+                <span x-show="data.durationMillis" class="inline-flex items-center gap-1.5"><svg class="w-4 h-4"><use href="#icon-clock"/></svg> <span x-text="data.durationMillis"></span> ms</span>
+            </div>
+        </section>
 
         <!-- Scenarios -->
         <template x-for="scenario in data.scenarios" :key="scenario.refId">
-            <div class="card mb-3" :id="scenario.refId">
-                <div class="card-header d-flex justify-content-between align-items-center py-2"
-                     :class="scenario.skipped ? 'bg-warning-subtle' : (scenario.passed ? 'bg-success-subtle' : 'bg-danger-subtle')">
-                    <span>
-                        <span class="fw-bold" x-text="scenario.refId"></span>
+            <div class="rounded-lg border border-slate-200 dark:border-slate-700 mb-4 overflow-hidden" :id="scenario.refId">
+                <div class="flex justify-between items-center px-3 py-2"
+                     :class="scenario.skipped
+                         ? 'bg-amber-50 dark:bg-amber-950/30 border-b border-amber-200 dark:border-amber-900'
+                         : (scenario.passed
+                             ? 'bg-green-50 dark:bg-green-950/30 border-b border-green-200 dark:border-green-900'
+                             : 'bg-red-50 dark:bg-red-950/30 border-b border-red-200 dark:border-red-900')">
+                    <span class="flex items-center gap-2 flex-wrap min-w-0">
+                        <span class="font-bold" x-text="scenario.refId"></span>
                         <span x-text="scenario.name"></span>
                         <template x-if="scenario.isOutlineExample">
-                            <span class="badge bg-info ms-1">Outline</span>
+                            <span class="inline-block px-1.5 py-0.5 text-[0.65rem] rounded bg-accent text-white">Outline</span>
                         </template>
                         <template x-for="tag in scenario.tags || []" :key="tag">
-                            <span class="badge bg-secondary ms-1" x-text="tag"></span>
+                            <span class="inline-block px-1.5 py-0.5 text-[0.65rem] rounded bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300" x-text="tag"></span>
                         </template>
                     </span>
-                    <span>
-                        <small class="text-muted me-2" x-text="scenario.durationMillis + ' ms'"></small>
-                        <span x-show="scenario.skipped" class="badge bg-warning">SKIP</span>
-                        <span x-show="scenario.passed && !scenario.skipped" class="badge bg-success">PASS</span>
-                        <span x-show="!scenario.passed" class="badge bg-danger">FAIL</span>
+                    <span class="flex items-center gap-2 shrink-0">
+                        <span class="text-xs text-slate-500 dark:text-slate-400" x-text="scenario.durationMillis + ' ms'"></span>
+                        <span class="inline-block px-2 py-0.5 text-[0.65rem] font-semibold rounded text-white"
+                              :class="statusOf(scenario).cls"
+                              x-text="statusOf(scenario).label"></span>
                     </span>
                 </div>
-                <div class="card-body p-0" x-html="renderSteps(scenario.steps)">
-                </div>
-                <!-- Scenario Error -->
+                <div x-html="renderSteps(scenario.steps)"></div>
                 <template x-if="scenario.error && !scenario.steps?.some(s => s.error)">
-                    <div class="card-footer bg-danger-subtle">
-                        <pre class="mb-0 small text-danger" x-text="scenario.error"></pre>
+                    <div class="bg-red-50 dark:bg-red-950/40 border-t border-red-200 dark:border-red-900 px-3 py-2">
+                        <pre class="m-0 text-xs text-red-700 dark:text-red-300 whitespace-pre-wrap" x-text="scenario.error"></pre>
                     </div>
                 </template>
             </div>
         </template>
     </main>
 
-    <script src="../res/bootstrap.bundle.min.js"></script>
+    <!-- Shared screenshot lightbox. Click any image embed to open. Backdrop click
+         closes (the onclick guard checks event.target === dialog so clicks inside
+         the dialog content don't dismiss). KarateReport.openLightbox(src, name)
+         populates and shows it. -->
+    <dialog id="img-lightbox"
+            class="rounded-lg p-0 bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100 backdrop:bg-black/70 max-w-[90vw] max-h-[90vh]"
+            onclick="if(event.target===this) this.close()">
+        <div class="relative">
+            <button class="absolute top-2 right-2 inline-flex items-center justify-center w-8 h-8 rounded-full bg-white/80 dark:bg-slate-800/80 hover:bg-white dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 shadow"
+                    onclick="this.closest('dialog').close()"
+                    aria-label="Close">
+                <span class="text-lg leading-none">&times;</span>
+            </button>
+            <img id="img-lightbox-img" src="" alt="" class="block max-w-[90vw] max-h-[80vh]"/>
+            <div id="img-lightbox-caption" class="px-4 py-2 text-xs border-t border-slate-200 dark:border-slate-700 font-mono text-slate-600 dark:text-slate-300"></div>
+        </div>
+    </dialog>
+
+    <footer class="md:ml-56 border-t border-slate-200 dark:border-slate-700 text-center text-xs text-slate-500 dark:text-slate-400 py-4 mt-6">
+        Generated by <a href="https://karatelabs.io" target="_blank" rel="noopener" class="hover:text-accent">Karate <span x-text="data.karateVersion">2.0</span></a>
+        <span class="mx-1.5">·</span>
+        <span x-text="data.reportDate"></span>
+        <span class="mx-1.5">·</span>
+        <a href="https://docs.karatelabs.io/" target="_blank" rel="noopener" class="hover:text-accent">Documentation</a>
+    </footer>
+
     <script src="../res/karate-report.js"></script>
     <script id="karate-data" type="application/json">{
   "path": "target/test-classes/app/api/interop/interop.feature",
   "name": "Java interop from feature files",
   "relativePath": "target/test-classes/app/api/interop/interop.feature",
   "passed": true,
-  "durationMillis": 489,
+  "durationMillis": 137,
+  "reportDate": "2026-06-04 08:38:56",
+  "karateVersion": "2.0.10",
   "scenarios": [
     {
       "name": "calling static method",
       "line": 4,
       "passed": true,
-      "durationMillis": 11,
-      "startTime": 1778646608425,
-      "endTime": 1778646608436,
+      "durationMillis": 22,
+      "startTime": 1780562336968,
+      "endTime": 1780562336990,
       "refId": "[1:4]",
       "sectionIndex": 1,
       "exampleIndex": -1,
@@ -190,7 +260,7 @@
           "text": "helper = Java.type('app.api.interop.Helper')",
           "line": 5,
           "status": "passed",
-          "durationMillis": 9,
+          "durationMillis": 1,
           "hasLogs": false,
           "hasEmbeds": false,
           "hasCallResults": false
@@ -201,7 +271,7 @@
           "text": "result = helper.doWork('hello world')",
           "line": 6,
           "status": "passed",
-          "durationMillis": 1,
+          "durationMillis": 3,
           "hasLogs": false,
           "hasEmbeds": false,
           "hasCallResults": false
@@ -212,7 +282,7 @@
           "text": "result == { \"message\": \"hello world\" }",
           "line": 7,
           "status": "passed",
-          "durationMillis": 0,
+          "durationMillis": 14,
           "hasLogs": false,
           "hasEmbeds": false,
           "hasCallResults": false
@@ -223,14 +293,14 @@
       "name": null,
       "line": 9,
       "passed": true,
-      "durationMillis": 45,
-      "startTime": 1778646608437,
-      "endTime": 1778646608482,
+      "durationMillis": 36,
+      "startTime": 1780562336993,
+      "endTime": 1780562337029,
       "refId": "[2:9]",
       "sectionIndex": 2,
       "exampleIndex": -1,
       "isOutlineExample": false,
-      "thread": "3",
+      "thread": "1",
       "skipped": false,
       "steps": [
         {
@@ -261,7 +331,7 @@
           "text": "decoded = helper.fromBrotli(encoded)",
           "line": 12,
           "status": "passed",
-          "durationMillis": 42,
+          "durationMillis": 31,
           "hasLogs": false,
           "hasEmbeds": false,
           "hasCallResults": false
@@ -283,7 +353,7 @@
           "text": "json = karate.fromString(decoded)",
           "line": 14,
           "status": "passed",
-          "durationMillis": 0,
+          "durationMillis": 2,
           "hasLogs": false,
           "hasEmbeds": false,
           "hasCallResults": false

@@ -1,231 +1,456 @@
 <!DOCTYPE html>
-<html lang="en" data-bs-theme="light">
+<html lang="en" data-theme="light">
 <head>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
-    <link rel="stylesheet" href="res/bootstrap.min.css"/>
     <link rel="stylesheet" href="res/karate-report.css"/>
     <link rel="icon" href="res/favicon.ico"/>
     <link rel="stylesheet" href="https://unpkg.com/vis-timeline@7/styles/vis-timeline-graph2d.min.css"/>
     <script src="https://unpkg.com/vis-timeline@7/standalone/umd/vis-timeline-graph2d.min.js"></script>
     <script src="res/alpine.min.js" defer></script>
+    <script>document.documentElement.setAttribute('data-theme', localStorage.getItem('karate-theme') || 'light');</script>
+    
     <title>Karate Timeline</title>
     <style>
         #timeline {
             width: 100%;
-            height: calc(100vh - 150px);
-            min-height: 400px;
+            /* Cap so the Slowest scenarios panel below stays visible without
+               scrolling past a full-viewport gantt. vis-timeline auto-scrolls
+               internally when content exceeds the height. */
+            max-height: 60vh;
+            min-height: 320px;
         }
-        .vis-item.failed {
-            background-color: #dc3545 !important;
-            border-color: #b02a37 !important;
-            color: white !important;
+        .vis-item.failed { background-color: #dc2626 !important; border-color: #b91c1c !important; color: white !important; }
+        .vis-item.passed { background-color: #16a34a !important; border-color: #15803d !important; color: white !important; }
+        .vis-label { font-size: 0.9rem; }
+        .vis-item-content { font-size: 0.8rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        /* Light mode — soften vis-timeline's default greys to match the D20 surface palette. */
+        .vis-timeline { border-color: #e2e8f0; }
+        .vis-labelset .vis-label { background-color: #f8fafc; color: #0f172a; border-color: #e2e8f0; }
+        .vis-time-axis .vis-text { color: #475569; }
+        .vis-time-axis .vis-grid.vis-minor { border-color: #e2e8f0; }
+        .vis-time-axis .vis-grid.vis-major { border-color: #cbd5e1; }
+        /* Dark mode for vis-timeline (we set data-theme on <html>) */
+        [data-theme="dark"] .vis-timeline { border-color: #475569; }
+        [data-theme="dark"] .vis-panel.vis-background,
+        [data-theme="dark"] .vis-panel.vis-center { background-color: #1e293b; }
+        [data-theme="dark"] .vis-labelset .vis-label {
+            background-color: #334155; color: #f1f5f9; border-color: #475569;
         }
-        .vis-item.passed {
-            background-color: #198754 !important;
-            border-color: #146c43 !important;
-            color: white !important;
-        }
-        .vis-label {
-            font-size: 0.9rem;
-        }
-        .vis-item-content {
-            font-size: 0.8rem;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-        /* Dark mode support */
-        [data-bs-theme="dark"] .vis-timeline {
-            border-color: #495057;
-        }
-        [data-bs-theme="dark"] .vis-panel.vis-background,
-        [data-bs-theme="dark"] .vis-panel.vis-center {
-            background-color: #212529;
-        }
-        [data-bs-theme="dark"] .vis-labelset .vis-label {
-            background-color: #343a40;
-            color: #f8f9fa;
-            border-color: #495057;
-        }
-        [data-bs-theme="dark"] .vis-time-axis .vis-text {
-            color: #adb5bd;
-        }
-        [data-bs-theme="dark"] .vis-time-axis .vis-grid.vis-minor {
-            border-color: #495057;
-        }
-        [data-bs-theme="dark"] .vis-time-axis .vis-grid.vis-major {
-            border-color: #6c757d;
-        }
+        [data-theme="dark"] .vis-time-axis .vis-text { color: #cbd5e1; }
+        [data-theme="dark"] .vis-time-axis .vis-grid.vis-minor { border-color: #475569; }
+        [data-theme="dark"] .vis-time-axis .vis-grid.vis-major { border-color: #64748b; }
     </style>
 </head>
-<body x-data="KarateReport.timelineData()">
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="karate-summary.html">
-                <img src="res/karate-logo.svg" alt="Karate" height="32" class="d-inline-block align-middle me-2"/>
-                Timeline
-            </a>
-            <ul class="navbar-nav ms-auto">
-                <li class="nav-item">
-                    <a class="nav-link" href="karate-summary.html">Summary</a>
-                </li>
-            </ul>
-            <button class="btn btn-sm btn-outline-light ms-2" @click="toggleTheme()" title="Toggle theme">
-                <span x-show="theme === 'light'">&#9790;</span>
-                <span x-show="theme === 'dark'">&#9788;</span>
+<body class="bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100 font-sans antialiased" x-data="KarateReport.timelineData()">
+    <!-- Karate report inline SVG sprite (Heroicons v2, MIT). Spliced into the KARATE_ICONS placeholder by HtmlReportWriter. -->
+<svg xmlns="http://www.w3.org/2000/svg" style="display:none" aria-hidden="true">
+
+    <!-- Status: passed -->
+    <symbol id="icon-check-circle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+    </symbol>
+
+    <!-- Status: failed -->
+    <symbol id="icon-x-circle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path stroke-linecap="round" stroke-linejoin="round" d="m9.75 9.75 4.5 4.5m0-4.5-4.5 4.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+    </symbol>
+
+    <!-- Status: skipped -->
+    <symbol id="icon-minus-circle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75h6m6 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+    </symbol>
+
+    <!-- Sort indicator: ascending -->
+    <symbol id="icon-chevron-up" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 15.75 7.5-7.5 7.5 7.5" />
+    </symbol>
+
+    <!-- Sort indicator: descending / row expanded -->
+    <symbol id="icon-chevron-down" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
+    </symbol>
+
+    <!-- Row collapsed (replaces the unicode ▶ used in the current templates) -->
+    <symbol id="icon-chevron-right" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+    </symbol>
+
+    <!-- Theme toggle: switch to light -->
+    <symbol id="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v2.25m6.364.386-1.591 1.591M21 12h-2.25m-.386 6.364-1.591-1.591M12 18.75V21m-4.773-4.227-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0Z" />
+    </symbol>
+
+    <!-- Theme toggle: switch to dark -->
+    <symbol id="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M21.752 15.002A9.72 9.72 0 0 1 18 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 0 0 3 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 0 0 9.002-5.998Z" />
+    </symbol>
+
+    <!-- Enterprise CTA: sparkle -->
+    <symbol id="icon-sparkle" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M12 2l1.5 5.5L19 9l-5.5 1.5L12 16l-1.5-5.5L5 9l5.5-1.5L12 2zm6 12l.8 2.7L21.5 18l-2.7.8L18 21.5l-.8-2.7L14.5 18l2.7-.8L18 14.5z"/>
+    </symbol>
+
+    <!-- Enterprise CTA: right arrow -->
+    <symbol id="icon-arrow-right" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14M12 5l7 7-7 7"/>
+    </symbol>
+
+    <!-- Hero meta: clock -->
+    <symbol id="icon-clock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
+    </symbol>
+
+    <!-- Hero meta: server / env -->
+    <symbol id="icon-server" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M5.25 14.25h13.5m-13.5 0a3 3 0 0 1-3-3V8.25a3 3 0 0 1 3-3h13.5a3 3 0 0 1 3 3v3a3 3 0 0 1-3 3m-13.5 0v3a3 3 0 0 0 3 3h7.5a3 3 0 0 0 3-3v-3M7.5 11.25h.008v.008H7.5v-.008Z"/>
+    </symbol>
+
+    <!-- Hero meta: cpu / threads -->
+    <symbol id="icon-cpu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M9 17.25v1.007a3 3 0 0 1-.879 2.122L7.5 21h9l-.621-.621A3 3 0 0 1 15 18.257V17.25m6-12v8.25a2.25 2.25 0 0 1-2.25 2.25H5.25a2.25 2.25 0 0 1-2.25-2.25V5.25m18 0A2.25 2.25 0 0 0 18.75 3H5.25A2.25 2.25 0 0 0 3 5.25m18 0V12a2.25 2.25 0 0 1-2.25 2.25H5.25A2.25 2.25 0 0 1 3 12V5.25"/>
+    </symbol>
+
+</svg>
+
+    <nav class="flex items-center justify-between px-4 py-2 bg-slate-100 dark:bg-brand-navbar text-slate-900 dark:text-white border-b border-slate-200 dark:border-transparent">
+        <a class="flex items-center gap-2 font-medium" href="karate-summary.html">
+            <img src="res/karate-logo.svg" alt="Karate" height="32" class="h-8"/>
+            <span>Timeline</span>
+        </a>
+        <div class="flex items-center gap-4">
+            <a class="text-sm text-slate-600 hover:text-slate-900 dark:text-white/80 dark:hover:text-white" href="karate-summary.html">Summary</a>
+            
+            <button class="p-1.5 rounded hover:bg-slate-200 dark:hover:bg-white/10" @click="toggleTheme()" title="Toggle theme">
+                <svg x-show="theme === 'light'" class="w-4 h-4"><use href="#icon-moon"/></svg>
+                <svg x-show="theme === 'dark'" class="w-4 h-4"><use href="#icon-sun"/></svg>
             </button>
+            <span class="hidden sm:inline-block w-px h-5 bg-slate-300 dark:bg-white/20"></span>
+            <a href="https://karatelabs.io/karate-enterprise?utm_source=karate-os&utm_medium=report&utm_campaign=enterprise-cta&utm_content=timeline"
+               target="_blank" rel="noopener"
+               class="group inline-flex items-center gap-1.5 px-2.5 py-1 rounded text-xs font-medium bg-accent text-white hover:bg-accent-dark transition-colors"
+               title="Karate Open Source vs Karate Enterprise — see what's included">
+                <svg class="w-3.5 h-3.5"><use href="#icon-sparkle"/></svg>
+                <span><span class="hidden md:inline">Try </span>Karate Enterprise</span>
+                <svg class="w-3 h-3 transition-transform group-hover:translate-x-0.5"><use href="#icon-arrow-right"/></svg>
+            </a>
         </div>
     </nav>
 
-    <div class="container-fluid p-3">
-        <div class="row mb-3">
-            <div class="col">
-                <p class="text-muted mb-2">
-                    <span x-text="data.reportDate">Date</span>
-                    <span x-show="data.env" class="ms-2">| env: <span class="badge bg-info" x-text="data.env"></span></span>
-                    <span class="ms-2">| threads: <span class="badge bg-secondary" x-text="data.threads || 1"></span></span>
-                </p>
-                <div class="d-flex gap-3">
-                    <span><span class="badge bg-success">&nbsp;</span> Passed</span>
-                    <span><span class="badge bg-danger">&nbsp;</span> Failed</span>
-                </div>
+    <div class="px-6 py-5">
+        <!-- Hero -->
+        <section class="mb-5">
+            <div class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full border text-xs font-medium" :class="heroStatus.pillCls">
+                <span class="w-1.5 h-1.5 rounded-full" :class="heroStatus.dotCls"></span>
+                <span x-text="heroStatus.label"></span>
+            </div>
+            <h1 class="mt-3 text-2xl md:text-3xl font-semibold tracking-tight">Execution Timeline</h1>
+            <div class="flex flex-wrap items-center gap-x-4 gap-y-1 mt-2 text-sm text-slate-500 dark:text-slate-400">
+                <span class="inline-flex items-center gap-1.5"><svg class="w-4 h-4"><use href="#icon-clock"/></svg> <span x-text="data.reportDate">Date</span></span>
+                <span x-show="data.env" class="inline-flex items-center gap-1.5"><svg class="w-4 h-4"><use href="#icon-server"/></svg> env <span class="font-mono" x-text="data.env"></span></span>
+                <span x-show="data.threads" class="inline-flex items-center gap-1.5"><svg class="w-4 h-4"><use href="#icon-cpu"/></svg> <span x-text="data.threads"></span> threads</span>
+            </div>
+        </section>
+        <!-- KPI cards: Scenarios | Speedup (when shown) | Wall clock.
+             Speedup is threshold-gated — see speedup getter in karate-report.js. -->
+        <div class="grid grid-cols-1 gap-4 mb-5"
+             :class="speedup ? 'sm:grid-cols-3' : 'sm:grid-cols-2'"
+             x-show="data.summary?.scenario_count || data.summary?.duration_millis">
+            <div class="rounded-lg p-4 border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50">
+                <div class="text-sm text-slate-500 dark:text-slate-400">Scenarios</div>
+                <div class="text-3xl font-bold mt-1 tabular-nums" x-text="data.summary?.scenario_count || 0">0</div>
+                <div class="text-xs text-slate-500 dark:text-slate-400 mt-1">total executed</div>
+            </div>
+            <div class="rounded-lg p-4 border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50" x-show="speedup">
+                <div class="text-sm text-slate-500 dark:text-slate-400">Speedup</div>
+                <div class="text-3xl font-bold mt-1 tabular-nums" x-text="speedup">1.0x</div>
+                <div class="text-xs text-slate-500 dark:text-slate-400 mt-1">vs. serial execution</div>
+            </div>
+            <div class="rounded-lg p-4 border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50">
+                <div class="text-sm text-slate-500 dark:text-slate-400">Wall clock</div>
+                <div class="text-3xl font-bold mt-1 tabular-nums" x-text="wallClock">0 ms</div>
+                <div class="text-xs text-slate-500 dark:text-slate-400 mt-1">total suite duration</div>
             </div>
         </div>
+
+        <div class="flex gap-4 text-sm mb-3 text-slate-600 dark:text-slate-400">
+            <span class="inline-flex items-center gap-1.5">
+                <span class="inline-block w-3 h-3 rounded-sm bg-green-600"></span> Passed
+            </span>
+            <span class="inline-flex items-center gap-1.5">
+                <span class="inline-block w-3 h-3 rounded-sm bg-red-600"></span> Failed
+            </span>
+        </div>
         <div id="timeline"></div>
+
+        <!-- Top-5 slowest scenarios. Links jump into the feature page anchor. -->
+        <section class="mt-6" x-show="slowestScenarios.length > 0">
+            <h2 class="text-lg font-semibold mb-3">Slowest scenarios</h2>
+            <div class="rounded-lg border border-slate-200 dark:border-slate-700 overflow-hidden">
+                <template x-for="(s, i) in slowestScenarios" :key="i">
+                    <a :href="scenarioHref(s)"
+                       class="flex items-center justify-between gap-3 px-3 py-2 text-sm border-b border-slate-100 dark:border-slate-800 last:border-b-0 hover:bg-slate-50 dark:hover:bg-slate-800/50">
+                        <span class="flex items-center gap-2 min-w-0">
+                            <span class="inline-block w-2 h-2 rounded-full shrink-0"
+                                  :class="s.passed ? 'bg-green-500' : 'bg-red-500'"></span>
+                            <span class="font-mono text-xs text-slate-500 dark:text-slate-400 shrink-0" x-text="s.featureFileName + s.refId"></span>
+                            <span class="truncate text-slate-700 dark:text-slate-300" x-text="s.name || ''"></span>
+                        </span>
+                        <span class="font-mono tabular-nums text-slate-700 dark:text-slate-300 shrink-0" x-text="s.durationMillis + ' ms'"></span>
+                    </a>
+                </template>
+            </div>
+        </section>
     </div>
 
-    <script src="res/bootstrap.bundle.min.js"></script>
+    <footer class="border-t border-slate-200 dark:border-slate-700 text-center text-xs text-slate-500 dark:text-slate-400 py-4 mt-6">
+        Generated by <a href="https://karatelabs.io" target="_blank" rel="noopener" class="hover:text-accent">Karate <span x-text="data.karateVersion">2.0</span></a>
+        <span class="mx-1.5">·</span>
+        <span x-text="data.reportDate"></span>
+        <span class="mx-1.5">·</span>
+        <a href="https://docs.karatelabs.io/" target="_blank" rel="noopener" class="hover:text-accent">Documentation</a>
+    </footer>
+
     <script src="res/karate-report.js"></script>
     <script id="karate-data" type="application/json">{
   "env": null,
-  "reportDate": "2026-05-13 04:30:07",
+  "reportDate": "2026-06-04 08:38:56",
   "threads": 3,
-  "karateVersion": "2.0.9",
+  "karateVersion": "2.0.10",
+  "summary": {
+    "feature_count": 8,
+    "feature_passed": 8,
+    "feature_failed": 0,
+    "scenario_count": 12,
+    "scenario_passed": 12,
+    "scenario_failed": 0,
+    "scenario_skipped": 0,
+    "duration_millis": 2263,
+    "status": "passed"
+  },
   "groups": [
     {
       "id": 1,
-      "content": "3"
+      "content": "Thread 1"
     },
     {
       "id": 2,
-      "content": "1"
+      "content": "Thread 3"
     },
     {
       "id": 3,
-      "content": "2"
+      "content": "Thread 2"
     }
   ],
   "items": [
     {
       "id": 1,
       "group": 1,
-      "content": "match[1:4]",
-      "start": 1778646608369,
-      "end": 1778646608376,
-      "title": "match[1:4] 04:30:08.369 (8 ms) match examples",
+      "content": "interop[1:4]",
+      "start": 1780562336968,
+      "end": 1780562336989,
+      "title": "interop[1:4] 08:38:56.968 (22 ms) calling static method",
       "className": "passed"
     },
     {
       "id": 2,
       "group": 1,
-      "content": "outline-csv[1.1:8]",
-      "start": 1778646608364,
-      "end": 1778646608364,
-      "title": "outline-csv[1.1:8] 04:30:08.364 (1 ms) dynamic 1",
+      "content": "interop[2:9]",
+      "start": 1780562336993,
+      "end": 1780562337028,
+      "title": "interop[2:9] 08:38:56.993 (36 ms)",
       "className": "passed"
     },
     {
       "id": 3,
-      "group": 1,
-      "content": "outline-csv[1.2:8]",
-      "start": 1778646608368,
-      "end": 1778646608368,
-      "title": "outline-csv[1.2:8] 04:30:08.368 (1 ms) dynamic 2",
+      "group": 2,
+      "content": "match[1:4]",
+      "start": 1780562336972,
+      "end": 1780562336999,
+      "title": "match[1:4] 08:38:56.972 (28 ms) match examples",
       "className": "passed"
     },
     {
       "id": 4,
       "group": 2,
-      "content": "simple[1:7]",
-      "start": 1778646608016,
-      "end": 1778646608419,
-      "title": "simple[1:7] 04:30:08.016 (404 ms) simple crud flow",
+      "content": "outline[1.1:13]",
+      "start": 1780562337001,
+      "end": 1780562337503,
+      "title": "outline[1.1:13] 08:38:57.001 (503 ms) using title: One",
       "className": "passed"
     },
     {
       "id": 5,
-      "group": 3,
-      "content": "nested[1:11]",
-      "start": 1778646608016,
-      "end": 1778646608419,
-      "title": "nested[1:11] 04:30:08.016 (404 ms) create several todos by chaining helpers",
+      "group": 1,
+      "content": "outline[1.2:13]",
+      "start": 1780562337030,
+      "end": 1780562337501,
+      "title": "outline[1.2:13] 08:38:57.030 (472 ms) using title: Two",
       "className": "passed"
     },
     {
       "id": 6,
       "group": 1,
-      "content": "caller[1:8]",
-      "start": 1778646608383,
-      "end": 1778646608414,
-      "title": "caller[1:8] 04:30:08.383 (32 ms) create a todo via a helper, then verify it exists",
+      "content": "outline[1.3:13]",
+      "start": 1780562337503,
+      "end": 1780562337520,
+      "title": "outline[1.3:13] 08:38:57.503 (18 ms) using title: Three",
       "className": "passed"
     },
     {
       "id": 7,
-      "group": 1,
-      "content": "outline[1.1:13]",
-      "start": 1778646608016,
-      "end": 1778646608362,
-      "title": "outline[1.1:13] 04:30:08.016 (347 ms) using title: One",
+      "group": 2,
+      "content": "caller[1:8]",
+      "start": 1780562337505,
+      "end": 1780562337547,
+      "title": "caller[1:8] 08:38:57.505 (43 ms) create a todo via a helper, then verify it exists",
       "className": "passed"
     },
     {
       "id": 8,
-      "group": 1,
-      "content": "outline[1.2:13]",
-      "start": 1778646608416,
-      "end": 1778646608430,
-      "title": "outline[1.2:13] 04:30:08.416 (15 ms) using title: Two",
+      "group": 3,
+      "content": "nested[1:11]",
+      "start": 1780562336966,
+      "end": 1780562337618,
+      "title": "nested[1:11] 08:38:56.966 (653 ms) create several todos by chaining helpers",
       "className": "passed"
     },
     {
       "id": 9,
       "group": 3,
-      "content": "outline[1.3:13]",
-      "start": 1778646608420,
-      "end": 1778646608426,
-      "title": "outline[1.3:13] 04:30:08.420 (7 ms) using title: Three",
+      "content": "outline-csv[1.1:8]",
+      "start": 1780562337620,
+      "end": 1780562337624,
+      "title": "outline-csv[1.1:8] 08:38:57.620 (5 ms) dynamic 1",
       "className": "passed"
     },
     {
       "id": 10,
-      "group": 2,
-      "content": "interop[1:4]",
-      "start": 1778646608425,
-      "end": 1778646608435,
-      "title": "interop[1:4] 04:30:08.425 (11 ms) calling static method",
+      "group": 3,
+      "content": "outline-csv[1.2:8]",
+      "start": 1780562337626,
+      "end": 1780562337626,
+      "title": "outline-csv[1.2:8] 08:38:57.626 (1 ms) dynamic 2",
       "className": "passed"
     },
     {
       "id": 11,
-      "group": 1,
-      "content": "interop[2:9]",
-      "start": 1778646608437,
-      "end": 1778646608481,
-      "title": "interop[2:9] 04:30:08.437 (45 ms)",
+      "group": 2,
+      "content": "simple[1:7]",
+      "start": 1780562337549,
+      "end": 1780562337666,
+      "title": "simple[1:7] 08:38:57.549 (118 ms) simple crud flow",
       "className": "passed"
     },
     {
       "id": 12,
-      "group": 3,
+      "group": 1,
       "content": "simple[1:7]",
-      "start": 1778646608428,
-      "end": 1778646610051,
-      "title": "simple[1:7] 04:30:08.428 (1624 ms) add and verify a todo",
+      "start": 1780562337522,
+      "end": 1780562339105,
+      "title": "simple[1:7] 08:38:57.522 (1584 ms) add and verify a todo",
       "className": "passed"
     }
-  ]
+  ],
+  "scenarios": [
+    {
+      "featureFileName": "interop",
+      "featureHtmlName": "target.test-classes.app.api.interop.interop",
+      "refId": "[1:4]",
+      "name": "calling static method",
+      "durationMillis": 22,
+      "passed": true
+    },
+    {
+      "featureFileName": "interop",
+      "featureHtmlName": "target.test-classes.app.api.interop.interop",
+      "refId": "[2:9]",
+      "name": null,
+      "durationMillis": 36,
+      "passed": true
+    },
+    {
+      "featureFileName": "match",
+      "featureHtmlName": "target.test-classes.app.api.match.match",
+      "refId": "[1:4]",
+      "name": "match examples",
+      "durationMillis": 28,
+      "passed": true
+    },
+    {
+      "featureFileName": "outline",
+      "featureHtmlName": "target.test-classes.app.api.data.outline",
+      "refId": "[1.1:13]",
+      "name": "using title: One",
+      "durationMillis": 503,
+      "passed": true
+    },
+    {
+      "featureFileName": "outline",
+      "featureHtmlName": "target.test-classes.app.api.data.outline",
+      "refId": "[1.2:13]",
+      "name": "using title: Two",
+      "durationMillis": 472,
+      "passed": true
+    },
+    {
+      "featureFileName": "outline",
+      "featureHtmlName": "target.test-classes.app.api.data.outline",
+      "refId": "[1.3:13]",
+      "name": "using title: Three",
+      "durationMillis": 18,
+      "passed": true
+    },
+    {
+      "featureFileName": "caller",
+      "featureHtmlName": "target.test-classes.app.api.call.caller",
+      "refId": "[1:8]",
+      "name": "create a todo via a helper, then verify it exists",
+      "durationMillis": 43,
+      "passed": true
+    },
+    {
+      "featureFileName": "nested",
+      "featureHtmlName": "target.test-classes.app.api.call.nested",
+      "refId": "[1:11]",
+      "name": "create several todos by chaining helpers",
+      "durationMillis": 653,
+      "passed": true
+    },
+    {
+      "featureFileName": "outline-csv",
+      "featureHtmlName": "target.test-classes.app.api.data.outline-csv",
+      "refId": "[1.1:8]",
+      "name": "dynamic 1",
+      "durationMillis": 5,
+      "passed": true
+    },
+    {
+      "featureFileName": "outline-csv",
+      "featureHtmlName": "target.test-classes.app.api.data.outline-csv",
+      "refId": "[1.2:8]",
+      "name": "dynamic 2",
+      "durationMillis": 1,
+      "passed": true
+    },
+    {
+      "featureFileName": "simple",
+      "featureHtmlName": "target.test-classes.app.api.simple.simple",
+      "refId": "[1:7]",
+      "name": "simple crud flow",
+      "durationMillis": 118,
+      "passed": true
+    },
+    {
+      "featureFileName": "simple",
+      "featureHtmlName": "target.test-classes.app.ui.simple.simple",
+      "refId": "[1:7]",
+      "name": "add and verify a todo",
+      "durationMillis": 1584,
+      "passed": true
+    }
+  ],
+  "serialDurationMillis": 3483
 }</script>
 </body>
 </html>
