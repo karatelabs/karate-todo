@@ -236,22 +236,26 @@
   "name": "using a called feature to set up test data",
   "relativePath": "target/test-classes/app/api/call/caller.feature",
   "passed": true,
-  "durationMillis": 655,
-  "reportDate": "2026-06-04 08:38:56",
-  "karateVersion": "2.0.10",
+  "durationMillis": 898,
+  "reportDate": "2026-06-17 05:09:50",
+  "karateVersion": "2.1.0",
   "scenarios": [
     {
       "name": "create a todo via a helper, then verify it exists",
       "line": 8,
       "passed": true,
-      "durationMillis": 43,
-      "startTime": 1780562337505,
-      "endTime": 1780562337548,
+      "durationMillis": 28,
+      "startTime": 1781672991303,
+      "endTime": 1781672991331,
       "refId": "[1:8]",
       "sectionIndex": 1,
       "exampleIndex": -1,
       "isOutlineExample": false,
-      "thread": "3",
+      "thread": "2",
+      "tags": [
+        "@api",
+        "@call"
+      ],
       "skipped": false,
       "steps": [
         {
@@ -260,7 +264,7 @@
           "text": "created = call read('called.feature') { title: 'from-caller' }",
           "line": 9,
           "status": "passed",
-          "durationMillis": 19,
+          "durationMillis": 17,
           "hasLogs": false,
           "hasEmbeds": false,
           "hasCallResults": true,
@@ -270,22 +274,25 @@
               "name": "reusable helper that creates a todo and returns its id",
               "relativePath": "target/test-classes/app/api/call/called.feature",
               "passed": true,
-              "durationMillis": 20,
-              "reportDate": "2026-06-04 08:38:57",
-              "karateVersion": "2.0.10",
+              "durationMillis": 17,
+              "reportDate": "2026-06-17 05:09:51",
+              "karateVersion": "2.1.0",
               "scenarios": [
                 {
                   "name": null,
                   "line": 9,
                   "passed": true,
-                  "durationMillis": 19,
-                  "startTime": 1780562337506,
-                  "endTime": 1780562337525,
+                  "durationMillis": 10,
+                  "startTime": 1781672991307,
+                  "endTime": 1781672991317,
                   "refId": "[1:9]",
                   "sectionIndex": 1,
                   "exampleIndex": -1,
                   "isOutlineExample": false,
-                  "thread": "3",
+                  "thread": "2",
+                  "tags": [
+                    "@ignore"
+                  ],
                   "skipped": false,
                   "steps": [
                     {
@@ -316,7 +323,7 @@
                       "text": "post",
                       "line": 12,
                       "status": "passed",
-                      "durationMillis": 18,
+                      "durationMillis": 9,
                       "hasLogs": true,
                       "logSegments": [
                         {
@@ -327,14 +334,14 @@
                           "code": "{\n  \"title\": \"from-caller\",\n  \"complete\": false\n}"
                         },
                         {
-                          "text": "\n\nresponse time in milliseconds: 16\n1 < 201 POST http://localhost:18080/api/todos\n1 < content-length: 84\n1 < Set-Cookie: karate.sid=singleton; Path=/; HttpOnly; SameSite=Lax; Secure\n1 < Content-Type: application/json; charset=UTF-8\n"
+                          "text": "\n\nresponse time in milliseconds: 5\n1 < 201 POST http://localhost:18080/api/todos\n1 < content-length: 84\n1 < Set-Cookie: karate.sid=singleton; Path=/; HttpOnly; SameSite=Lax; Secure\n1 < Content-Type: application/json; charset=UTF-8\n"
                         },
                         {
                           "lang": "json",
-                          "code": "{\n  \"title\": \"from-caller\",\n  \"complete\": false,\n  \"id\": \"49ee0ff0-4880-455c-9a7d-4168881d3e0b\"\n}"
+                          "code": "{\n  \"title\": \"from-caller\",\n  \"complete\": false,\n  \"id\": \"e7a88b80-4fef-4b2a-a2f3-f20562d4936d\"\n}"
                         },
                         {
-                          "text": "\n\nPOST http://localhost:18080/api/todos\n201 (16 ms)\n"
+                          "text": "\n\nPOST http://localhost:18080/api/todos\n201 (5 ms)\n"
                         }
                       ],
                       "hasEmbeds": false,
@@ -385,18 +392,18 @@
           "text": "get",
           "line": 12,
           "status": "passed",
-          "durationMillis": 22,
+          "durationMillis": 9,
           "hasLogs": true,
           "logSegments": [
             {
-              "text": "request:\n1 > GET http://localhost:18080/api/todos/49ee0ff0-4880-455c-9a7d-4168881d3e0b\n1 > Host: localhost:18080\n1 > Connection: keep-alive\n1 > User-Agent: Apache-HttpClient/5.6.1 (Java/21.0.11)\n\nresponse time in milliseconds: 20\n1 < 200 GET http://localhost:18080/api/todos/49ee0ff0-4880-455c-9a7d-4168881d3e0b\n1 < content-length: 84\n1 < Set-Cookie: karate.sid=singleton; Path=/; HttpOnly; SameSite=Lax; Secure\n1 < Content-Type: application/json; charset=UTF-8\n"
+              "text": "request:\n1 > GET http://localhost:18080/api/todos/e7a88b80-4fef-4b2a-a2f3-f20562d4936d\n1 > Host: localhost:18080\n1 > Connection: keep-alive\n1 > User-Agent: Apache-HttpClient/5.6.1 (Java/21.0.11)\n\nresponse time in milliseconds: 6\n1 < 200 GET http://localhost:18080/api/todos/e7a88b80-4fef-4b2a-a2f3-f20562d4936d\n1 < content-length: 84\n1 < Set-Cookie: karate.sid=singleton; Path=/; HttpOnly; SameSite=Lax; Secure\n1 < Content-Type: application/json; charset=UTF-8\n"
             },
             {
               "lang": "json",
-              "code": "{\n  \"title\": \"from-caller\",\n  \"complete\": false,\n  \"id\": \"49ee0ff0-4880-455c-9a7d-4168881d3e0b\"\n}"
+              "code": "{\n  \"title\": \"from-caller\",\n  \"complete\": false,\n  \"id\": \"e7a88b80-4fef-4b2a-a2f3-f20562d4936d\"\n}"
             },
             {
-              "text": "\n\nGET http://localhost:18080/api/todos/49ee0ff0-4880-455c-9a7d-4168881d3e0b\n200 (20 ms)\n"
+              "text": "\n\nGET http://localhost:18080/api/todos/e7a88b80-4fef-4b2a-a2f3-f20562d4936d\n200 (6 ms)\n"
             }
           ],
           "hasEmbeds": false,

@@ -236,22 +236,28 @@
   "name": "add a todo via the UI",
   "relativePath": "target/test-classes/app/ui/simple/simple.feature",
   "passed": true,
-  "durationMillis": 2185,
-  "reportDate": "2026-06-04 08:38:56",
-  "karateVersion": "2.0.10",
+  "durationMillis": 2557,
+  "reportDate": "2026-06-17 05:09:50",
+  "karateVersion": "2.1.0",
   "scenarios": [
     {
       "name": "add and verify a todo",
       "line": 7,
       "passed": true,
-      "durationMillis": 1584,
-      "startTime": 1780562337522,
-      "endTime": 1780562339106,
+      "durationMillis": 1621,
+      "startTime": 1781672991371,
+      "endTime": 1781672992992,
       "refId": "[1:7]",
       "sectionIndex": 1,
       "exampleIndex": -1,
       "isOutlineExample": false,
-      "thread": "1",
+      "thread": "3",
+      "tags": [
+        "@smoke",
+        "@ui",
+        "@crud",
+        "@lock=ui"
+      ],
       "skipped": false,
       "steps": [
         {
@@ -260,7 +266,7 @@
           "text": "serverUrl",
           "line": 5,
           "status": "passed",
-          "durationMillis": 983,
+          "durationMillis": 1031,
           "hasLogs": false,
           "hasEmbeds": false,
           "hasCallResults": false
@@ -271,7 +277,7 @@
           "text": "screenshot()",
           "line": 8,
           "status": "passed",
-          "durationMillis": 312,
+          "durationMillis": 328,
           "hasLogs": false,
           "hasEmbeds": true,
           "embeds": [
@@ -294,7 +300,7 @@
           "text": "input('input[name=title]', 'Task One' + Key.ENTER)",
           "line": 9,
           "status": "passed",
-          "durationMillis": 130,
+          "durationMillis": 121,
           "hasLogs": false,
           "hasEmbeds": false,
           "hasCallResults": false
@@ -305,7 +311,7 @@
           "text": "waitFor('.border-bottom')",
           "line": 10,
           "status": "passed",
-          "durationMillis": 5,
+          "durationMillis": 2,
           "hasLogs": false,
           "hasEmbeds": false,
           "hasCallResults": false
@@ -316,7 +322,7 @@
           "text": "screenshot()",
           "line": 11,
           "status": "passed",
-          "durationMillis": 153,
+          "durationMillis": 137,
           "hasLogs": false,
           "hasEmbeds": true,
           "embeds": [

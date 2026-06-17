@@ -236,22 +236,27 @@
   "name": "simple data driven testing",
   "relativePath": "target/test-classes/app/api/data/outline.feature",
   "passed": true,
-  "durationMillis": 598,
-  "reportDate": "2026-06-04 08:38:56",
-  "karateVersion": "2.0.10",
+  "durationMillis": 865,
+  "reportDate": "2026-06-17 05:09:50",
+  "karateVersion": "2.1.0",
   "scenarios": [
     {
       "name": "using title: One",
       "line": 13,
       "passed": true,
-      "durationMillis": 503,
-      "startTime": 1780562337001,
-      "endTime": 1780562337504,
+      "durationMillis": 838,
+      "startTime": 1781672990462,
+      "endTime": 1781672991300,
       "refId": "[1.1:13]",
       "sectionIndex": 1,
       "exampleIndex": 0,
       "isOutlineExample": true,
       "thread": "3",
+      "tags": [
+        "@api",
+        "@data-driven",
+        "@crud"
+      ],
       "skipped": false,
       "steps": [
         {
@@ -260,7 +265,7 @@
           "text": "apiUrl + '/api/todos'",
           "line": 5,
           "status": "passed",
-          "durationMillis": 0,
+          "durationMillis": 2,
           "hasLogs": false,
           "hasEmbeds": false,
           "hasCallResults": false
@@ -271,7 +276,7 @@
           "text": "{ title: '#(title)', complete: false }",
           "line": 8,
           "status": "passed",
-          "durationMillis": 0,
+          "durationMillis": 12,
           "hasLogs": false,
           "hasEmbeds": false,
           "hasCallResults": false
@@ -282,7 +287,7 @@
           "text": "post",
           "line": 9,
           "status": "passed",
-          "durationMillis": 500,
+          "durationMillis": 821,
           "hasLogs": true,
           "logSegments": [
             {
@@ -293,14 +298,14 @@
               "code": "{\n  \"title\": \"One\",\n  \"complete\": false\n}"
             },
             {
-              "text": "\n\nresponse time in milliseconds: 222\n1 < 201 POST http://localhost:18080/api/todos\n1 < content-length: 76\n1 < Set-Cookie: karate.sid=singleton; Path=/; HttpOnly; SameSite=Lax; Secure\n1 < Content-Type: application/json; charset=UTF-8\n"
+              "text": "\n\nresponse time in milliseconds: 513\n1 < 201 POST http://localhost:18080/api/todos\n1 < content-length: 76\n1 < Set-Cookie: karate.sid=singleton; Path=/; HttpOnly; SameSite=Lax; Secure\n1 < Content-Type: application/json; charset=UTF-8\n"
             },
             {
               "lang": "json",
-              "code": "{\n  \"title\": \"One\",\n  \"complete\": false,\n  \"id\": \"d0e06f3b-7b0c-44df-a6be-de24102d3669\"\n}"
+              "code": "{\n  \"title\": \"One\",\n  \"complete\": false,\n  \"id\": \"e20aa61b-414c-497c-885f-916875ee89e7\"\n}"
             },
             {
-              "text": "\n\nPOST http://localhost:18080/api/todos\n201 (222 ms)\n"
+              "text": "\n\nPOST http://localhost:18080/api/todos\n201 (513 ms)\n"
             }
           ],
           "hasEmbeds": false,
@@ -323,7 +328,7 @@
           "text": "response == { id: '#string', title: '#(title)', complete: false }",
           "line": 11,
           "status": "passed",
-          "durationMillis": 2,
+          "durationMillis": 0,
           "hasLogs": false,
           "hasEmbeds": false,
           "hasCallResults": false
@@ -334,14 +339,19 @@
       "name": "using title: Two",
       "line": 13,
       "passed": true,
-      "durationMillis": 472,
-      "startTime": 1780562337030,
-      "endTime": 1780562337502,
+      "durationMillis": 816,
+      "startTime": 1781672990485,
+      "endTime": 1781672991301,
       "refId": "[1.2:13]",
       "sectionIndex": 1,
       "exampleIndex": 1,
       "isOutlineExample": true,
-      "thread": "1",
+      "thread": "2",
+      "tags": [
+        "@api",
+        "@data-driven",
+        "@crud"
+      ],
       "skipped": false,
       "steps": [
         {
@@ -372,7 +382,7 @@
           "text": "post",
           "line": 9,
           "status": "passed",
-          "durationMillis": 471,
+          "durationMillis": 815,
           "hasLogs": true,
           "logSegments": [
             {
@@ -383,14 +393,14 @@
               "code": "{\n  \"title\": \"Two\",\n  \"complete\": false\n}"
             },
             {
-              "text": "\n\nresponse time in milliseconds: 223\n1 < 201 POST http://localhost:18080/api/todos\n1 < content-length: 76\n1 < Set-Cookie: karate.sid=singleton; Path=/; HttpOnly; SameSite=Lax; Secure\n1 < Content-Type: application/json; charset=UTF-8\n"
+              "text": "\n\nresponse time in milliseconds: 514\n1 < 201 POST http://localhost:18080/api/todos\n1 < content-length: 76\n1 < Set-Cookie: karate.sid=singleton; Path=/; HttpOnly; SameSite=Lax; Secure\n1 < Content-Type: application/json; charset=UTF-8\n"
             },
             {
               "lang": "json",
-              "code": "{\n  \"title\": \"Two\",\n  \"complete\": false,\n  \"id\": \"af197949-0cd0-4d2b-8338-f07886f6caca\"\n}"
+              "code": "{\n  \"title\": \"Two\",\n  \"complete\": false,\n  \"id\": \"b66bcc18-c20a-490f-aa16-8768a469d873\"\n}"
             },
             {
-              "text": "\n\nPOST http://localhost:18080/api/todos\n201 (223 ms)\n"
+              "text": "\n\nPOST http://localhost:18080/api/todos\n201 (514 ms)\n"
             }
           ],
           "hasEmbeds": false,
@@ -424,14 +434,19 @@
       "name": "using title: Three",
       "line": 13,
       "passed": true,
-      "durationMillis": 18,
-      "startTime": 1780562337503,
-      "endTime": 1780562337521,
+      "durationMillis": 809,
+      "startTime": 1781672990492,
+      "endTime": 1781672991301,
       "refId": "[1.3:13]",
       "sectionIndex": 1,
       "exampleIndex": 2,
       "isOutlineExample": true,
       "thread": "1",
+      "tags": [
+        "@api",
+        "@data-driven",
+        "@crud"
+      ],
       "skipped": false,
       "steps": [
         {
@@ -462,7 +477,7 @@
           "text": "post",
           "line": 9,
           "status": "passed",
-          "durationMillis": 16,
+          "durationMillis": 808,
           "hasLogs": true,
           "logSegments": [
             {
@@ -473,14 +488,14 @@
               "code": "{\n  \"title\": \"Three\",\n  \"complete\": false\n}"
             },
             {
-              "text": "\n\nresponse time in milliseconds: 11\n1 < 201 POST http://localhost:18080/api/todos\n1 < content-length: 78\n1 < Set-Cookie: karate.sid=singleton; Path=/; HttpOnly; SameSite=Lax; Secure\n1 < Content-Type: application/json; charset=UTF-8\n"
+              "text": "\n\nresponse time in milliseconds: 514\n1 < 201 POST http://localhost:18080/api/todos\n1 < content-length: 78\n1 < Set-Cookie: karate.sid=singleton; Path=/; HttpOnly; SameSite=Lax; Secure\n1 < Content-Type: application/json; charset=UTF-8\n"
             },
             {
               "lang": "json",
-              "code": "{\n  \"title\": \"Three\",\n  \"complete\": false,\n  \"id\": \"9adb41a1-faa9-4305-9123-f930d2a12282\"\n}"
+              "code": "{\n  \"title\": \"Three\",\n  \"complete\": false,\n  \"id\": \"5444d40d-5396-45de-92ec-a862543418e8\"\n}"
             },
             {
-              "text": "\n\nPOST http://localhost:18080/api/todos\n201 (11 ms)\n"
+              "text": "\n\nPOST http://localhost:18080/api/todos\n201 (514 ms)\n"
             }
           ],
           "hasEmbeds": false,

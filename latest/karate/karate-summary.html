@@ -121,19 +121,22 @@
                     <span x-show="data.threads" class="inline-flex items-center gap-1.5"><svg class="w-4 h-4"><use href="#icon-cpu"/></svg> <span x-text="data.threads"></span> threads</span>
                 </div>
             </div>
-            <!-- Pass-rate donut. Three <circle> segments are unrolled (no x-for in SVG, see karate-report.js#donutPass). -->
+            <!-- Pass-rate donut. Three <circle> segments (pass / skip / fail) are unrolled (no
+                 x-for in SVG, see karate-report.js#donutPass). The green pass arc shows only real
+                 passes and the amber arc shows skipped, so the arcs don't overlap; the center %
+                 still counts skipped as passed (see karate-report.js#donutPct). -->
             <div class="relative shrink-0" x-show="donutTotal > 0">
                 <svg class="w-32 h-32 -rotate-90" viewBox="0 0 120 120">
                     <circle cx="60" cy="60" r="50" fill="none" stroke="currentColor" stroke-width="14" class="text-slate-200 dark:text-slate-700"/>
                     <circle x-show="donutPass" cx="60" cy="60" r="50" fill="none" stroke="currentColor" stroke-width="14"
                             pathLength="100" stroke-linecap="butt" class="text-green-600"
                             :stroke-dasharray="donutPass?.dash" :stroke-dashoffset="donutPass?.offset"/>
-                    <circle x-show="donutFail" cx="60" cy="60" r="50" fill="none" stroke="currentColor" stroke-width="14"
-                            pathLength="100" stroke-linecap="butt" class="text-red-600"
-                            :stroke-dasharray="donutFail?.dash" :stroke-dashoffset="donutFail?.offset"/>
                     <circle x-show="donutSkip" cx="60" cy="60" r="50" fill="none" stroke="currentColor" stroke-width="14"
                             pathLength="100" stroke-linecap="butt" class="text-amber-500"
                             :stroke-dasharray="donutSkip?.dash" :stroke-dashoffset="donutSkip?.offset"/>
+                    <circle x-show="donutFail" cx="60" cy="60" r="50" fill="none" stroke="currentColor" stroke-width="14"
+                            pathLength="100" stroke-linecap="butt" class="text-red-600"
+                            :stroke-dasharray="donutFail?.dash" :stroke-dashoffset="donutFail?.offset"/>
                 </svg>
                 <div class="absolute inset-0 flex flex-col items-center justify-center">
                     <div class="text-2xl font-bold tabular-nums"><span x-text="donutPct"></span><span class="text-sm font-medium opacity-60">%</span></div>
@@ -164,6 +167,20 @@
                 <div class="text-sm opacity-90">Duration</div>
                 <div class="text-3xl font-bold mt-1"><span x-text="data.summary?.duration_millis || 0">0</span><span class="text-base font-medium ml-1">ms</span></div>
             </div>
+        </div>
+
+        <!-- Ext-contributed KPI tiles (e.g. coverage %, requirements covered) — populated via
+             Suite.addSummaryCard() from an ext's onShutdown(); absent (row hidden) when none. -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6" x-show="(data.summaryCards || []).length > 0">
+            <template x-for="(c, idx) in (data.summaryCards || [])" :key="idx">
+                <a :href="c.href || null"
+                   class="rounded-lg p-4 border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800/50 block"
+                   :class="c.href ? 'hover:border-accent transition-colors' : 'pointer-events-none'">
+                    <div class="text-sm text-slate-500 dark:text-slate-400" x-text="c.label"></div>
+                    <div class="text-3xl font-bold mt-1 tabular-nums" :class="summaryCardColor(c.status)" x-text="c.value"></div>
+                    <div class="text-xs text-slate-500 dark:text-slate-400 mt-0.5" x-show="c.sub" x-text="c.sub"></div>
+                </a>
+            </template>
         </div>
 
         <!-- Tile row: Failures (baked-in) + ext-contributed tiles via summary.panels slot.
@@ -335,8 +352,8 @@
     <script src="res/karate-report.js"></script>
     <script id="karate-data" type="application/json">{
   "env": null,
-  "reportDate": "2026-06-04 08:38:56",
-  "karateVersion": "2.0.10",
+  "reportDate": "2026-06-17 05:09:50",
+  "karateVersion": "2.1.0",
   "summary": {
     "feature_count": 8,
     "feature_passed": 8,
@@ -345,54 +362,17 @@
     "scenario_passed": 12,
     "scenario_failed": 0,
     "scenario_skipped": 0,
-    "duration_millis": 2263,
+    "duration_millis": 2664,
     "status": "passed"
   },
   "features": [
-    {
-      "name": "Java interop from feature files",
-      "relativePath": "target/test-classes/app/api/interop/interop.feature",
-      "fileName": "target.test-classes.app.api.interop.interop",
-      "passed": true,
-      "failed": false,
-      "durationMillis": 137,
-      "scenarioCount": 2,
-      "passedCount": 2,
-      "failedCount": 0,
-      "skippedCount": 0,
-      "passedRate": 100,
-      "scenarios": [
-        {
-          "name": "calling static method",
-          "refId": "[1:4]",
-          "passed": true,
-          "skipped": false,
-          "durationMillis": 22,
-          "tags": [
-            "@api",
-            "@java-interop"
-          ]
-        },
-        {
-          "name": null,
-          "refId": "[2:9]",
-          "passed": true,
-          "skipped": false,
-          "durationMillis": 36,
-          "tags": [
-            "@api",
-            "@java-interop"
-          ]
-        }
-      ]
-    },
     {
       "name": "match assertion examples",
       "relativePath": "target/test-classes/app/api/match/match.feature",
       "fileName": "target.test-classes.app.api.match.match",
       "passed": true,
       "failed": false,
-      "durationMillis": 108,
+      "durationMillis": 77,
       "scenarioCount": 1,
       "passedCount": 1,
       "failedCount": 0,
@@ -419,7 +399,7 @@
       "fileName": "target.test-classes.app.api.data.outline",
       "passed": true,
       "failed": false,
-      "durationMillis": 598,
+      "durationMillis": 865,
       "scenarioCount": 3,
       "passedCount": 3,
       "failedCount": 0,
@@ -431,7 +411,7 @@
           "refId": "[1.1:13]",
           "passed": true,
           "skipped": false,
-          "durationMillis": 503,
+          "durationMillis": 838,
           "tags": [
             "@api",
             "@data-driven",
@@ -443,7 +423,7 @@
           "refId": "[1.2:13]",
           "passed": true,
           "skipped": false,
-          "durationMillis": 472,
+          "durationMillis": 816,
           "tags": [
             "@api",
             "@data-driven",
@@ -455,63 +435,11 @@
           "refId": "[1.3:13]",
           "passed": true,
           "skipped": false,
-          "durationMillis": 18,
+          "durationMillis": 809,
           "tags": [
             "@api",
             "@data-driven",
             "@crud"
-          ]
-        }
-      ]
-    },
-    {
-      "name": "using a called feature to set up test data",
-      "relativePath": "target/test-classes/app/api/call/caller.feature",
-      "fileName": "target.test-classes.app.api.call.caller",
-      "passed": true,
-      "failed": false,
-      "durationMillis": 655,
-      "scenarioCount": 1,
-      "passedCount": 1,
-      "failedCount": 0,
-      "skippedCount": 0,
-      "passedRate": 100,
-      "scenarios": [
-        {
-          "name": "create a todo via a helper, then verify it exists",
-          "refId": "[1:8]",
-          "passed": true,
-          "skipped": false,
-          "durationMillis": 43,
-          "tags": [
-            "@api",
-            "@call"
-          ]
-        }
-      ]
-    },
-    {
-      "name": "nested called features — a chain of reusable helpers",
-      "relativePath": "target/test-classes/app/api/call/nested.feature",
-      "fileName": "target.test-classes.app.api.call.nested",
-      "passed": true,
-      "failed": false,
-      "durationMillis": 726,
-      "scenarioCount": 1,
-      "passedCount": 1,
-      "failedCount": 0,
-      "skippedCount": 0,
-      "passedRate": 100,
-      "scenarios": [
-        {
-          "name": "create several todos by chaining helpers",
-          "refId": "[1:11]",
-          "passed": true,
-          "skipped": false,
-          "durationMillis": 653,
-          "tags": [
-            "@api",
-            "@call"
           ]
         }
       ]
@@ -522,7 +450,7 @@
       "fileName": "target.test-classes.app.api.data.outline-csv",
       "passed": true,
       "failed": false,
-      "durationMillis": 703,
+      "durationMillis": 917,
       "scenarioCount": 2,
       "passedCount": 2,
       "failedCount": 0,
@@ -534,7 +462,7 @@
           "refId": "[1.1:8]",
           "passed": true,
           "skipped": false,
-          "durationMillis": 5,
+          "durationMillis": 0,
           "tags": [
             "@api",
             "@data-driven"
@@ -554,12 +482,38 @@
       ]
     },
     {
+      "name": "using a called feature to set up test data",
+      "relativePath": "target/test-classes/app/api/call/caller.feature",
+      "fileName": "target.test-classes.app.api.call.caller",
+      "passed": true,
+      "failed": false,
+      "durationMillis": 898,
+      "scenarioCount": 1,
+      "passedCount": 1,
+      "failedCount": 0,
+      "skippedCount": 0,
+      "passedRate": 100,
+      "scenarios": [
+        {
+          "name": "create a todo via a helper, then verify it exists",
+          "refId": "[1:8]",
+          "passed": true,
+          "skipped": false,
+          "durationMillis": 28,
+          "tags": [
+            "@api",
+            "@call"
+          ]
+        }
+      ]
+    },
+    {
       "name": "simple crud flow against the todo API",
       "relativePath": "target/test-classes/app/api/simple/simple.feature",
       "fileName": "target.test-classes.app.api.simple.simple",
       "passed": true,
       "failed": false,
-      "durationMillis": 744,
+      "durationMillis": 954,
       "scenarioCount": 1,
       "passedCount": 1,
       "failedCount": 0,
@@ -571,11 +525,74 @@
           "refId": "[1:7]",
           "passed": true,
           "skipped": false,
-          "durationMillis": 118,
+          "durationMillis": 67,
           "tags": [
             "@smoke",
             "@api",
             "@crud"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "nested called features — a chain of reusable helpers",
+      "relativePath": "target/test-classes/app/api/call/nested.feature",
+      "fileName": "target.test-classes.app.api.call.nested",
+      "passed": true,
+      "failed": false,
+      "durationMillis": 938,
+      "scenarioCount": 1,
+      "passedCount": 1,
+      "failedCount": 0,
+      "skippedCount": 0,
+      "passedRate": 100,
+      "scenarios": [
+        {
+          "name": "create several todos by chaining helpers",
+          "refId": "[1:11]",
+          "passed": true,
+          "skipped": false,
+          "durationMillis": 71,
+          "tags": [
+            "@api",
+            "@call"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Java interop from feature files",
+      "relativePath": "target/test-classes/app/api/interop/interop.feature",
+      "fileName": "target.test-classes.app.api.interop.interop",
+      "passed": true,
+      "failed": false,
+      "durationMillis": 966,
+      "scenarioCount": 2,
+      "passedCount": 2,
+      "failedCount": 0,
+      "skippedCount": 0,
+      "passedRate": 100,
+      "scenarios": [
+        {
+          "name": "calling static method",
+          "refId": "[1:4]",
+          "passed": true,
+          "skipped": false,
+          "durationMillis": 21,
+          "tags": [
+            "@api",
+            "@java-interop"
+          ]
+        },
+        {
+          "name": null,
+          "refId": "[2:9]",
+          "passed": true,
+          "skipped": false,
+          "durationMillis": 41,
+          "tags": [
+            "@api",
+            "@java-interop"
           ]
         }
       ]
@@ -586,7 +603,7 @@
       "fileName": "target.test-classes.app.ui.simple.simple",
       "passed": true,
       "failed": false,
-      "durationMillis": 2185,
+      "durationMillis": 2557,
       "scenarioCount": 1,
       "passedCount": 1,
       "failedCount": 0,
@@ -598,7 +615,7 @@
           "refId": "[1:7]",
           "passed": true,
           "skipped": false,
-          "durationMillis": 1584,
+          "durationMillis": 1621,
           "tags": [
             "@smoke",
             "@ui",
