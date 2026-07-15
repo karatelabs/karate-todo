@@ -6,8 +6,9 @@
     <link rel="stylesheet" href="../res/karate-report.css"/>
     <link rel="stylesheet" href="../res/prism-karate.css"/>
     <link rel="icon" href="../res/favicon.ico"/>
-    <!-- data-manual: content is injected by Alpine after load, so we highlight on
-         insert via KarateReport._highlightCode rather than Prism's auto-run. -->
+    <!-- data-manual: content is injected by Alpine after load, and we highlight code
+         blocks lazily on-view (KarateReport._observeCode) rather than Prism's auto-run,
+         so collapsed/off-screen HTTP bodies aren't tokenized until actually shown. -->
     <script src="../res/prism.min.js" data-manual></script>
     <script src="../res/alpine.min.js" defer></script>
     <script>document.documentElement.setAttribute('data-theme', localStorage.getItem('karate-theme') || 'light');</script>
@@ -98,14 +99,7 @@
                 <svg x-show="theme === 'dark'" class="w-4 h-4"><use href="#icon-sun"/></svg>
             </button>
             <span class="hidden sm:inline-block w-px h-5 bg-slate-300 dark:bg-white/20"></span>
-            <a href="https://karatelabs.io/karate-enterprise?utm_source=karate-os&utm_medium=report&utm_campaign=enterprise-cta&utm_content=feature"
-               target="_blank" rel="noopener"
-               class="group inline-flex items-center gap-1.5 px-2.5 py-1 rounded text-xs font-medium bg-accent text-white hover:bg-accent-dark transition-colors"
-               title="Karate Open Source vs Karate Enterprise — see what's included">
-                <svg class="w-3.5 h-3.5"><use href="#icon-sparkle"/></svg>
-                <span><span class="hidden md:inline">Try </span>Karate Enterprise</span>
-                <svg class="w-3 h-3 transition-transform group-hover:translate-x-0.5"><use href="#icon-arrow-right"/></svg>
-            </a>
+            <a href="https://karatelabs.io/karate-enterprise?utm_source=karate-os&utm_medium=report&utm_campaign=enterprise-cta" target="_blank" rel="noopener" class="group inline-flex items-center gap-1.5 px-2.5 py-1 rounded text-xs font-medium bg-accent text-white hover:bg-accent-dark transition-colors" title="Karate Open Source vs Karate Enterprise — see what's included"><svg class="w-4 h-4"><use href="#icon-sparkle"/></svg><span><span class="hidden md:inline">Try </span>Karate Enterprise</span><svg class="w-3 h-3 transition-transform group-hover:translate-x-0.5"><use href="#icon-arrow-right"/></svg></a>
         </div>
     </nav>
 
@@ -181,7 +175,8 @@
                         <span class="font-bold" x-text="scenario.refId"></span>
                         <span x-text="scenario.name"></span>
                         <template x-if="scenario.isOutlineExample">
-                            <span class="inline-block px-1.5 py-0.5 text-[0.65rem] rounded bg-accent text-white">Outline</span>
+                            <!-- outline (unfilled) style so it's clearly NOT an embed/kind badge (which are filled bg-accent) -->
+                            <span class="inline-block px-1.5 py-0.5 text-[0.65rem] rounded border border-slate-400 text-slate-500 dark:border-slate-500 dark:text-slate-400">Outline</span>
                         </template>
                         <template x-for="tag in scenario.tags || []" :key="tag">
                             <span class="inline-block px-1.5 py-0.5 text-[0.65rem] rounded bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300" x-text="tag"></span>
@@ -236,22 +231,22 @@
   "name": "Java interop from feature files",
   "relativePath": "target/test-classes/app/api/interop/interop.feature",
   "passed": true,
-  "durationMillis": 966,
-  "reportDate": "2026-06-17 05:09:50",
-  "karateVersion": "2.1.0",
+  "durationMillis": 580,
+  "reportDate": "2026-07-15 10:28:32",
+  "karateVersion": "2.1.1",
   "scenarios": [
     {
       "name": "calling static method",
       "line": 4,
       "passed": true,
-      "durationMillis": 21,
-      "startTime": 1781672990462,
-      "endTime": 1781672990483,
+      "durationMillis": 13,
+      "startTime": 1784111312933,
+      "endTime": 1784111312946,
       "refId": "[1:4]",
       "sectionIndex": 1,
       "exampleIndex": -1,
       "isOutlineExample": false,
-      "thread": "2",
+      "thread": "3",
       "tags": [
         "@api",
         "@java-interop"
@@ -264,7 +259,7 @@
           "text": "helper = Java.type('app.api.interop.Helper')",
           "line": 5,
           "status": "passed",
-          "durationMillis": 4,
+          "durationMillis": 5,
           "hasLogs": false,
           "hasEmbeds": false,
           "hasCallResults": false
@@ -275,7 +270,7 @@
           "text": "result = helper.doWork('hello world')",
           "line": 6,
           "status": "passed",
-          "durationMillis": 1,
+          "durationMillis": 4,
           "hasLogs": false,
           "hasEmbeds": false,
           "hasCallResults": false
@@ -286,7 +281,7 @@
           "text": "result == { \"message\": \"hello world\" }",
           "line": 7,
           "status": "passed",
-          "durationMillis": 15,
+          "durationMillis": 0,
           "hasLogs": false,
           "hasEmbeds": false,
           "hasCallResults": false
@@ -297,14 +292,14 @@
       "name": null,
       "line": 9,
       "passed": true,
-      "durationMillis": 41,
-      "startTime": 1781672991341,
-      "endTime": 1781672991382,
+      "durationMillis": 29,
+      "startTime": 1784111312939,
+      "endTime": 1784111312968,
       "refId": "[2:9]",
       "sectionIndex": 2,
       "exampleIndex": -1,
       "isOutlineExample": false,
-      "thread": "2",
+      "thread": "1",
       "tags": [
         "@api",
         "@java-interop"
@@ -317,7 +312,7 @@
           "text": "helper = Java.type('app.api.interop.Helper')",
           "line": 10,
           "status": "passed",
-          "durationMillis": 0,
+          "durationMillis": 2,
           "hasLogs": false,
           "hasEmbeds": false,
           "hasCallResults": false
@@ -339,7 +334,7 @@
           "text": "decoded = helper.fromBrotli(encoded)",
           "line": 12,
           "status": "passed",
-          "durationMillis": 39,
+          "durationMillis": 24,
           "hasLogs": false,
           "hasEmbeds": false,
           "hasCallResults": false

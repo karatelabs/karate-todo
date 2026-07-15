@@ -204,9 +204,55 @@ const KarateReport = {
         if (!detail) return;
         const expanded = detail.style.display !== 'none';
         detail.style.display = expanded ? 'none' : 'block';
-        container.querySelectorAll(':scope > .step-row .k-badge-collapsed').forEach(el => {
-            el.style.display = expanded ? '' : 'none';
+        // A row click shows EVERYTHING — clear any per-kind filter a badge set, so all embeds show.
+        detail.querySelectorAll('.k-embed').forEach(el => { el.style.display = ''; });
+        delete detail.dataset.kindFilter;
+        // Highlighting is deferred (see initDeferredEmbeds): now that this detail is visible,
+        // colorize its code blocks immediately rather than waiting for the on-view observer.
+        if (!expanded) detail.querySelectorAll('code[class*="language-"]').forEach(el => this._highlightEl(el));
+        // The collapsed badges STAY as a persistent handle (they used to be hidden on expand — you then
+        // lost track of what the row carried and had nothing to click to collapse). Just clear the
+        // per-kind active highlight; the badges remain visible in both states.
+        container.querySelectorAll(':scope > .step-row .k-embed-badge').forEach(el => {
+            el.style.outline = '';
         });
+    },
+
+    /**
+     * Expand ONLY the embeds of one kind (the row's kind badge was clicked). Opens the step
+     * detail, shows just that kind's embeds (hiding sibling embeds — a row click clears the
+     * filter), and outlines the active badge. Clicking the same kind badge again collapses.
+     * `event.stopPropagation()` on the badge keeps this from also firing the row's toggleStep.
+     */
+    toggleEmbedKind(badge, kind) {
+        const container = badge.closest('.k-step');
+        if (!container) return;
+        const detail = container.querySelector(':scope > .k-step-detail');
+        if (!detail) return;
+        const rowBadges = container.querySelectorAll(':scope > .step-row .k-embed-badge');
+        const alreadyThisKind = detail.style.display !== 'none' && detail.dataset.kindFilter === kind;
+        if (alreadyThisKind) {
+            detail.style.display = 'none';
+            delete detail.dataset.kindFilter;
+            rowBadges.forEach(b => { b.style.outline = ''; });
+            return;
+        }
+        detail.style.display = 'block';
+        detail.dataset.kindFilter = kind;
+        detail.querySelectorAll('.k-embed').forEach(el => {
+            el.style.display = (el.dataset.embedKind === kind) ? '' : 'none';
+        });
+        rowBadges.forEach(b => {
+            b.style.outline = (b.dataset.embedKind === kind) ? '2px solid rgba(255,255,255,.7)' : '';
+        });
+        // materialize any now-visible deferred embeds of this kind (they render on-view otherwise)
+        detail.querySelectorAll('.k-embed[data-defer]').forEach(h => {
+            if (h.style.display !== 'none') this._materializeEmbed(h);
+        });
+        // Same as toggleStep: the detail is now visible, so colorize its code blocks
+        // (log-segment HTTP bodies aren't .k-embeds, so the kind filter never hides them)
+        // immediately rather than waiting for the on-view observer.
+        detail.querySelectorAll('code[class*="language-"]').forEach(el => this._highlightEl(el));
     },
 
     /**
@@ -294,8 +340,17 @@ const KarateReport = {
             html += ` <span class="${badgeBase} bg-slate-600 ml-1 k-badge-collapsed" title="Has logs - click to expand">log</span>`;
         }
         if (step.hasEmbeds) {
-            const n = step.embeds?.length || 0;
-            html += ` <span class="${badgeBase} bg-accent ml-1 k-badge-collapsed" title="${n} embed(s)">${n} embed${n > 1 ? 's' : ''}</span>`;
+            // One badge PER embed KIND (screenshot / http / coverage / …) so the row says at a glance
+            // WHAT evidence it carries, not just how many. Clicking a kind badge expands ONLY that kind;
+            // clicking the row still expands everything (toggleStep). Badges persist while expanded — a
+            // handle to collapse again — instead of being hidden.
+            this._embedKinds(step.embeds || []).forEach(({ kind, count }) => {
+                const label = count > 1 ? `${this._esc(kind)} ${count}` : this._esc(kind);
+                html += ` <span class="${badgeBase} bg-accent ml-1 k-badge-collapsed k-embed-badge cursor-pointer"`
+                    + ` data-embed-kind="${this._esc(kind)}"`
+                    + ` onclick="event.stopPropagation(); KarateReport.toggleEmbedKind(this, '${this._esc(kind)}')"`
+                    + ` title="${count} ${this._esc(kind)} embed${count > 1 ? 's' : ''} — click to expand just these">${label}</span>`;
+            });
         }
         if (step.hasCallResults) {
             const n = step.callResults?.length || 0;
@@ -317,8 +372,8 @@ const KarateReport = {
             if (step.logSegments && step.logSegments.length) {
                 // One contiguous <pre> so whitespace stays exactly as logged; code
                 // segments (e.g. JSON bodies) are wrapped in a language-tagged <code>
-                // that Prism colorizes in place (_highlightCode), leaving the request
-                // and header lines around them as plain text.
+                // that Prism colorizes on-view (_observeCode/_highlightEl), leaving the
+                // request and header lines around them as plain text.
                 let inner = '';
                 step.logSegments.forEach(seg => {
                     if (seg.lang) {
@@ -430,7 +485,42 @@ const KarateReport = {
     _renderEmbed(embed) {
         const id = ++this._embedSeq;
         this._embeds.push({ id, embed });
-        return `<div class="k-embed" data-embed-id="${id}" data-defer style="min-height:2rem"></div>`;
+        const kind = this._embedKind(embed);
+        return `<div class="k-embed" data-embed-id="${id}" data-embed-kind="${this._esc(kind)}" data-defer style="min-height:2rem"></div>`;
+    },
+
+    /**
+     * Classify an embed into a short, human-readable KIND for the collapsed row badge
+     * (image / http / coverage / grpc / …). Precedence: an explicit ext-declared
+     * `meta.kind` wins; else an image/video part is an image/video; else the embed
+     * name with a coverage/exchange suffix stripped to its base (`http-exchange`→`http`,
+     * `openapi-match`→`openapi`, `coverage-emit`→`coverage`); `evidence`→`assertion`.
+     * Core knows no ext-specific names — this is pure shape/suffix derivation.
+     */
+    _embedKind(embed) {
+        if (embed && embed.meta && embed.meta.kind) return String(embed.meta.kind);
+        const mimes = ((embed && embed.parts) || []).map(p => (p.mime || '').toLowerCase());
+        if (mimes.some(m => m.startsWith('image/'))) return 'image';
+        if (mimes.some(m => m.startsWith('video/'))) return 'video';
+        const n = (embed && embed.name || '').toLowerCase().trim();
+        if (!n) return mimes.some(m => m === 'text/html') ? 'html' : 'embed';
+        const m = n.match(/^([a-z0-9]+)-(exchange|match|emit)$/);
+        if (m) return m[1];
+        if (n === 'evidence') return 'assertion';
+        if (/\.(png|jpe?g|gif|webp)$/.test(n)) return 'image';
+        return n;
+    },
+
+    /** Distinct embed kinds for a step, in first-seen order, each with its count. */
+    _embedKinds(embeds) {
+        const order = [];
+        const counts = {};
+        (embeds || []).forEach(e => {
+            const k = this._embedKind(e);
+            if (!(k in counts)) { counts[k] = 0; order.push(k); }
+            counts[k]++;
+        });
+        return order.map(k => ({ kind: k, count: counts[k] }));
     },
 
     _materializeEmbed(host) {
@@ -468,12 +558,22 @@ const KarateReport = {
             this._deferIO = new IntersectionObserver(entries => {
                 entries.forEach(e => { if (e.isIntersecting) self._materializeEmbed(e.target); });
             }, { rootMargin: '200px' });
+            // Prism highlighting is deferred the same way embeds are. Highlighting every
+            // code block eagerly at insert time is what makes large feature reports (100s
+            // of scenarios, each with HTTP JSON bodies) explode: Prism turns each body into
+            // thousands of <span> nodes, and 99% of them sit inside collapsed step details
+            // nobody ever opens. Observing instead of highlighting keeps hidden bodies as
+            // plain text until they actually scroll into view / a step is expanded.
+            this._hlIO = new IntersectionObserver(entries => {
+                entries.forEach(e => { if (e.isIntersecting) { self._highlightEl(e.target); self._hlIO.unobserve(e.target); } });
+            }, { rootMargin: '200px' });
         }
         const scan = root => {
             if (root && root.querySelectorAll) {
                 root.querySelectorAll('[data-embed-id][data-defer]').forEach(h => self._observeDeferred(h));
+                root.querySelectorAll('code[class*="language-"]').forEach(el => self._observeCode(el));
             }
-            self._highlightCode(root);
+            if (root && root.matches && root.matches('code[class*="language-"]')) self._observeCode(root);
         };
         if (typeof MutationObserver !== 'undefined' && document.body) {
             new MutationObserver(muts => {
@@ -487,29 +587,32 @@ const KarateReport = {
         scan(document);
         window.addEventListener('beforeprint', () => {
             document.querySelectorAll('[data-embed-id][data-defer]').forEach(h => self._materializeEmbed(h));
+            document.querySelectorAll('code[class*="language-"]').forEach(el => self._highlightEl(el));
         });
     },
 
     /**
-     * Run Prism over any language-tagged <code> blocks under `root` (HTTP JSON
-     * bodies today, JS snippets later). Called as Alpine inserts each scenario's
-     * x-html. Prism highlights hidden nodes fine, so we colorize at insert time
-     * regardless of whether the step detail is expanded. No-op if Prism is absent.
-     * Token colors come from prism-karate.css, keyed on the report's data-theme —
-     * so the theme toggle re-colors instantly with no re-highlight needed.
+     * Register a code block for on-view Prism highlighting via {@link #_hlIO}.
+     * Observing a still-hidden (display:none) block is fine — IntersectionObserver
+     * simply reports it as not-intersecting and fires later, when a step is expanded
+     * or it scrolls into view. Falls back to highlighting immediately when the browser
+     * has no IntersectionObserver.
      */
-    _highlightCode(root) {
-        if (typeof Prism === 'undefined' || !root) return;
-        if (root.matches && root.matches('code[class*="language-"]')) {
-            Prism.highlightElement(root);
-            return;
-        }
-        if (root.querySelectorAll) {
-            root.querySelectorAll('code[class*="language-"]').forEach(el => Prism.highlightElement(el));
-        }
+    _observeCode(el) {
+        if (!el || el.dataset.hlDone || el.dataset.hlObserved) return;
+        if (this._hlIO) { el.dataset.hlObserved = '1'; this._hlIO.observe(el); }
+        else this._highlightEl(el);
+    },
+
+    /** Highlight a single code block at most once. */
+    _highlightEl(el) {
+        if (typeof Prism === 'undefined' || !el || el.dataset.hlDone) return;
+        Prism.highlightElement(el);
+        el.dataset.hlDone = '1';
     },
 
     _deferIO: null,
+    _hlIO: null,
     _deferReady: false,
 
     // Default per-part rendering when no ext claims the embed name — also the
@@ -907,6 +1010,64 @@ const KarateReport = {
         };
         const timeline = new vis.Timeline(container, items, groups, options);
         timeline.fit();
+    },
+
+    /**
+     * Render the shared report TOP-NAV into a mount element (default {@code #k-topnav}) — the one nav
+     * bar every contributed ext page (Coverage, Traceability, …) can reuse so they read as ONE report,
+     * with the current tab highlighted. "Non-UI mode": pure DOM, no Alpine report app needed — an ext's
+     * standalone/static page just includes this script, drops a {@code <div id="k-topnav">}, and calls
+     * this. Self-contained styling (injected once) works under the ext pages' {@code [data-theme]} theming
+     * without Tailwind. opts: {@code current} (active tab key, highlighted), {@code summary} (href back to
+     * the test report), {@code tabs:[{key,title,href}]} (the contributed tabs), {@code cta:{label,href}} (optional).
+     */
+    renderTopNav(opts) {
+        opts = opts || {};
+        const mount = document.querySelector(opts.mount || '#k-topnav');
+        if (!mount) return;
+        const esc = s => this._esc(s == null ? '' : String(s));
+        const items = [];
+        if (opts.summary) items.push({ key: 'summary', title: 'Test report', href: opts.summary, back: true });
+        (opts.tabs || []).forEach(t => items.push(t));
+        const links = items.map(t => {
+            const active = t.key && t.key === opts.current;
+            return `<a class="k-tnav-link${active ? ' k-tnav-active' : ''}${t.back ? ' k-tnav-back' : ''}"`
+                + ` href="${esc(t.href)}"${active ? ' aria-current="page"' : ''}>`
+                + `${t.back ? '&#8592; ' : ''}${esc(t.title)}</a>`;
+        }).join('');
+        const cta = (opts.cta && opts.cta.href)
+            ? `<a class="k-tnav-cta" href="${esc(opts.cta.href)}" target="_blank" rel="noopener">${esc(opts.cta.label || 'Learn more')}</a>`
+            : '';
+        this._ensureTopNavStyle();
+        mount.innerHTML = `<nav class="k-tnav"><div class="k-tnav-links">${links}</div><div class="k-tnav-right">${cta}</div></nav>`;
+    },
+
+    /** Inject the top-nav stylesheet once. Plain CSS (no Tailwind) + {@code [data-theme="dark"]} so it
+     *  themes correctly on the ext pages, which don't ship the report's Tailwind build. */
+    _ensureTopNavStyle() {
+        if (document.getElementById('k-tnav-style')) return;
+        const css = `
+.k-tnav{display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;`
+            + `padding:.5rem 1rem;margin-bottom:1rem;border-bottom:1px solid #e2e8f0;`
+            + `font:500 13px/1.2 system-ui,-apple-system,Segoe UI,sans-serif}`
+            + `.k-tnav-links{display:flex;align-items:center;gap:.25rem;flex-wrap:wrap}`
+            + `.k-tnav-link{padding:.35rem .65rem;border-radius:.375rem;color:#475569;text-decoration:none;transition:background .12s,color .12s}`
+            + `.k-tnav-link:hover{background:rgba(100,116,139,.14);color:#0f172a}`
+            + `.k-tnav-active{background:rgba(59,130,246,.14);color:#1d4ed8;font-weight:600}`
+            + `.k-tnav-back{color:#64748b}`
+            + `.k-tnav-cta{padding:.3rem .65rem;border:1px solid #cbd5e1;border-radius:.375rem;color:#64748b;text-decoration:none;font-size:12px}`
+            + `.k-tnav-cta:hover{color:#0f172a;border-color:#94a3b8}`
+            + `[data-theme="dark"] .k-tnav{border-color:rgba(255,255,255,.1)}`
+            + `[data-theme="dark"] .k-tnav-link{color:rgba(255,255,255,.75)}`
+            + `[data-theme="dark"] .k-tnav-link:hover{background:rgba(255,255,255,.1);color:#fff}`
+            + `[data-theme="dark"] .k-tnav-active{background:rgba(59,130,246,.28);color:#fff}`
+            + `[data-theme="dark"] .k-tnav-back{color:rgba(255,255,255,.6)}`
+            + `[data-theme="dark"] .k-tnav-cta{border-color:rgba(255,255,255,.2);color:rgba(255,255,255,.6)}`
+            + `[data-theme="dark"] .k-tnav-cta:hover{color:#fff;border-color:rgba(255,255,255,.4)}`;
+        const style = document.createElement('style');
+        style.id = 'k-tnav-style';
+        style.textContent = css;
+        document.head.appendChild(style);
     }
 };
 

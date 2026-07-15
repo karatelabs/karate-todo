@@ -126,14 +126,7 @@
                 <svg x-show="theme === 'dark'" class="w-4 h-4"><use href="#icon-sun"/></svg>
             </button>
             <span class="hidden sm:inline-block w-px h-5 bg-slate-300 dark:bg-white/20"></span>
-            <a href="https://karatelabs.io/karate-enterprise?utm_source=karate-os&utm_medium=report&utm_campaign=enterprise-cta&utm_content=timeline"
-               target="_blank" rel="noopener"
-               class="group inline-flex items-center gap-1.5 px-2.5 py-1 rounded text-xs font-medium bg-accent text-white hover:bg-accent-dark transition-colors"
-               title="Karate Open Source vs Karate Enterprise — see what's included">
-                <svg class="w-3.5 h-3.5"><use href="#icon-sparkle"/></svg>
-                <span><span class="hidden md:inline">Try </span>Karate Enterprise</span>
-                <svg class="w-3 h-3 transition-transform group-hover:translate-x-0.5"><use href="#icon-arrow-right"/></svg>
-            </a>
+            <a href="https://karatelabs.io/karate-enterprise?utm_source=karate-os&utm_medium=report&utm_campaign=enterprise-cta" target="_blank" rel="noopener" class="group inline-flex items-center gap-1.5 px-2.5 py-1 rounded text-xs font-medium bg-accent text-white hover:bg-accent-dark transition-colors" title="Karate Open Source vs Karate Enterprise — see what's included"><svg class="w-4 h-4"><use href="#icon-sparkle"/></svg><span><span class="hidden md:inline">Try </span>Karate Enterprise</span><svg class="w-3 h-3 transition-transform group-hover:translate-x-0.5"><use href="#icon-arrow-right"/></svg></a>
         </div>
     </nav>
 
@@ -214,9 +207,9 @@
     <script src="res/karate-report.js"></script>
     <script id="karate-data" type="application/json">{
   "env": null,
-  "reportDate": "2026-06-17 05:09:50",
+  "reportDate": "2026-07-15 10:28:32",
   "threads": 3,
-  "karateVersion": "2.1.0",
+  "karateVersion": "2.1.1",
   "summary": {
     "feature_count": 8,
     "feature_passed": 8,
@@ -225,21 +218,21 @@
     "scenario_passed": 12,
     "scenario_failed": 0,
     "scenario_skipped": 0,
-    "duration_millis": 2664,
+    "duration_millis": 2091,
     "status": "passed"
   },
   "groups": [
     {
       "id": 1,
-      "content": "Thread 1"
-    },
-    {
-      "id": 2,
       "content": "Thread 3"
     },
     {
-      "id": 3,
+      "id": 2,
       "content": "Thread 2"
+    },
+    {
+      "id": 3,
+      "content": "Thread 1"
     }
   ],
   "items": [
@@ -247,108 +240,108 @@
       "id": 1,
       "group": 1,
       "content": "match[1:4]",
-      "start": 1781672990463,
-      "end": 1781672990490,
-      "title": "match[1:4] 05:09:50.463 (28 ms) match examples",
+      "start": 1784111312895,
+      "end": 1784111312910,
+      "title": "match[1:4] 10:28:32.895 (16 ms) match examples",
       "className": "passed"
     },
     {
       "id": 2,
-      "group": 2,
-      "content": "outline[1.1:13]",
-      "start": 1781672990462,
-      "end": 1781672991299,
-      "title": "outline[1.1:13] 05:09:50.462 (838 ms) using title: One",
+      "group": 1,
+      "content": "caller[1:8]",
+      "start": 1784111312427,
+      "end": 1784111312893,
+      "title": "caller[1:8] 10:28:32.427 (467 ms) create a todo via a helper, then verify it exists",
       "className": "passed"
     },
     {
       "id": 3,
-      "group": 3,
-      "content": "outline[1.2:13]",
-      "start": 1781672990485,
-      "end": 1781672991300,
-      "title": "outline[1.2:13] 05:09:50.485 (816 ms) using title: Two",
+      "group": 2,
+      "content": "simple[1:7]",
+      "start": 1784111312428,
+      "end": 1784111312922,
+      "title": "simple[1:7] 10:28:32.428 (495 ms) simple crud flow",
       "className": "passed"
     },
     {
       "id": 4,
-      "group": 1,
-      "content": "outline[1.3:13]",
-      "start": 1781672990492,
-      "end": 1781672991300,
-      "title": "outline[1.3:13] 05:09:50.492 (809 ms) using title: Three",
+      "group": 3,
+      "content": "nested[1:11]",
+      "start": 1784111312428,
+      "end": 1784111312937,
+      "title": "nested[1:11] 10:28:32.428 (510 ms) create several todos by chaining helpers",
       "className": "passed"
     },
     {
       "id": 5,
-      "group": 3,
-      "content": "outline-csv[1.1:8]",
-      "start": 1781672991332,
-      "end": 1781672991332,
-      "title": "outline-csv[1.1:8] 05:09:51.332 (1 ms) dynamic 1",
+      "group": 1,
+      "content": "outline[1.1:13]",
+      "start": 1784111312912,
+      "end": 1784111312931,
+      "title": "outline[1.1:13] 10:28:32.912 (20 ms) using title: One",
       "className": "passed"
     },
     {
       "id": 6,
-      "group": 3,
-      "content": "outline-csv[1.2:8]",
-      "start": 1781672991333,
-      "end": 1781672991333,
-      "title": "outline-csv[1.2:8] 05:09:51.333 (1 ms) dynamic 2",
+      "group": 2,
+      "content": "outline[1.2:13]",
+      "start": 1784111312925,
+      "end": 1784111312935,
+      "title": "outline[1.2:13] 10:28:32.925 (11 ms) using title: Two",
       "className": "passed"
     },
     {
       "id": 7,
-      "group": 3,
-      "content": "caller[1:8]",
-      "start": 1781672991303,
-      "end": 1781672991330,
-      "title": "caller[1:8] 05:09:51.303 (28 ms) create a todo via a helper, then verify it exists",
+      "group": 2,
+      "content": "outline[1.3:13]",
+      "start": 1784111312937,
+      "end": 1784111312946,
+      "title": "outline[1.3:13] 10:28:32.937 (10 ms) using title: Three",
       "className": "passed"
     },
     {
       "id": 8,
-      "group": 2,
-      "content": "simple[1:7]",
-      "start": 1781672991302,
-      "end": 1781672991368,
-      "title": "simple[1:7] 05:09:51.302 (67 ms) simple crud flow",
+      "group": 1,
+      "content": "outline-csv[1.1:8]",
+      "start": 1784111312951,
+      "end": 1784111312951,
+      "title": "outline-csv[1.1:8] 10:28:32.951 (1 ms) dynamic 1",
       "className": "passed"
     },
     {
       "id": 9,
       "group": 1,
-      "content": "nested[1:11]",
-      "start": 1781672991302,
-      "end": 1781672991372,
-      "title": "nested[1:11] 05:09:51.302 (71 ms) create several todos by chaining helpers",
+      "content": "outline-csv[1.2:8]",
+      "start": 1784111312952,
+      "end": 1784111312952,
+      "title": "outline-csv[1.2:8] 10:28:32.952 (1 ms) dynamic 2",
       "className": "passed"
     },
     {
       "id": 10,
-      "group": 3,
+      "group": 1,
       "content": "interop[1:4]",
-      "start": 1781672990462,
-      "end": 1781672990482,
-      "title": "interop[1:4] 05:09:50.462 (21 ms) calling static method",
+      "start": 1784111312933,
+      "end": 1784111312945,
+      "title": "interop[1:4] 10:28:32.933 (13 ms) calling static method",
       "className": "passed"
     },
     {
       "id": 11,
       "group": 3,
       "content": "interop[2:9]",
-      "start": 1781672991341,
-      "end": 1781672991381,
-      "title": "interop[2:9] 05:09:51.341 (41 ms)",
+      "start": 1784111312939,
+      "end": 1784111312967,
+      "title": "interop[2:9] 10:28:32.939 (29 ms)",
       "className": "passed"
     },
     {
       "id": 12,
       "group": 2,
       "content": "simple[1:7]",
-      "start": 1781672991371,
-      "end": 1781672992991,
-      "title": "simple[1:7] 05:09:51.371 (1621 ms) add and verify a todo",
+      "start": 1784111312948,
+      "end": 1784111314430,
+      "title": "simple[1:7] 10:28:32.948 (1483 ms) add and verify a todo",
       "className": "passed"
     }
   ],
@@ -358,7 +351,31 @@
       "featureHtmlName": "target.test-classes.app.api.match.match",
       "refId": "[1:4]",
       "name": "match examples",
-      "durationMillis": 28,
+      "durationMillis": 16,
+      "passed": true
+    },
+    {
+      "featureFileName": "caller",
+      "featureHtmlName": "target.test-classes.app.api.call.caller",
+      "refId": "[1:8]",
+      "name": "create a todo via a helper, then verify it exists",
+      "durationMillis": 467,
+      "passed": true
+    },
+    {
+      "featureFileName": "simple",
+      "featureHtmlName": "target.test-classes.app.api.simple.simple",
+      "refId": "[1:7]",
+      "name": "simple crud flow",
+      "durationMillis": 495,
+      "passed": true
+    },
+    {
+      "featureFileName": "nested",
+      "featureHtmlName": "target.test-classes.app.api.call.nested",
+      "refId": "[1:11]",
+      "name": "create several todos by chaining helpers",
+      "durationMillis": 510,
       "passed": true
     },
     {
@@ -366,7 +383,7 @@
       "featureHtmlName": "target.test-classes.app.api.data.outline",
       "refId": "[1.1:13]",
       "name": "using title: One",
-      "durationMillis": 838,
+      "durationMillis": 20,
       "passed": true
     },
     {
@@ -374,7 +391,7 @@
       "featureHtmlName": "target.test-classes.app.api.data.outline",
       "refId": "[1.2:13]",
       "name": "using title: Two",
-      "durationMillis": 816,
+      "durationMillis": 11,
       "passed": true
     },
     {
@@ -382,7 +399,7 @@
       "featureHtmlName": "target.test-classes.app.api.data.outline",
       "refId": "[1.3:13]",
       "name": "using title: Three",
-      "durationMillis": 809,
+      "durationMillis": 10,
       "passed": true
     },
     {
@@ -402,35 +419,11 @@
       "passed": true
     },
     {
-      "featureFileName": "caller",
-      "featureHtmlName": "target.test-classes.app.api.call.caller",
-      "refId": "[1:8]",
-      "name": "create a todo via a helper, then verify it exists",
-      "durationMillis": 28,
-      "passed": true
-    },
-    {
-      "featureFileName": "simple",
-      "featureHtmlName": "target.test-classes.app.api.simple.simple",
-      "refId": "[1:7]",
-      "name": "simple crud flow",
-      "durationMillis": 67,
-      "passed": true
-    },
-    {
-      "featureFileName": "nested",
-      "featureHtmlName": "target.test-classes.app.api.call.nested",
-      "refId": "[1:11]",
-      "name": "create several todos by chaining helpers",
-      "durationMillis": 71,
-      "passed": true
-    },
-    {
       "featureFileName": "interop",
       "featureHtmlName": "target.test-classes.app.api.interop.interop",
       "refId": "[1:4]",
       "name": "calling static method",
-      "durationMillis": 21,
+      "durationMillis": 13,
       "passed": true
     },
     {
@@ -438,7 +431,7 @@
       "featureHtmlName": "target.test-classes.app.api.interop.interop",
       "refId": "[2:9]",
       "name": null,
-      "durationMillis": 41,
+      "durationMillis": 29,
       "passed": true
     },
     {
@@ -446,11 +439,11 @@
       "featureHtmlName": "target.test-classes.app.ui.simple.simple",
       "refId": "[1:7]",
       "name": "add and verify a todo",
-      "durationMillis": 1621,
+      "durationMillis": 1483,
       "passed": true
     }
   ],
-  "serialDurationMillis": 4342
+  "serialDurationMillis": 3056
 }</script>
 </body>
 </html>
