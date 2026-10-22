@@ -55,7 +55,7 @@ The app uses a **singleton session** so tests mutate the same state you see in t
 | UI tests (Testcontainers) | [`app/ui/`](src/test/java/app/ui/) — run by [`UiTest.java`](src/test/java/app/ui/UiTest.java) with `-Pui` | [UI Testing](https://docs.karatelabs.io/extensions/ui-testing) |
 | API mock | [`app/mock/`](src/test/java/app/mock/) — stand up locally via [`MockRunner.java`](src/test/java/app/mock/MockRunner.java) | [Test Doubles](https://docs.karatelabs.io/extensions/test-doubles) |
 | Performance | [`app/perf/TodoSimulation.java`](src/test/java/app/perf/TodoSimulation.java) | [Performance Testing](https://docs.karatelabs.io/extensions/performance-testing) |
-| Debugger demo | [`app/debug/debug.feature`](src/test/java/app/debug/debug.feature) — breakpoints in inline JS, a `.js` file and an `eval` block | [IDE plugins](#ide-plugins) |
+| Debugger demo | [`app/debug/debug.feature`](src/test/java/app/debug/debug.feature) — breakpoints in inline JS, a `.js` file and an `eval` block | [IntelliJ](https://karatelabs.io/intellij), [VS Code](https://karatelabs.io/vscode) |
 
 Feature files tagged `@external` hit real external hosts (httpbin, jsonplaceholder, restful-booker, google) —
 excluded from CI by `~@external`.
@@ -110,8 +110,8 @@ Live reports: [karatelabs.github.io/karate-todo/latest/](https://karatelabs.gith
 
 ## IDE plugins
 
-* [Karate for VS Code](https://marketplace.visualstudio.com/items?itemName=karatelabs.karate)
-* [Karate for IntelliJ IDEA](https://plugins.jetbrains.com/plugin/19232-karate)
+* [Karate for VS Code](https://karatelabs.io/vscode)
+* [Karate for IntelliJ IDEA](https://karatelabs.io/intellij)
 
 ## Prerequisites
 
