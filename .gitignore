@@ -5,5 +5,6 @@
 target/
 home/
 .idea/
-.vscode/
+.vscode/*
+!.vscode/extensions.json
 
