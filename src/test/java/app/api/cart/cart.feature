@@ -23,3 +23,11 @@ Feature: Cart invoice
     * def invoice = read('invoice.js')
     * def bill = invoice(cart, taxRate)
     * match bill == { subtotal: 11, tax: 2.75, total: 13.75, lines: 2 }
+
+  Scenario Outline: A line of <name> costs price times quantity
+    * def line = <price> * <qty>
+    * match line == <total>
+
+    Examples:
+      | name  | price | qty | total |
+      | apple | 2     | 3   | 6     |
