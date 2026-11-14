@@ -18,4 +18,5 @@ Feature: cross-site browser automation demo
     # And click('{}Accept all')
     And input("[name=q][name=q]", 'karate dsl')
     When submit().click("input[name=btnI]")
-    Then waitForUrl('https://github.com/karatelabs/karate')
+    Then waitForUrl('/karatelabs')
+    And screenshot()
